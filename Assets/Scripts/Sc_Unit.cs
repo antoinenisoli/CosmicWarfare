@@ -9,8 +9,10 @@ public class Sc_Unit : MonoBehaviour
     NavMeshAgent agent => GetComponent<NavMeshAgent>();
     MeshRenderer mr => GetComponentInChildren<MeshRenderer>();
 
-    [SerializeField] bool selected;
-    [SerializeField] Material highlight;
+    public bool highlited;
+    public bool selected;
+    [SerializeField] Material HighlightMat;
+    [SerializeField] Material SelectedMat;
     Material baseMat;
 
     private void Awake()
@@ -30,6 +32,6 @@ public class Sc_Unit : MonoBehaviour
 
     private void Update()
     {
-        mr.material = selected ? highlight : baseMat;
+        mr.material = selected ? SelectedMat : highlited ? HighlightMat : baseMat;
     }
 }

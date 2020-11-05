@@ -853,6 +853,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a676927935f32c4f96372434f10871a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debug: 0
   boxColor: {r: 0.039443493, g: 0, b: 1, a: 0.3254902}
   panBounds: {x: 100, y: 100}
   heightBounds: {x: 20, y: 50}

@@ -42,6 +42,11 @@ public class Sc_Selection : MonoBehaviour
     void SelectUnits()
     {
         onUnit = Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, Mathf.Infinity, unitLayer);
+        foreach (var item in allUnits)
+        {
+            item.highlited = onUnit && item.Equals(hit.collider.gameObject.GetComponentInParent<Sc_Unit>()) && !item.selected;
+        }
+
         if (Input.GetMouseButtonDown(0))
         {
             if (onUnit)

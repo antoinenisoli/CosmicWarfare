@@ -6,6 +6,7 @@ public class Sc_CameraController : MonoBehaviour
 {
     Camera mainCam => GetComponent<Camera>();
 
+    [SerializeField] bool debug;
     [SerializeField] Color boxColor = Color.white;
     [SerializeField] Vector2 panBounds;
     [SerializeField] Vector2 heightBounds;
@@ -26,8 +27,11 @@ public class Sc_CameraController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = boxColor;
-        Gizmos.DrawCube(basePosition, new Vector3(panBounds.x * 2, heightBounds.x * 2, panBounds.y * 2));
+        if (debug)
+        {
+            Gizmos.color = boxColor;
+            Gizmos.DrawCube(basePosition, new Vector3(panBounds.x * 2, heightBounds.x * 2, panBounds.y * 2));
+        }
     }
 
     [ContextMenu("Clamp position in box")]
