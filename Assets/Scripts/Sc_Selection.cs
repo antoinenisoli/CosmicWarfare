@@ -3,15 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+enum Detectables
+{
+    Ground,
+    Units,
+    Buildings,
+    None,
+}
+
 public class Sc_Selection : MonoBehaviour
 {
-    Camera mainCam => GetComponent<Camera>();
-    List<Sc_Unit> allUnits;
+    Camera mainCam => Camera.main;
+
+    List<Sc_UnitAlly> allPlayerUnits = new List<Sc_UnitAlly>();
+    List<Sc_UnitEnemy> allEnemyUnits = new List<Sc_UnitEnemy>();
 
     [Header("Select units")]
-    [SerializeField] LayerMask unitLayer;    
-    [SerializeField] Sc_Unit selectedUnit;
-    bool onUnit;
+    [SerializeField] LayerMask unitLayer;
+    [SerializeField] List<Sc_UnitAlly> selectedUnits = new List<Sc_UnitAlly>();
+    [SerializeField] Detectables isDetecting;
+    RaycastHit hit;
 
     [Header("Rectangle selection")]
     [SerializeField] Color textureColor = Color.white;
@@ -21,46 +32,76 @@ public class Sc_Selection : MonoBehaviour
     [Header("Move units")]
     [SerializeField] LayerMask groundLayer;
     [SerializeField] GameObject moveMark;
-    bool onGround;
 
     private void Awake()
     {
-        allUnits = FindObjectsOfType<Sc_Unit>().ToList();
+        allPlayerUnits = FindObjectsOfType<Sc_UnitAlly>().ToList();
+        allEnemyUnits = FindObjectsOfType<Sc_UnitEnemy>().ToList();
     }
 
     void MoveUnits()
     {
-        onGround = Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, Mathf.Infinity, groundLayer);
-        if (selectedUnit && onGround && Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && selectedUnits.Count > 0 && isDetecting == Detectables.Ground)
         {
             Vector3 position = hit.point;
-            selectedUnit.MoveTo(position);
-            moveMark.transform.position = position + Vector3.up * 0.2f;
+            foreach (var unit in selectedUnits)
+            {
+                if (unit.selected)
+                    unit.MoveTo(position);
+            }
+
+            Instantiate(moveMark, position + Vector3.up * 0.2f, Quaternion.identity);
         }
     }
 
     void SelectUnits()
     {
-        onUnit = Physics.Raycast(mainCam.ScreenPointToRay(Input.mousePosition), out RaycastHit hit, Mathf.Infinity, unitLayer);
-        foreach (var item in allUnits)
+        foreach (var ally in allPlayerUnits)
         {
-            item.highlited = onUnit && item.Equals(hit.collider.gameObject.GetComponentInParent<Sc_Unit>()) && !item.selected;
+            ally.highlighted = 
+                (hit.collider != null 
+                && ally.Equals(hit.collider.gameObject.GetComponentInParent<Sc_UnitAlly>()) 
+                && !ally.selected 
+                && isDetecting == Detectables.Units) 
+                || selectedUnits.Contains(ally);
+        }
+
+        foreach (var enemy in allEnemyUnits)
+        {
+            enemy.highlighted = hit.collider != null && selectedUnits.Count > 0 && enemy.Equals(hit.collider.gameObject.GetComponentInParent<Sc_UnitEnemy>());
         }
 
         if (Input.GetMouseButtonDown(0))
         {
-            if (onUnit)
+            for (int i = 0; i < allPlayerUnits.Count; i++)
             {
-                if (selectedUnit)
-                    selectedUnit.Select(false);
-
-                selectedUnit = hit.collider.GetComponentInParent<Sc_Unit>();
-                selectedUnit.Select(true);
+                allPlayerUnits[i].Select(false);
+                selectedUnits.Clear();
             }
-            else if (selectedUnit)
+
+            if (isDetecting == Detectables.Units)
             {
-                selectedUnit.Select(false);
-                selectedUnit = null;
+                Sc_UnitAlly thisUnit = hit.collider.GetComponentInParent<Sc_UnitAlly>();
+                if (!selectedUnits.Contains(thisUnit))
+                {
+                    thisUnit.Select(true);
+                    selectedUnits.Add(thisUnit);
+                }
+            }
+        }
+    }
+
+    void InteractUnits()
+    {
+        if (Input.GetMouseButtonDown(1) && isDetecting == Detectables.Units)
+        {
+            Sc_UnitEnemy enemy = hit.collider.GetComponentInParent<Sc_UnitEnemy>();
+            if (enemy)
+            {
+                foreach (var unit in selectedUnits)
+                {
+                    unit.Attack(enemy);
+                }
             }
         }
     }
@@ -83,26 +124,60 @@ public class Sc_Selection : MonoBehaviour
             }
 
             selectRect = new Rect(mousePos.x, Screen.height - mousePos.y, Input.mousePosition.x - mousePos.x, -1 * (Input.mousePosition.y - mousePos.y));
+            if (selectRect.size.y < 2 && selectRect.size.y < 2)
+                return;
+
+            foreach (var unit in allPlayerUnits)
+            {
+                if (unit == null)
+                {
+                    allPlayerUnits.Remove(unit);
+                    return;
+                }
+
+                Vector3 unitPos = mainCam.WorldToScreenPoint(unit.transform.position);
+                unitPos.y = Screen.height - unitPos.y;
+
+                if (selectRect.Contains(unitPos))
+                {
+                    if (!selectedUnits.Contains(unit))
+                        selectedUnits.Add(unit);
+                }
+                else
+                {
+                    if (selectedUnits.Contains(unit))
+                        selectedUnits.Remove(unit);
+                }
+            }
         }
 
         if (Input.GetMouseButtonUp(0))
-        {
-            foreach (var item in allUnits)
-            {
-                if (selectRect.Contains(mainCam.WorldToScreenPoint(item.transform.position)))
-                {
-                    item.Select(true);
-                }
-            }
-
+        {            
             selectRect = new Rect();
+
+            if (selectedUnits.Count <= 0)
+                return;
+
+            for (int i = 0; i < selectedUnits.Count; i++)
+            {
+                selectedUnits[i].Select(true);
+            }
         }
     }
 
     private void Update()
     {
+        Ray screenPoint = mainCam.ScreenPointToRay(Input.mousePosition);
+        if (Physics.Raycast(screenPoint, out hit, Mathf.Infinity, unitLayer))
+            isDetecting = Detectables.Units;
+        else if (Physics.Raycast(screenPoint, out hit, Mathf.Infinity, groundLayer))
+            isDetecting = Detectables.Ground;
+        else
+            isDetecting = Detectables.None;
+
         SelectInBox();
         SelectUnits();
+        InteractUnits();
         MoveUnits();
     }
 }
