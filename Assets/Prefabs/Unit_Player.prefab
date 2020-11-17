@@ -215,11 +215,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1d8e484ff8a554192f02db6d03acc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trail: {fileID: 1494408004880654766}
   health:
     maxHealth: 10
     currentHealth: 0
     healthSlider: {fileID: 7110152268525728750}
+  trail: {fileID: 1494408004880654766}
   highlighted: 0
   HighlightMat: {fileID: 2100000, guid: b9cc259c1860d8f409305d5b34679100, type: 2}
   firePower: 1
@@ -576,8 +576,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4482480842546715861}
-  m_LocalRotation: {x: 0.23415314, y: -0, z: -0, w: 0.97219974}
-  m_LocalPosition: {x: 0, y: 0, z: 0.51}
+  m_LocalRotation: {x: 0.38268346, y: -0, z: -0, w: 0.9238795}
+  m_LocalPosition: {x: 0, y: 0, z: 0.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4529923685237194442}

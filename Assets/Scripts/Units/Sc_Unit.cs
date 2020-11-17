@@ -12,18 +12,17 @@ public enum UnitState
 }
 
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class Sc_Unit : MonoBehaviour
+public abstract class Sc_Unit : Sc_DestroyableEntity
 {
     protected NavMeshAgent agent => GetComponent<NavMeshAgent>();
     protected MeshRenderer mr => GetComponentInChildren<MeshRenderer>();
+
     [SerializeField] TrailRenderer trail;
 
     [Header("Selection")]
-    [SerializeField] protected Sc_HealthSystem health;
     public bool highlighted;
     [SerializeField] protected Material HighlightMat;
-    protected Material baseMat;
-    protected Sc_Unit lastTarget;
+    protected Sc_DestroyableEntity lastTarget;
 
     [Header("Caracteristics")]
     [SerializeField] protected float firePower = 3;
@@ -36,10 +35,10 @@ public abstract class Sc_Unit : MonoBehaviour
     protected float shootTimer;
     public LayerMask ground = 1 >> 2;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         baseMat = mr.material;
-        health.Initialize(this);
     }
 
     [ContextMenu("Place unit")]
@@ -50,18 +49,13 @@ public abstract class Sc_Unit : MonoBehaviour
             transform.position = hit.point + Vector3.up * transform.lossyScale.y;
     }
 
-    public virtual void Death()
+    public override void TakeDamages(float amount)
     {
-        Destroy(gameObject);
-    }
-
-    public void TakeDamages(float amount)
-    {
-        health.TakeDamages(amount);
+        base.TakeDamages(amount);
         Instantiate(bloodFx, transform.position, Quaternion.identity);
     }
 
-    public void Attack(Sc_Unit target)
+    public void Attack(Sc_DestroyableEntity target)
     {
         lastTarget = target;
         currentState = UnitState.IsAttacking;

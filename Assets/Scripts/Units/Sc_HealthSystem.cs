@@ -7,7 +7,7 @@ using UnityEngine.UI;
 [Serializable]
 public class Sc_HealthSystem
 {
-    Sc_Unit unit;
+    Sc_DestroyableEntity entity;
     [SerializeField] float maxHealth, currentHealth;
     [SerializeField] Slider healthSlider;
 
@@ -18,7 +18,7 @@ public class Sc_HealthSystem
         {
             if (value < 0)
             {
-                unit.Death();
+                entity.Death();
                 value = 0;
             }
 
@@ -31,9 +31,9 @@ public class Sc_HealthSystem
     }
     public float MaxHealth { get => maxHealth; set => maxHealth = value; }
 
-    public void Initialize(Sc_Unit unit)
+    public void Initialize(Sc_DestroyableEntity entity)
     {
-        this.unit = unit;
+        this.entity = entity;
         CurrentHealth = MaxHealth;
         SetSlider();
     }

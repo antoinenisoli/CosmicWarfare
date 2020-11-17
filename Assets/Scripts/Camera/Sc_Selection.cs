@@ -20,12 +20,13 @@ public class Sc_Selection : MonoBehaviour
 
     [Header("Select units")]
     [SerializeField] LayerMask unitLayer;
-    [SerializeField] List<Sc_UnitAlly> selectedUnits = new List<Sc_UnitAlly>();
+    [SerializeField] LayerMask buildingsLayer;
     [SerializeField] Detectables isDetecting;
     RaycastHit hit;
 
     [Header("Rectangle selection")]
     [SerializeField] Color textureColor = Color.white;
+    [SerializeField] List<Sc_UnitAlly> selectedUnits = new List<Sc_UnitAlly>();
     Rect selectRect;
     Vector3 mousePos;
 
@@ -93,14 +94,14 @@ public class Sc_Selection : MonoBehaviour
 
     void InteractUnits()
     {
-        if (Input.GetMouseButtonDown(1) && isDetecting == Detectables.Units)
+        if (Input.GetMouseButtonDown(1) && (isDetecting == Detectables.Units || isDetecting == Detectables.Buildings)) //attack other units
         {
-            Sc_UnitEnemy enemy = hit.collider.GetComponentInParent<Sc_UnitEnemy>();
-            if (enemy)
+            Sc_DestroyableEntity target = hit.collider.GetComponentInParent<Sc_DestroyableEntity>();
+            if (target)
             {
                 foreach (var unit in selectedUnits)
                 {
-                    unit.Attack(enemy);
+                    unit.Attack(target);
                 }
             }
         }
@@ -165,16 +166,23 @@ public class Sc_Selection : MonoBehaviour
         }
     }
 
-    private void Update()
+    void DetectItems()
     {
         Ray screenPoint = mainCam.ScreenPointToRay(Input.mousePosition);
+
         if (Physics.Raycast(screenPoint, out hit, Mathf.Infinity, unitLayer))
             isDetecting = Detectables.Units;
         else if (Physics.Raycast(screenPoint, out hit, Mathf.Infinity, groundLayer))
             isDetecting = Detectables.Ground;
+        else if (Physics.Raycast(screenPoint, out hit, Mathf.Infinity, buildingsLayer))
+            isDetecting = Detectables.Buildings;
         else
             isDetecting = Detectables.None;
+    }
 
+    private void Update()
+    {
+        DetectItems();
         SelectInBox();
         SelectUnits();
         InteractUnits();
