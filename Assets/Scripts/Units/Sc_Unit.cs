@@ -16,6 +16,7 @@ public abstract class Sc_Unit : Sc_DestroyableEntity
 {
     protected NavMeshAgent agent => GetComponent<NavMeshAgent>();
     protected MeshRenderer mr => GetComponentInChildren<MeshRenderer>();
+    protected Outline outline => mr.GetComponent<Outline>();
 
     [SerializeField] TrailRenderer trail;
 
@@ -35,10 +36,15 @@ public abstract class Sc_Unit : Sc_DestroyableEntity
     protected float shootTimer;
     public LayerMask ground = 1 >> 2;
 
-    public override void Awake()
+    public void Awake()
     {
-        base.Awake();
         baseMat = mr.material;
+    }
+
+    public override void Death()
+    {
+        Destroy(health.healthSlider.gameObject);
+        base.Death();
     }
 
     [ContextMenu("Place unit")]
@@ -132,8 +138,10 @@ public abstract class Sc_Unit : Sc_DestroyableEntity
         }
     }
 
-    public virtual void Update()
+    public override void Update()
     {
+        base.Update();
         Behavior();
+        outline.enabled = highlighted ? true : false;
     }
 }

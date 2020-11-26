@@ -24,7 +24,7 @@ public class Sc_UnitAlly : Sc_Unit
     public override void Update()
     {
         if (HighlightMat != null && SelectedMat != null)
-            mr.material = selected ? SelectedMat : highlighted ? HighlightMat : baseMat;
+            mr.material = selected ? HighlightMat : baseMat;
 
         base.Update();
     }

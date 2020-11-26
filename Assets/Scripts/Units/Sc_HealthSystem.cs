@@ -9,7 +9,7 @@ public class Sc_HealthSystem
 {
     Sc_DestroyableEntity entity;
     [SerializeField] float maxHealth, currentHealth;
-    [SerializeField] Slider healthSlider;
+    [HideInInspector] public Slider healthSlider;
 
     public float CurrentHealth 
     { 
@@ -46,6 +46,9 @@ public class Sc_HealthSystem
 
     void SetSlider()
     {
+        if (healthSlider == null)
+            return;
+
         healthSlider.maxValue = MaxHealth;
         healthSlider.value = CurrentHealth;
     }

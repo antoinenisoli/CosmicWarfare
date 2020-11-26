@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Sc_DestroyableEntity : MonoBehaviour
 {
-    [SerializeField] protected Sc_HealthSystem health;
+    public Sc_HealthSystem health;
     protected Material baseMat;
 
-    public virtual void Awake()
+    public virtual void Start()
     {
         health.Initialize(this);
     }
@@ -20,5 +20,10 @@ public class Sc_DestroyableEntity : MonoBehaviour
     public virtual void Death()
     {
         Destroy(gameObject);
+    }
+
+    public virtual void Update()
+    {
+        health.healthSlider.gameObject.SetActive(health.CurrentHealth < health.MaxHealth);
     }
 }
