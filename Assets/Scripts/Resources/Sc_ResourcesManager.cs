@@ -45,7 +45,7 @@ public class Sc_ResourcesManager : MonoBehaviour
         ActualizeText();
     }
 
-    public void Cost(ResourceType res, int amount)
+    public void Cost(int amount, ResourceType res)
     {
         resources[(int)res].CurrentAmount -= amount;
         ActualizeText();

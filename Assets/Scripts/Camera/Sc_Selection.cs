@@ -44,14 +44,16 @@ public class Sc_Selection : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1) && selectedUnits.Count > 0 && isDetecting == Detectables.Ground)
         {
+            bool validPath = false;
             Vector3 position = hit.point;
             foreach (var unit in selectedUnits)
             {
                 if (unit.selected)
-                    unit.MoveTo(position);
+                    unit.MoveTo(position, out validPath);
             }
 
-            Instantiate(moveMark, position + Vector3.up * 0.2f, Quaternion.identity);
+            if (validPath)
+                Instantiate(moveMark, position + Vector3.up * 0.2f, Quaternion.identity);
         }
     }
 

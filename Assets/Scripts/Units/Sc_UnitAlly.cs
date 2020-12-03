@@ -9,11 +9,16 @@ public class Sc_UnitAlly : Sc_Unit
     [SerializeField] protected Material SelectedMat;
     public bool selected;
 
-    public void MoveTo(Vector3 pos)
+    public void MoveTo(Vector3 pos, out bool valid)
     {
-        agent.isStopped = false;
-        currentState = UnitState.IsMoving;
-        agent.SetDestination(pos);
+        NavMeshPath path = new NavMeshPath();
+        valid = agent.CalculatePath(pos, path);
+        if (valid)
+        {
+            agent.isStopped = false;
+            currentState = UnitState.IsMoving;
+            agent.SetDestination(pos);
+        }
     }
 
     public void Select(bool select)

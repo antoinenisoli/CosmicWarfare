@@ -24,6 +24,7 @@ public class Sc_DestroyableEntity : MonoBehaviour
 
     public virtual void Update()
     {
-        health.healthSlider.gameObject.SetActive(health.CurrentHealth < health.MaxHealth);
+        if (health.healthSlider)
+            health.healthSlider.gameObject.SetActive(health.CurrentHealth < health.MaxHealth);
     }
 }

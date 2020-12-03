@@ -29,15 +29,9 @@ public class Sc_CameraController : MonoBehaviour
     [SerializeField] float zoomAmount = 30;
     Vector3 newZoom;
 
-    [ContextMenu("Reset Box Position")]
-    public void ResetPos()
-    {
-        basePosition = transform.position;
-    }
-
     private void Awake()
     {
-        ResetPos();
+        basePosition = transform.position;
         newRotation = transform.rotation;
         newPosition = transform.position;
         newZoom = mainCam.transform.localPosition;
@@ -49,7 +43,7 @@ public class Sc_CameraController : MonoBehaviour
             return;
 
         Gizmos.color = boxColor;
-        Gizmos.DrawCube(basePosition, new Vector3(panBounds.x * 2, zoomLimits.x, panBounds.z * 2));
+        Gizmos.DrawCube(transform.position, new Vector3(panBounds.x * 2, zoomLimits.x, panBounds.z * 2));
     }
 
     [ContextMenu("Clamp position in box")]
