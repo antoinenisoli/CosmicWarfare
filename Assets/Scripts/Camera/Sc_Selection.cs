@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using DG.Tweening;
 
 enum Detectables
 {
@@ -15,29 +17,62 @@ public class Sc_Selection : MonoBehaviour
 {
     Camera mainCam => Camera.main;
 
-    List<Sc_UnitAlly> allPlayerUnits = new List<Sc_UnitAlly>();
-    List<Sc_UnitEnemy> allEnemyUnits = new List<Sc_UnitEnemy>();
+    [SerializeField] List<Sc_UnitAlly> allPlayerUnits = new List<Sc_UnitAlly>();
+    [SerializeField] List<Sc_UnitEnemy> allEnemyUnits = new List<Sc_UnitEnemy>();
+    [SerializeField] List<Sc_Building> allBuildings = new List<Sc_Building>();
 
-    [Header("Select units")]
+    [Header("Select")]
     [SerializeField] LayerMask unitLayer;
     [SerializeField] LayerMask buildingsLayer;
     [SerializeField] Detectables isDetecting;
+    public Sc_Building selectedBuilding;
     RaycastHit hit;
 
     [Header("Rectangle selection")]
     [SerializeField] Color textureColor = Color.white;
-    [SerializeField] List<Sc_UnitAlly> selectedUnits = new List<Sc_UnitAlly>();
+    public List<Sc_UnitAlly> selectedUnits = new List<Sc_UnitAlly>();
     Rect selectRect;
     Vector3 mousePos;
 
     [Header("Move units")]
     [SerializeField] LayerMask groundLayer;
     [SerializeField] GameObject moveMark;
+    [SerializeField] float dummyAnimDuration = 3;
 
     private void Awake()
     {
         allPlayerUnits = FindObjectsOfType<Sc_UnitAlly>().ToList();
         allEnemyUnits = FindObjectsOfType<Sc_UnitEnemy>().ToList();
+        allBuildings = FindObjectsOfType<Sc_Building>().ToList();
+    }
+
+    private void Start()
+    {
+        Sc_EventManager.Instance.onNewUnit.AddListener(NewEntity);
+    }
+
+    public static void GenerateEntity(Sc_DestroyableEntity _new)
+    {
+        Sc_EventManager.Instance.onNewUnit.Invoke(_new);
+    }
+
+    public void NewEntity(Sc_DestroyableEntity entity)
+    {
+        print(entity.GetComponent<Sc_Building>());
+        if (entity.GetComponent<Sc_Building>())
+            allBuildings.Add(entity as Sc_Building);
+        else if (entity.GetComponent<Sc_Unit>())
+        {
+            switch ((entity as Sc_Unit).myTeam)
+            {
+                case Team.Player:
+                    allPlayerUnits.Add(entity as Sc_UnitAlly);
+                    break;
+                case Team.Enemy:
+                    allEnemyUnits.Add(entity as Sc_UnitEnemy);
+                    break;
+            }
+        }
     }
 
     void MoveUnits()
@@ -53,8 +88,30 @@ public class Sc_Selection : MonoBehaviour
             }
 
             if (validPath)
-                Instantiate(moveMark, position + Vector3.up * 0.2f, Quaternion.identity);
+            {
+                GameObject dummy = Instantiate(moveMark, position + Vector3.up * 0.2f, Quaternion.identity);
+                Vector3 currentScale = dummy.transform.localScale;
+                dummy.transform.DOScale(currentScale * 1.5f, dummyAnimDuration / 3);
+                dummy.transform.DOScale(Vector3.zero, dummyAnimDuration / 3).SetDelay(dummyAnimDuration / 3);
+                Destroy(dummy, dummyAnimDuration);
+            }
         }
+    }
+
+    public void CleanList()
+    {
+        void Clean<T>(List<T> list)
+        {
+            foreach (var item in list)
+            {
+                if (item == null)
+                    list.Remove(item);
+            }
+        }
+
+        Clean(allEnemyUnits);
+        Clean(allBuildings);
+        Clean(allPlayerUnits);
     }
 
     void SelectUnits()
@@ -62,11 +119,24 @@ public class Sc_Selection : MonoBehaviour
         foreach (var ally in allPlayerUnits)
         {
             ally.highlighted = 
-                (hit.collider != null 
+                (
+                hit.collider != null 
                 && ally.Equals(hit.collider.gameObject.GetComponentInParent<Sc_UnitAlly>()) 
                 && !ally.selected 
-                && isDetecting == Detectables.Units) 
-                || selectedUnits.Contains(ally);
+                ) 
+                || selectedUnits.Contains(ally)
+                ;
+        }
+
+        foreach (var building in allBuildings)
+        {
+            building.highlighted =
+                hit.collider != null
+                && building.Equals(hit.collider.gameObject.GetComponentInParent<Sc_Building>())
+                && !building.selected
+                && building.myTeam == Team.Player
+                && building.currentState == BuildingState.Builded
+                ;
         }
 
         foreach (var enemy in allEnemyUnits)
@@ -82,6 +152,12 @@ public class Sc_Selection : MonoBehaviour
                 selectedUnits.Clear();
             }
 
+            if (selectedBuilding && !EventSystem.current.IsPointerOverGameObject())
+            {
+                selectedBuilding.SelectMe(false);
+                selectedBuilding = null;
+            }
+
             if (isDetecting == Detectables.Units)
             {
                 Sc_UnitAlly thisUnit = hit.collider.GetComponentInParent<Sc_UnitAlly>();
@@ -89,6 +165,15 @@ public class Sc_Selection : MonoBehaviour
                 {
                     thisUnit.Select(true);
                     selectedUnits.Add(thisUnit);
+                }
+            }
+            else if (isDetecting == Detectables.Buildings)
+            {
+                Sc_Building pointedBuilding = hit.collider.GetComponentInParent<Sc_Building>();
+                if (pointedBuilding.currentState == BuildingState.Builded)
+                {
+                    selectedBuilding = pointedBuilding;
+                    selectedBuilding.SelectMe(true);
                 }
             }
         }
@@ -105,6 +190,13 @@ public class Sc_Selection : MonoBehaviour
                 {
                     unit.Attack(target);
                 }
+
+                GameObject dummy = Instantiate(moveMark, target.transform.position + Vector3.up * 0.2f, Quaternion.identity);
+                dummy.GetComponent<MeshRenderer>().material.color = Color.red;
+                Vector3 currentScale = dummy.transform.localScale;
+                dummy.transform.DOScale(currentScale * 1.5f, dummyAnimDuration / 3);
+                dummy.transform.DOScale(Vector3.zero, dummyAnimDuration / 3).SetDelay(dummyAnimDuration / 3);
+                Destroy(dummy, dummyAnimDuration);
             }
         }
     }
@@ -174,10 +266,10 @@ public class Sc_Selection : MonoBehaviour
 
         if (Physics.Raycast(screenPoint, out hit, Mathf.Infinity, unitLayer))
             isDetecting = Detectables.Units;
-        else if (Physics.Raycast(screenPoint, out hit, Mathf.Infinity, groundLayer))
-            isDetecting = Detectables.Ground;
         else if (Physics.Raycast(screenPoint, out hit, Mathf.Infinity, buildingsLayer))
             isDetecting = Detectables.Buildings;
+        else if (Physics.Raycast(screenPoint, out hit, Mathf.Infinity, groundLayer))
+            isDetecting = Detectables.Ground;
         else
             isDetecting = Detectables.None;
     }

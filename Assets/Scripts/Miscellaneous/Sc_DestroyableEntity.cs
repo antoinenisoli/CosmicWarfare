@@ -6,6 +6,8 @@ public class Sc_DestroyableEntity : MonoBehaviour
 {
     public Sc_HealthSystem health;
     protected Material baseMat;
+    public bool highlighted;
+    public Team myTeam;
 
     public virtual void Start()
     {

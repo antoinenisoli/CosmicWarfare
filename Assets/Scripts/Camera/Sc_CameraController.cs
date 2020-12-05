@@ -12,6 +12,8 @@ public class Sc_CameraController : MonoBehaviour
     [Header("Move camera")]
     [SerializeField] Vector3 panBounds;
     [SerializeField] float smoothSpeed = 5;
+    [Range(0,1)]
+    [SerializeField] float screenBoundsX, screenBoundsY;
     [SerializeField] float panSpeed = 3;
     Vector3 basePosition;
     Vector3 newPosition;
@@ -108,14 +110,14 @@ public class Sc_CameraController : MonoBehaviour
     {
         Vector3 mousePosition = mainCam.ScreenToViewportPoint(Input.mousePosition);
         
-        if (mousePosition.x > 0.93f) 
+        if (mousePosition.x > screenBoundsY) 
             newPosition += (transform.right * panSpeed);
-        if (mousePosition.x < 0.08f)
+        if (mousePosition.x < screenBoundsX)
             newPosition += (transform.right * -panSpeed);
 
-        if (mousePosition.y > 0.93f)
+        if (mousePosition.y > screenBoundsY)
             newPosition += (transform.forward * panSpeed);
-        if (mousePosition.y < 0.08f)
+        if (mousePosition.y < screenBoundsX)
             newPosition += (transform.forward * -panSpeed);
 
         transform.position = Vector3.Lerp(transform.position, newPosition, Time.deltaTime * smoothSpeed);

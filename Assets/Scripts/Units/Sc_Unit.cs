@@ -20,12 +20,12 @@ public abstract class Sc_Unit : Sc_DestroyableEntity
 
     [SerializeField] TrailRenderer trail;
 
-    [Header("Selection")]
-    public bool highlighted;
+    [Header("Selection")]    
     [SerializeField] protected Material HighlightMat;
     protected Sc_DestroyableEntity lastTarget;
 
     [Header("Caracteristics")]
+    public string unitName = "Soldier";
     [SerializeField] protected float firePower = 3;
     [SerializeField] protected UnitState currentState = UnitState.IsUnactive;
     [SerializeField] protected GameObject bloodFx;

@@ -12,33 +12,7 @@ public enum ResourceType
 
 public class Sc_ResourcesManager : MonoBehaviour
 {
-    [Serializable]
-    class Resource
-    {
-        public string name;
-        public Text displayResource;
-        [SerializeField] int currentAmount;
-        [SerializeField] int maxAmount;
-        public int CurrentAmount
-        {
-            get => currentAmount;
-
-            set
-            {
-                if (value > maxAmount)
-                    value = maxAmount;
-
-                if (value < 0)
-                    value = 0;
-
-                currentAmount = value;
-            }
-        }
-
-        public int MaxAmount { get => maxAmount; set => maxAmount = value; }
-    }
-
-    [SerializeField] Resource[] resources;
+    public Resource[] resources;
 
     private void Start()
     {
@@ -51,11 +25,34 @@ public class Sc_ResourcesManager : MonoBehaviour
         ActualizeText();
     }
 
+    public Resource GetResource(ResourceType type)
+    {
+        foreach (Resource resource in resources)
+        {
+            if (resource.type.Equals(type))
+                return resource;
+        }
+
+        return null;
+    }
+
+    public bool CanPay(ResourceCost[] costs)
+    {
+        bool canPay = false;
+        foreach (ResourceCost cost in costs)
+        {
+            Resource resource = GetResource(cost.resourceType);
+            canPay = (resource.CurrentAmount - cost.value) > 0;
+        }
+
+        return canPay;
+    }
+
     public void ActualizeText()
     {
         for (int i = 0; i < resources.Length; i++)
         {
-            resources[i].displayResource.text = resources[i].name + " : " + resources[i].CurrentAmount;
+            resources[i].displayResource.text = resources[i].type + " : " + resources[i].CurrentAmount;
         }
     }
 }

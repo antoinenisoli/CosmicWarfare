@@ -2,74 +2,123 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
-enum BuildingState
+public enum BuildingState
 {
     InPlacing,
     IsBuilding,
     Builded,
 }
 
-public class Sc_Building : Sc_DestroyableEntity
+public abstract class Sc_Building : Sc_DestroyableEntity
 {
-    [Serializable]
-    public class BuildingCost
-    {
-        public int cost = 15;
-        public ResourceType resource;
-    }
-    Sc_ResourcesManager resourceManager => FindObjectOfType<Sc_ResourcesManager>();
-
-    [Header("Build")]
-    public BuildingCost[] costs = new BuildingCost[2];
-    [SerializeField] BuildingState currentState = BuildingState.InPlacing;
+    [Header("Build")]    
+    public BuildingState currentState = BuildingState.InPlacing;
     [SerializeField] MeshRenderer meshRender;
-    [SerializeField] Material movingMat, constructionMat;
-    [SerializeField] float buildingTime = 15;
+    Outline outline;
+    [SerializeField] Material movingMat, constructionMat, selectedMat;
+    [SerializeField] GameObject dummyVersion;
     float delay;
+    public bool isColliding;
 
     [Header("Gameplay")]
-    [SerializeField] string bName;
-    [SerializeField] protected Team myTeam;
+    public bool selected;
+    public string bName;
+    [SerializeField] Animation[] idleAnimations;
 
     private void Awake()
     {
         baseMat = meshRender.material;
+        outline = meshRender.GetComponent<Outline>();
+        idleAnimations = GetComponentsInChildren<Animation>();
+
+        if (currentState == BuildingState.InPlacing)
+        {
+            meshRender.material = movingMat;
+            foreach (var anim in idleAnimations)
+            {
+                anim.Stop();
+            }
+        }
     }
 
-    public void Place()
+    private void OnTriggerStay(Collider other)
     {
-        delay = buildingTime;
-        currentState = BuildingState.IsBuilding;
+        isColliding = other.GetComponent<Sc_Building>() || other.GetComponentInParent<Sc_Unit>();
+    }
 
-        foreach (BuildingCost item in costs)
+    private void OnTriggerExit(Collider other)
+    {
+        isColliding = false;
+    }
+
+    public void Place(float delay)
+    {
+        Vector3 baseScale = transform.GetChild(0).localScale;
+        transform.GetChild(0).localScale = Vector3.one * 0.1f;
+        transform.GetChild(0).DOScale(baseScale, delay);
+        GameObject constructionDummy = Instantiate(dummyVersion, transform.position, Quaternion.identity);
+        Destroy(constructionDummy, delay);
+        this.delay = delay;
+        meshRender.material = constructionMat;
+        currentState = BuildingState.IsBuilding;
+        Sc_Selection.GenerateEntity(this);
+    }
+
+    public abstract void UseBuilding();
+
+    public void SelectMe(bool select)
+    {
+        if (currentState != BuildingState.Builded)
+            return;
+
+        selected = select;
+    }
+
+    public void CanBePlaced(bool canBePlaced)
+    {
+        Color newCol = canBePlaced ? Color.green : Color.red;
+        newCol.a = 0.2f;
+        meshRender.material.SetColor("_Color", newCol);
+    }
+    void Build()
+    {
+        meshRender.material = baseMat;
+        delay = 0;
+        currentState = BuildingState.Builded;
+        foreach (var anim in idleAnimations)
         {
-            resourceManager.Cost(item.cost, item.resource);
+            anim.Play();
         }
     }
 
     public override void Update()
     {
         base.Update();
-        meshRender.material = currentState == BuildingState.InPlacing ? movingMat : currentState == BuildingState.IsBuilding ? constructionMat : baseMat;
+        if (outline)
+            outline.enabled = highlighted;
 
         switch (currentState)
         {
-            case BuildingState.InPlacing:
-                break;
             case BuildingState.IsBuilding:
                 if (delay > 0)
-                {
                     delay -= Time.deltaTime;
-                }
                 else
                 {
-                    delay = 0;
-                    currentState = BuildingState.Builded;
-                    print(bName + " is build !");
+                    Build();
                 }
                 break;
             case BuildingState.Builded:
+                if (selected)
+                {
+                    meshRender.material = selectedMat;
+                    UseBuilding();
+                }
+                else
+                {
+                    meshRender.material = baseMat;
+                }
                 break;
         }
     }
