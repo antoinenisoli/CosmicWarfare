@@ -38,7 +38,7 @@ public class Sc_GlobalBuilder : MonoBehaviour
 
     public void SelectBuilding(GameObject building, Purchase purchase)
     {
-        GameObject newBuilding = Instantiate(building, transform.position, Quaternion.identity, parent);
+        GameObject newBuilding = Instantiate(building, parent);
         lastBuilding = newBuilding.GetComponent<Sc_Building>();
         isBuilding = true;
         mainBase.SwitchBuildingMode(true);
@@ -73,7 +73,7 @@ public class Sc_GlobalBuilder : MonoBehaviour
                     lastBuilding.Place(lastBuildingCost.creationDelay);
                     foreach (var cost in lastBuildingCost.costs)
                     {
-                        resourceManager.Cost(cost.value, cost.resourceType);
+                        resourceManager.ModifyValue(cost.value, cost.resourceType);
                     }
 
                     ExitBuild();

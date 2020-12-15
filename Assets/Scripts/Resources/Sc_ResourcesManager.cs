@@ -3,25 +3,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public enum ResourceType
 {
-    Wood,
+    Steel,
     Oil,
 }
 
 public class Sc_ResourcesManager : MonoBehaviour
 {
     public Resource[] resources;
+    [SerializeField] GameObject floatingText;
+    [SerializeField] float animDuration = 4f;
 
     private void Start()
     {
         ActualizeText();
     }
 
-    public void Cost(int amount, ResourceType res)
+    public void ModifyValue(int amount, ResourceType res)
     {
-        resources[(int)res].CurrentAmount -= amount;
+        if (amount == 0)
+            return;
+
+        GameObject txt = Instantiate(floatingText, resources[(int)res].displayResource.transform);
+        txt.transform.position = resources[(int)res].displayResource.transform.position + Vector3.up;
+        txt.transform.DOMoveY(transform.position.y + 3, animDuration);
+        Text thisText = txt.GetComponent<Text>();        
+        thisText.DOFade(0, animDuration);
+
+        if (amount < 0)
+        {
+            thisText.text = "-" + amount;
+            thisText.color = Color.red;
+        }
+        else
+        {
+            thisText.text = "+" + amount;
+            thisText.color = Color.yellow;
+        }
+
+        Destroy(txt, animDuration);
+        resources[(int)res].CurrentAmount += amount;
         ActualizeText();
     }
 

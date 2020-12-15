@@ -175,12 +175,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330c74a72f6b71745961ae429d32177b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  s_Name: Enemy soldier
+  s_description: A regular enemy soldier.
   health:
     maxHealth: 10
     currentHealth: 0
     healthSlider: {fileID: 0}
-  trail: {fileID: 8160053748347519170}
   highlighted: 0
+  myTeam: 0
+  trail: {fileID: 8160053748347519170}
   HighlightMat: {fileID: 2100000, guid: f3bee6971ab035948b3dded41907c85c, type: 2}
   firePower: 1
   currentState: 0

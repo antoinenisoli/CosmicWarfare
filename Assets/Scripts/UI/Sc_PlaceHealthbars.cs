@@ -12,20 +12,25 @@ public class Sc_PlaceHealthbars : MonoBehaviour
 
     private void Awake()
     {
-        AssignHealthbars();
-    }
-
-    public void AssignHealthbars()
-    {
         entities = FindObjectsOfType<Sc_DestroyableEntity>().ToList();
         foreach (var item in entities)
         {
-            if (item.health.healthSlider != null)
-                return;
-
-            GameObject bar = Instantiate(barPrefab, transform.position, Quaternion.identity, parent);
-            bar.GetComponent<Sc_Healthbar>().Initialize(item);
-            item.health.healthSlider = bar.GetComponent<Slider>();
+            AssignToNew(item);
         }
+    }
+
+    private void Start()
+    {
+        Sc_EventManager.Instance.onNewUnit.AddListener(AssignToNew);
+    }
+
+    void AssignToNew(Sc_DestroyableEntity entity)
+    {
+        if (entity.health.healthSlider != null)
+            return;
+
+        GameObject bar = Instantiate(barPrefab, transform.position, Quaternion.identity, parent);
+        bar.GetComponent<Sc_Healthbar>().Initialize(entity);
+        entity.health.healthSlider = bar.GetComponent<Slider>();
     }
 }

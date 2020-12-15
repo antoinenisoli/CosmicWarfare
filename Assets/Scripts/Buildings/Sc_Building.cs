@@ -13,7 +13,9 @@ public enum BuildingState
 
 public abstract class Sc_Building : Sc_DestroyableEntity
 {
-    [Header("Build")]    
+    protected Sc_ResourcesManager resourceManager => FindObjectOfType<Sc_ResourcesManager>();
+
+    [Header("_BUILD")]    
     public BuildingState currentState = BuildingState.InPlacing;
     [SerializeField] MeshRenderer meshRender;
     Outline outline;
@@ -22,9 +24,8 @@ public abstract class Sc_Building : Sc_DestroyableEntity
     float delay;
     public bool isColliding;
 
-    [Header("Gameplay")]
+    [Header("_GAMEPLAY")]
     public bool selected;
-    public string bName;
     [SerializeField] Animation[] idleAnimations;
 
     private void Awake()
@@ -53,14 +54,25 @@ public abstract class Sc_Building : Sc_DestroyableEntity
         isColliding = false;
     }
 
+    public override void ModifyLife(float amount, Vector3 damageLocation)
+    {
+        base.ModifyLife(amount, damageLocation);
+        if (amount < 0)
+        {
+            Sc_VFXManager.Instance.InvokeVFX(FX_Event.BuildingDamage, damageLocation);
+        }
+    }
+
     public void Place(float delay)
     {
+        this.delay = delay;
+
         Vector3 baseScale = transform.GetChild(0).localScale;
         transform.GetChild(0).localScale = Vector3.one * 0.1f;
         transform.GetChild(0).DOScale(baseScale, delay);
         GameObject constructionDummy = Instantiate(dummyVersion, transform.position, Quaternion.identity);
+        constructionDummy.transform.localScale = baseScale;
         Destroy(constructionDummy, delay);
-        this.delay = delay;
         meshRender.material = constructionMat;
         currentState = BuildingState.IsBuilding;
         Sc_Selection.GenerateEntity(this);
@@ -113,12 +125,13 @@ public abstract class Sc_Building : Sc_DestroyableEntity
                 if (selected)
                 {
                     meshRender.material = selectedMat;
-                    UseBuilding();
                 }
                 else
                 {
                     meshRender.material = baseMat;
                 }
+
+                UseBuilding();
                 break;
         }
     }

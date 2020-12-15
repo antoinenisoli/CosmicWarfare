@@ -22,10 +22,8 @@ public abstract class Sc_Unit : Sc_DestroyableEntity
 
     [Header("Selection")]    
     [SerializeField] protected Material HighlightMat;
-    protected Sc_DestroyableEntity lastTarget;
 
     [Header("Caracteristics")]
-    public string unitName = "Soldier";
     [SerializeField] protected float firePower = 3;
     [SerializeField] protected UnitState currentState = UnitState.IsUnactive;
     [SerializeField] protected GameObject bloodFx;
@@ -35,16 +33,12 @@ public abstract class Sc_Unit : Sc_DestroyableEntity
     [SerializeField] protected float shootSpeed = 1.5f;
     protected float shootTimer;
     public LayerMask ground = 1 >> 2;
+    protected Sc_DestroyableEntity lastTarget;
+    protected Vector3 attackPosition;
 
     public void Awake()
     {
         baseMat = mr.material;
-    }
-
-    public override void Death()
-    {
-        Destroy(health.healthSlider.gameObject);
-        base.Death();
     }
 
     [ContextMenu("Place unit")]
@@ -55,33 +49,39 @@ public abstract class Sc_Unit : Sc_DestroyableEntity
             transform.position = hit.point + Vector3.up * transform.lossyScale.y;
     }
 
-    public override void TakeDamages(float amount)
+    public override void ModifyLife(float amount, Vector3 damageLocation)
     {
-        base.TakeDamages(amount);
-        Instantiate(bloodFx, transform.position, Quaternion.identity);
+        base.ModifyLife(amount, damageLocation);
+        Instantiate(bloodFx, damageLocation, Quaternion.identity);
     }
 
-    public void Attack(Sc_DestroyableEntity target)
+    public void Attack(Sc_DestroyableEntity target, Vector3 pos)
     {
         lastTarget = target;
+        attackPosition = pos;
         currentState = UnitState.IsAttacking;
     }
 
     public virtual void Shoot()
     {
         shootTimer = 0;
-        lastTarget.TakeDamages(firePower);
+        lastTarget.ModifyLife(-firePower, attackPosition);
         StartCoroutine(ShowRay());
     }
 
     IEnumerator ShowRay()
     {
         trail.gameObject.SetActive(true);
-        trail.transform.position = lastTarget.transform.position;
+        trail.transform.position = attackPosition;
         yield return new WaitForSeconds(1f);
         trail.transform.position = transform.position;
         yield return new WaitForSeconds(0.25f);
         trail.gameObject.SetActive(false);
+    }
+
+    public Vector3 ClosestPoint()
+    {
+        return GetComponentInChildren<Collider>().ClosestPoint(transform.position);
     }
 
     public virtual void Behavior()
@@ -97,7 +97,7 @@ public abstract class Sc_Unit : Sc_DestroyableEntity
                 break;
 
             case UnitState.IsAttacking:
-                if (Vector3.Distance(transform.position, lastTarget.transform.position) < shootRange)
+                if (Vector3.Distance(transform.position, attackPosition) < shootRange)
                 {
                     currentState = UnitState.IsFighting;
                     agent.isStopped = true;
@@ -116,7 +116,7 @@ public abstract class Sc_Unit : Sc_DestroyableEntity
                     return;
                 }
 
-                if (Vector3.Distance(transform.position, lastTarget.transform.position) < shootRange)
+                if (Vector3.Distance(transform.position, attackPosition) < shootRange)
                 {
                     shootTimer += Time.deltaTime;
                     agent.isStopped = true;
@@ -128,7 +128,7 @@ public abstract class Sc_Unit : Sc_DestroyableEntity
                 else
                 {
                     shootTimer = 0;
-                    Attack(lastTarget);
+                    Attack(lastTarget, ClosestPoint());
                 }
                 break;
 

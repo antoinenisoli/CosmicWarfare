@@ -20,7 +20,10 @@ public class Sc_Healthbar : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 targetPositionScreenPoint = mainCam.WorldToScreenPoint(myEntity.transform.position);
-        transform.position = targetPositionScreenPoint + offset;
+        if (myEntity != null)
+        {
+            Vector3 targetPositionScreenPoint = mainCam.WorldToScreenPoint(myEntity.transform.position);
+            transform.position = targetPositionScreenPoint + offset;
+        }
     }
 }

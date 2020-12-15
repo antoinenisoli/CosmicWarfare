@@ -9,7 +9,7 @@ public class Sc_MainBase : Sc_Building
     [SerializeField] float constructionRadius = 50;
     [SerializeField] Projector projectArea;
 
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, constructionRadius);

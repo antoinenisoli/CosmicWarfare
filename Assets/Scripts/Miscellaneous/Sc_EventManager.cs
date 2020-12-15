@@ -6,12 +6,12 @@ using UnityEngine.Events;
 public class Sc_EventManager : MonoBehaviour
 {
     public static Sc_EventManager Instance;
-    [HideInInspector] public UnityEvent onCost = new UnityEvent();
+    public UnityEvent onCost = new UnityEvent();
 
-    public class EntityEvent : UnityEvent<Sc_DestroyableEntity> { }
-    [HideInInspector] public EntityEvent onNewUnit = new EntityEvent();
+    public class Entity_UnityEvent : UnityEvent<Sc_DestroyableEntity> { }
+    public Entity_UnityEvent onNewUnit = new Entity_UnityEvent();
 
-    private void Awake()
+    void Awake()
     {
         if (Instance == null)
             Instance = this;

@@ -46,7 +46,7 @@ public class Sc_UnitEnemy : Sc_Unit
                     {
                         maxDistance = distanceTo;
                         currentEnemy = enemy;
-                        Attack(currentEnemy);
+                        Attack(currentEnemy, currentEnemy.ClosestPoint());
                     }
                 }
             }

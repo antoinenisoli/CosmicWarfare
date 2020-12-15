@@ -159,6 +159,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1d8e484ff8a554192f02db6d03acc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  s_Name: Soldier
+  s_description: A regular soldier.
   health:
     maxHealth: 10
     currentHealth: 0
@@ -167,7 +169,6 @@ MonoBehaviour:
   myTeam: 0
   trail: {fileID: 1494408004880654766}
   HighlightMat: {fileID: 2100000, guid: b9cc259c1860d8f409305d5b34679100, type: 2}
-  unitName: Soldier
   firePower: 1
   currentState: 0
   bloodFx: {fileID: 3836327674847773433, guid: a4596465f171fff4a99e5a62d269753a, type: 3}

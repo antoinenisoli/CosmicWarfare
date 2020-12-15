@@ -21,7 +21,7 @@ public class Sc_Casern : Sc_Building
         Sc_Selection.GenerateEntity(unit);
         foreach (var item in unitsToCreate[index].costs)
         {
-            FindObjectOfType<Sc_ResourcesManager>().Cost(item.value, item.resourceType);
+            resourceManager.ModifyValue(item.value, item.resourceType);
         }
 
         busy = false;

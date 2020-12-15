@@ -32,18 +32,17 @@ public class Sc_CreateUnits : MonoBehaviour
 
         if (selectionManager.selectedBuilding)
         {
-            displaySelection.text = selectionManager.selectedBuilding.bName;
+            displaySelection.text = selectionManager.selectedBuilding.ToString();
 
             if (isCasern && casern != selectionManager.selectedBuilding.GetComponent<Sc_Casern>())
             {
-                print("get new casern");
-                displaySelection.text = selectionManager.selectedBuilding.bName;
+                displaySelection.text = selectionManager.selectedBuilding.ToString(); 
                 casern = selectionManager.selectedBuilding.GetComponent<Sc_Casern>();
             }
         }
         else if (selectionManager.selectedUnits.Count > 0)
         {
-            displaySelection.text = selectionManager.selectedUnits[0].unitName;
+            displaySelection.text = selectionManager.selectedUnits[0].ToString(); 
         }
         else
         {

@@ -89,7 +89,7 @@ public class Sc_Selection : MonoBehaviour
 
             if (validPath)
             {
-                GameObject dummy = Instantiate(moveMark, position + Vector3.up * 0.2f, Quaternion.identity);
+                GameObject dummy = Instantiate(moveMark, position + Vector3.up * 0.4f, Quaternion.FromToRotation(Vector3.up, hit.normal));
                 Vector3 currentScale = dummy.transform.localScale;
                 dummy.transform.DOScale(currentScale * 1.5f, dummyAnimDuration / 3);
                 dummy.transform.DOScale(Vector3.zero, dummyAnimDuration / 3).SetDelay(dummyAnimDuration / 3);
@@ -188,7 +188,7 @@ public class Sc_Selection : MonoBehaviour
             {
                 foreach (var unit in selectedUnits)
                 {
-                    unit.Attack(target);
+                    unit.Attack(target, hit.collider.ClosestPoint(unit.transform.position));                   
                 }
 
                 GameObject dummy = Instantiate(moveMark, target.transform.position + Vector3.up * 0.2f, Quaternion.identity);

@@ -40,7 +40,7 @@ public class Sc_HealthSystem
 
     public void TakeDamages(float amount)
     {
-        CurrentHealth -= amount;
+        CurrentHealth += amount;
         SetSlider();
     }
 
