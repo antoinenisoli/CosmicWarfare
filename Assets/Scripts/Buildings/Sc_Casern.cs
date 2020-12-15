@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Sc_Casern : Sc_Building
 {
+    public override string type => "Casern";
+
     [Header("Casern")]
     [SerializeField] Transform spawnDestination;
     [SerializeField] Transform spawnTransform;

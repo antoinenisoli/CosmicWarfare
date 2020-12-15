@@ -17,6 +17,7 @@ public class Sc_GlobalBuilder : MonoBehaviour
 
     Sc_MainBase mainBase;
     [SerializeField] LayerMask groundLayer;
+    [SerializeField] LayerMask oilLayer;
     [SerializeField] Transform parent;
     [Range(0,10)]
     [SerializeField] float maxBuildAngle = 8;
@@ -66,7 +67,13 @@ public class Sc_GlobalBuilder : MonoBehaviour
                 lastBuilding.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
                 float angle = Vector3.Angle(hit.normal, Vector3.up);
                 bool canPlace = angle < maxBuildAngle && !lastBuilding.isColliding && mainBase.InRange(lastBuilding.transform.position);
-                lastBuilding.CanBePlaced(canPlace);
+
+                if (lastBuilding.type == "Engine")
+                {
+                    lastBuilding.CanBePlaced(canPlace && Physics.Raycast(ray, Mathf.Infinity, oilLayer));
+                }
+                else
+                    lastBuilding.CanBePlaced(canPlace);
 
                 if (Input.GetMouseButtonDown(0) && canPlace)
                 {

@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class Sc_MainBase : Sc_Building
 {
+    public override string type => "MainBase";
+
     [Header("MainBase")]
     [SerializeField] float constructionRadius = 50;
     [SerializeField] Projector projectArea;

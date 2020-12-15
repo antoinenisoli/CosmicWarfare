@@ -14282,7 +14282,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2614295627643503618}
   - component: {fileID: 489624399542959883}
-  - component: {fileID: 7662533226971312819}
   m_Layer: 9
   m_Name: Casern
   m_TagString: Untagged
@@ -14348,22 +14347,6 @@ MonoBehaviour:
     - value: 5
       resourceType: 0
   busy: 0
---- !u!54 &7662533226971312819
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2333201051896128405}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &8765172931856906224
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,14 +15,16 @@ public abstract class Sc_Building : Sc_DestroyableEntity
 {
     protected Sc_ResourcesManager resourceManager => FindObjectOfType<Sc_ResourcesManager>();
 
+    public virtual string type { get; }
+
     [Header("_BUILD")]    
     public BuildingState currentState = BuildingState.InPlacing;
     [SerializeField] MeshRenderer meshRender;
-    Outline outline;
     [SerializeField] Material movingMat, constructionMat, selectedMat;
     [SerializeField] GameObject dummyVersion;
-    float delay;
     public bool isColliding;
+    float delay;
+    Outline outline;
 
     [Header("_GAMEPLAY")]
     public bool selected;

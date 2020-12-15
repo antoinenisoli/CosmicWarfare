@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Sc_Engine : Sc_Building
 {
-    Sc_ResourcesManager resourceManager => FindObjectOfType<Sc_ResourcesManager>();
+    public override string type => "Engine";
+
     [Header("Engine")]
     [SerializeField] int resourceAmount = 5;
     [SerializeField] float f_waitingTime = 15;

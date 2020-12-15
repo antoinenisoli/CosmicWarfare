@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2569867544951270389}
   - component: {fileID: 1843300680284152819}
   - component: {fileID: 2117270864332108779}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Structure_v2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 2463025874371038453}
   - component: {fileID: 2473993880150758937}
   - component: {fileID: 2482028089099953037}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Structure_v2_rotor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 2463025872306034113}
   - component: {fileID: 2473993866223343001}
   - component: {fileID: 2482028088256802409}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Structure_v2_door_s2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 2463025874123223357}
   - component: {fileID: 2473993865658864711}
   - component: {fileID: 2482028087898784179}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Structure_v2_door_s1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -382,7 +382,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2463025870524173433}
   - component: {fileID: 2569867543691867869}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Structure_v2_doors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
