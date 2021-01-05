@@ -14282,6 +14282,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2614295627643503618}
   - component: {fileID: 489624399542959883}
+  - component: {fileID: 4268743979888639409}
   m_Layer: 9
   m_Name: Casern
   m_TagString: Untagged
@@ -14340,13 +14341,26 @@ MonoBehaviour:
   spawnDestination: {fileID: 1306265219318091897}
   spawnTransform: {fileID: 8580752824338230019}
   unitsToCreate:
-  - name: Unit
+  - purchase_Name: Soldier
     prefab: {fileID: 885422398353187992, guid: e32cf44b03e3a454b9ecc19bb0b8cbc6, type: 3}
     creationDelay: 3
     costs:
     - value: 5
       resourceType: 0
   busy: 0
+--- !u!65 &4268743979888639409
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2333201051896128405}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 20.251122, y: 14.525593, z: 36.61113}
+  m_Center: {x: -1.01157, y: 6.0627956, z: -0.330616}
 --- !u!1 &8765172931856906224
 GameObject:
   m_ObjectHideFlags: 0

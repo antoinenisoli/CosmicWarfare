@@ -1282,6 +1282,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7747204294015466830}
   - component: {fileID: 7747204294015466831}
+  - component: {fileID: 7201233640251452055}
   m_Layer: 9
   m_Name: Base
   m_TagString: Untagged
@@ -1339,3 +1340,16 @@ MonoBehaviour:
   - {fileID: 6381859371441856859}
   constructionRadius: 130
   projectArea: {fileID: 5423526268808829870}
+--- !u!65 &7201233640251452055
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7747204294015466825}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 45, y: 14.59, z: 31.1}
+  m_Center: {x: -1.01157, y: 6.0627956, z: -0.330616}
