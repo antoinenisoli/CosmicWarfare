@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.AI;
 using DG.Tweening;
 
 enum Detectables
@@ -22,6 +23,7 @@ public class Sc_Selection : MonoBehaviour
     [SerializeField] List<Sc_Building> allBuildings = new List<Sc_Building>();
 
     [Header("Select")]
+    [SerializeField] MouseState mouseState;
     [SerializeField] LayerMask unitLayer;
     [SerializeField] LayerMask buildingsLayer;
     [SerializeField] Detectables isDetecting;
@@ -76,23 +78,29 @@ public class Sc_Selection : MonoBehaviour
 
     void MoveUnits()
     {
-        if (Input.GetMouseButtonDown(1) && selectedUnits.Count > 0 && isDetecting == Detectables.Ground)
+        if (selectedUnits.Count > 0 && isDetecting == Detectables.Ground)
         {
-            bool validPath = false;
             Vector3 position = hit.point;
-            foreach (var unit in selectedUnits)
+            if (NavMesh.SamplePosition(position, out _, 1.0f, NavMesh.AllAreas))
             {
-                if (unit.selected)
-                    unit.MoveTo(position, out validPath);
-            }
+                if (Input.GetMouseButtonDown(1))
+                {                    
+                    foreach (var unit in selectedUnits)
+                    {
+                        if (unit.selected)
+                            unit.MoveTo(position, out _);
+                    }
 
-            if (validPath)
+                    GameObject dummy = Instantiate(moveMark, position + Vector3.up * 0.4f, Quaternion.FromToRotation(Vector3.up, hit.normal));
+                    Vector3 currentScale = dummy.transform.localScale;
+                    dummy.transform.DOScale(currentScale * 1.5f, dummyAnimDuration / 3);
+                    dummy.transform.DOScale(Vector3.zero, dummyAnimDuration / 3).SetDelay(dummyAnimDuration / 3);
+                    Destroy(dummy, dummyAnimDuration);
+                }
+            }
+            else
             {
-                GameObject dummy = Instantiate(moveMark, position + Vector3.up * 0.4f, Quaternion.FromToRotation(Vector3.up, hit.normal));
-                Vector3 currentScale = dummy.transform.localScale;
-                dummy.transform.DOScale(currentScale * 1.5f, dummyAnimDuration / 3);
-                dummy.transform.DOScale(Vector3.zero, dummyAnimDuration / 3).SetDelay(dummyAnimDuration / 3);
-                Destroy(dummy, dummyAnimDuration);
+                Sc_CursorManager.instance.SetCursorState(MouseState.Invalid);
             }
         }
     }
@@ -180,23 +188,29 @@ public class Sc_Selection : MonoBehaviour
 
     void InteractUnits()
     {
-        if (Input.GetMouseButtonDown(1) && (isDetecting == Detectables.Units || isDetecting == Detectables.Buildings)) //attack other units
+        if (hit.transform != null && selectedUnits.Count > 0 && (isDetecting == Detectables.Units || isDetecting == Detectables.Buildings))
         {
             Sc_Entity target = hit.collider.GetComponentInParent<Sc_Entity>();
-            if (target && selectedUnits.Count > 0)
+            if (target)
             {
-                foreach (var unit in selectedUnits)
+                Sc_CursorManager.instance.SetCursorState(MouseState.Attack);
+                if (Input.GetMouseButtonDown(1))
                 {
-                    unit.Attack(target, hit.collider.ClosestPoint(unit.transform.position));                   
-                }
+                    foreach (var unit in selectedUnits)
+                    {
+                        unit.Attack(target, hit.collider.ClosestPoint(unit.transform.position));
+                    }
 
-                GameObject dummy = Instantiate(moveMark, target.transform.position + Vector3.up * 0.2f, Quaternion.identity);
-                dummy.GetComponent<MeshRenderer>().material.color = Color.red;
-                Vector3 currentScale = dummy.transform.localScale;
-                dummy.transform.DOScale(currentScale * 1.5f, dummyAnimDuration / 3);
-                dummy.transform.DOScale(Vector3.zero, dummyAnimDuration / 3).SetDelay(dummyAnimDuration / 3);
-                Destroy(dummy, dummyAnimDuration);
+                    GameObject dummy = Instantiate(moveMark, target.transform.position + Vector3.up * 0.2f, Quaternion.identity);
+                    dummy.GetComponent<MeshRenderer>().material.color = Color.red;
+                    Vector3 currentScale = dummy.transform.localScale;
+                    dummy.transform.DOScale(currentScale * 1.5f, dummyAnimDuration / 3);
+                    dummy.transform.DOScale(Vector3.zero, dummyAnimDuration / 3).SetDelay(dummyAnimDuration / 3);
+                    Destroy(dummy, dummyAnimDuration);
+                }
             }
+            else
+                Sc_CursorManager.instance.SetCursorState(MouseState.Valid);
         }
     }
 
