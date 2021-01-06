@@ -28,25 +28,27 @@ public class Sc_ResourcesManager : MonoBehaviour
             return;
 
         GameObject txt = Instantiate(floatingText, resources[(int)res].displayResource.transform);
-        txt.transform.position = resources[(int)res].displayResource.transform.position + Vector3.up;
-        txt.transform.DOMoveY(transform.position.y + 3, animDuration);
+        RectTransform txtRect = txt.GetComponent<RectTransform>();
+        txtRect.position = resources[(int)res].displayResource.transform.position + Vector3.up * 25;
+        txtRect.DOMoveY(txtRect.position.y + 30, animDuration);
         Text thisText = txt.GetComponent<Text>();        
         thisText.DOFade(0, animDuration);
 
         if (amount < 0)
         {
-            thisText.text = "-" + amount;
+            thisText.text = "" + amount;
             thisText.color = Color.red;
         }
         else
         {
             thisText.text = "+" + amount;
-            thisText.color = Color.yellow;
+            thisText.color = Color.green;
         }
 
         Destroy(txt, animDuration);
         resources[(int)res].CurrentAmount += amount;
         ActualizeText();
+        Sc_EventManager.Instance.onCost.Invoke();
     }
 
     public Resource GetResource(ResourceType type)
@@ -66,7 +68,7 @@ public class Sc_ResourcesManager : MonoBehaviour
         foreach (ResourceCost cost in costs)
         {
             Resource resource = GetResource(cost.resourceType);
-            canPay = (resource.CurrentAmount - cost.value) > 0;
+            canPay = (resource.CurrentAmount + cost.value) >= 0;
         }
 
         return canPay;

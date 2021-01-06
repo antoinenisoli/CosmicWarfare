@@ -18,6 +18,12 @@ public class Sc_Button_CreateUnit : Sc_Button
         block.transform.localScale = Vector3.one * 0.1f;
         block.transform.DOScale(baseScale, 0.2f);
         block.DOFillAmount(0, casern.unitsToCreate[index].creationDelay);
+        foreach (var item in casern.unitsToCreate[index].costs)
+        {
+            resourceManager.ModifyValue(item.value, item.resourceType);
+        }
+
+        Sc_EventManager.Instance.onCost.Invoke();
     }
 
     public override void ShowTooltip(bool value)
@@ -29,9 +35,6 @@ public class Sc_Button_CreateUnit : Sc_Button
     public override void SetButton()
     {
         if (casern)
-        {
-            myButton.interactable = resourceManager.CanPay(casern.unitsToCreate[index].costs);
-            myButton.transform.parent.GetChild(1).GetComponent<Image>().raycastTarget = casern.busy;
-        }
+            myButton.interactable = resourceManager.CanPay(casern.unitsToCreate[index].costs) && !casern.busy;
     }
 }

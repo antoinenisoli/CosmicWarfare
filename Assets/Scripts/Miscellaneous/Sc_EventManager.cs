@@ -8,7 +8,7 @@ public class Sc_EventManager : MonoBehaviour
     public static Sc_EventManager Instance;
     public UnityEvent onCost = new UnityEvent();
 
-    public class Entity_UnityEvent : UnityEvent<Sc_DestroyableEntity> { }
+    public class Entity_UnityEvent : UnityEvent<Sc_Entity> { }
     public Entity_UnityEvent onNewUnit = new Entity_UnityEvent();
 
     void Awake()

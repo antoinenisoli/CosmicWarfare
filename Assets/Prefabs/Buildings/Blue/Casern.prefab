@@ -139,7 +139,7 @@ Transform:
   m_GameObject: {fileID: 1944166623702566817}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.8394446, y: 3.8394446, z: 3.8394446}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1942926392805929463}
   m_Father: {fileID: 2614295627643503618}
@@ -14282,7 +14282,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2614295627643503618}
   - component: {fileID: 489624399542959883}
-  - component: {fileID: 4268743979888639409}
+  - component: {fileID: 1030195292304667922}
+  - component: {fileID: 8927781265013125240}
   m_Layer: 9
   m_Name: Casern
   m_TagString: Untagged
@@ -14299,7 +14300,7 @@ Transform:
   m_GameObject: {fileID: 2333201051896128405}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 1942926393228712991}
   - {fileID: 8580752824338230019}
@@ -14319,16 +14320,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 229908fb5603477448c33ba5d857b713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  s_Name: Casern
-  s_description: This building can recruits and deploy regular units.
   health:
-    maxHealth: 50
     currentHealth: 0
     healthSlider: {fileID: 0}
+  info: {fileID: 11400000, guid: c21e911ff8569de488b60bda0ebb95bb, type: 2}
   highlighted: 0
-  myTeam: 0
-  currentState: 0
   meshRender: {fileID: 1921113840632965949}
+  myTeam: 0
+  busy: 0
+  currentState: 0
   movingMat: {fileID: 2100000, guid: 1d4a4e6a523898c4ba1e11815c972cae, type: 2}
   constructionMat: {fileID: 2100000, guid: 933912a211c868c4ea7f4caeddab5d68, type: 2}
   selectedMat: {fileID: 2100000, guid: d4fbbde4238aa524dbdac2813cd5cdca, type: 2}
@@ -14345,10 +14345,9 @@ MonoBehaviour:
     prefab: {fileID: 885422398353187992, guid: e32cf44b03e3a454b9ecc19bb0b8cbc6, type: 3}
     creationDelay: 3
     costs:
-    - value: 5
+    - value: -5
       resourceType: 0
-  busy: 0
---- !u!65 &4268743979888639409
+--- !u!65 &1030195292304667922
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14359,8 +14358,24 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 20.251122, y: 14.525593, z: 36.61113}
-  m_Center: {x: -1.01157, y: 6.0627956, z: -0.330616}
+  m_Size: {x: 5.3612065, y: 5.6352215, z: 8.915025}
+  m_Center: {x: -0.60854816, y: 2.814355, z: 0.15710878}
+--- !u!54 &8927781265013125240
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2333201051896128405}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &8765172931856906224
 GameObject:
   m_ObjectHideFlags: 0

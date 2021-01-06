@@ -10,7 +10,7 @@ public class Sc_OilSource : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
+        Gizmos.color = Color.gray;
         Gizmos.DrawWireSphere(transform.position, areaRadius);
     }
 

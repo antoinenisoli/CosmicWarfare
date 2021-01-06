@@ -5,6 +5,7 @@ using UnityEngine;
 public enum FX_Event
 {
     BuildingDamage,
+    UnitDamage,
     Heal,
 }
 

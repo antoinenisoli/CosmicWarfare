@@ -24,15 +24,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 431731332159586809}
-  m_LocalRotation: {x: -0, y: 0.9084497, z: -0, w: 0.41799423}
-  m_LocalPosition: {x: -129.51, y: 5.2, z: 149.12}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children:
   - {fileID: 3993231900226805165}
   - {fileID: 4261647522836780436}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 130.584, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &431731332159586815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,19 +45,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a58212ead2b1ace40be8b813c9c5e2a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  s_Name: Main Base
-  s_description: Your main building, protect it at any cost.
   health:
-    maxHealth: 100
     currentHealth: 0
     healthSlider: {fileID: 0}
+  info: {fileID: 11400000, guid: 15134bc6a61623f42af3be72e4c5f355, type: 2}
   highlighted: 0
-  myTeam: 1
-  currentState: 2
   meshRender: {fileID: 3978170369886912971}
+  myTeam: 1
+  busy: 0
+  currentState: 2
   movingMat: {fileID: 2100000, guid: 1d4a4e6a523898c4ba1e11815c972cae, type: 2}
   constructionMat: {fileID: 2100000, guid: 933912a211c868c4ea7f4caeddab5d68, type: 2}
-  selectedMat: {fileID: 2100000, guid: af7bab87a883a4a48b2b2a6f3c8cac1e, type: 2}
+  selectedMat: {fileID: 2100000, guid: 155b45b62d24ac34d934939c0623fcad, type: 2}
   dummyVersion: {fileID: 7271745365983663369, guid: 725f997032a678042859533db530e45e,
     type: 3}
   isColliding: 0
@@ -276,7 +275,7 @@ Transform:
   m_GameObject: {fileID: 3992290700147758183}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3993231900216132873}
   - {fileID: 3993231899369530933}

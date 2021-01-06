@@ -8,12 +8,6 @@ public class Sc_Button_Build : Sc_Button
     Sc_GlobalBuilder builder => FindObjectOfType<Sc_GlobalBuilder>();
     [SerializeField] Purchase myPurchase;
 
-    private void Start()
-    {
-        Sc_EventManager.Instance.onCost.AddListener(SetButton);
-        Sc_EventManager.Instance.onCost.Invoke();
-    }
-
     public void SelectThisBuilding()
     {
         builder.SelectBuilding(myPurchase.prefab, myPurchase);

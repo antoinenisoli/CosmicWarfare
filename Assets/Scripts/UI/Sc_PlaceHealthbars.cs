@@ -8,11 +8,11 @@ public class Sc_PlaceHealthbars : MonoBehaviour
 {
     [SerializeField] GameObject barPrefab;
     [SerializeField] Transform parent;
-    List<Sc_DestroyableEntity> entities = new List<Sc_DestroyableEntity>();
+    List<Sc_Entity> entities = new List<Sc_Entity>();
 
     private void Awake()
     {
-        entities = FindObjectsOfType<Sc_DestroyableEntity>().ToList();
+        entities = FindObjectsOfType<Sc_Entity>().ToList();
         foreach (var item in entities)
         {
             AssignToNew(item);
@@ -24,13 +24,15 @@ public class Sc_PlaceHealthbars : MonoBehaviour
         Sc_EventManager.Instance.onNewUnit.AddListener(AssignToNew);
     }
 
-    void AssignToNew(Sc_DestroyableEntity entity)
+    void AssignToNew(Sc_Entity entity)
     {
         if (entity.health.healthSlider != null)
             return;
 
         GameObject bar = Instantiate(barPrefab, transform.position, Quaternion.identity, parent);
-        bar.GetComponent<Sc_Healthbar>().Initialize(entity);
+        bar.transform.localScale = Vector3.one + Vector3.one * (0.1f * entity.meshRender.GetComponent<MeshFilter>().mesh.bounds.size.magnitude);
         entity.health.healthSlider = bar.GetComponent<Slider>();
+        bar.GetComponent<Sc_Healthbar>().Initialize(entity);
+        entity.health.SetSlider();
     }
 }

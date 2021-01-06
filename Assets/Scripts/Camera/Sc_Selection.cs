@@ -51,14 +51,13 @@ public class Sc_Selection : MonoBehaviour
         Sc_EventManager.Instance.onNewUnit.AddListener(NewEntity);
     }
 
-    public static void GenerateEntity(Sc_DestroyableEntity _new)
+    public static void GenerateEntity(Sc_Entity _new)
     {
         Sc_EventManager.Instance.onNewUnit.Invoke(_new);
     }
 
-    public void NewEntity(Sc_DestroyableEntity entity)
+    public void NewEntity(Sc_Entity entity)
     {
-        print(entity.GetComponent<Sc_Building>());
         if (entity.GetComponent<Sc_Building>())
             allBuildings.Add(entity as Sc_Building);
         else if (entity.GetComponent<Sc_Unit>())
@@ -158,16 +157,16 @@ public class Sc_Selection : MonoBehaviour
                 selectedBuilding = null;
             }
 
-            if (isDetecting == Detectables.Units)
+            if (isDetecting == Detectables.Units) //select a unit
             {
                 Sc_UnitAlly thisUnit = hit.collider.GetComponentInParent<Sc_UnitAlly>();
-                if (!selectedUnits.Contains(thisUnit))
+                if (thisUnit && !selectedUnits.Contains(thisUnit))
                 {
                     thisUnit.Select(true);
                     selectedUnits.Add(thisUnit);
                 }
             }
-            else if (isDetecting == Detectables.Buildings)
+            else if (isDetecting == Detectables.Buildings) //select a building
             {
                 Sc_Building pointedBuilding = hit.collider.GetComponentInParent<Sc_Building>();
                 if (pointedBuilding.currentState == BuildingState.Builded)
@@ -183,8 +182,8 @@ public class Sc_Selection : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1) && (isDetecting == Detectables.Units || isDetecting == Detectables.Buildings)) //attack other units
         {
-            Sc_DestroyableEntity target = hit.collider.GetComponentInParent<Sc_DestroyableEntity>();
-            if (target)
+            Sc_Entity target = hit.collider.GetComponentInParent<Sc_Entity>();
+            if (target && selectedUnits.Count > 0)
             {
                 foreach (var unit in selectedUnits)
                 {

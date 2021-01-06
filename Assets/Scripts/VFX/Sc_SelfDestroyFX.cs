@@ -8,13 +8,7 @@ public class Sc_SelfDestroyFX : MonoBehaviour
 
     private void Awake()
     {
-        StartCoroutine(Destroy());
-    }
-
-    IEnumerator Destroy()
-    {
         fx.Play();
-        yield return new WaitForSeconds(fx.main.duration + fx.main.startLifetimeMultiplier);
-        Destroy(gameObject);
+        Destroy(gameObject, fx.main.duration + fx.main.startLifetimeMultiplier);
     }
 }

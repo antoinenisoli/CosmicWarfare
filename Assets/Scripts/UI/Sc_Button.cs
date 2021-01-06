@@ -15,12 +15,13 @@ public class Purchase
     public override string ToString()
     {
         string description = "";
+        Sc_Entity entity = prefab.GetComponent<Sc_Entity>();
         foreach (var item in costs)
         {
-            description += "\n" + item.value + " " + item.resourceType;
+            description += "\n" + "<color=red>" + item.value + " " + item.resourceType + "</color>";
         }
 
-        return purchase_Name + description;
+        return "<b>" + purchase_Name + "</b>" + description + "\n\n" + entity.info.entityDescription;
     }
 }
 
@@ -29,7 +30,7 @@ public abstract class Sc_Button : MonoBehaviour
     protected Sc_ResourcesManager resourceManager => FindObjectOfType<Sc_ResourcesManager>();
     protected Button myButton => GetComponent<Button>();
 
-    private void Start()
+    public virtual void Start()
     {
         Sc_EventManager.Instance.onCost.AddListener(SetButton);
         Sc_EventManager.Instance.onCost.Invoke();

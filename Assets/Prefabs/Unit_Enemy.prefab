@@ -175,30 +175,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 330c74a72f6b71745961ae429d32177b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  s_Name: Enemy soldier
-  s_description: A regular enemy soldier.
   health:
-    maxHealth: 10
     currentHealth: 0
     healthSlider: {fileID: 0}
+  info: {fileID: 11400000, guid: 1eefce2f955d32541aea963df35f41a4, type: 2}
   highlighted: 0
+  meshRender: {fileID: 7809600284184515211}
   myTeam: 0
   trail: {fileID: 8160053748347519170}
   HighlightMat: {fileID: 2100000, guid: f3bee6971ab035948b3dded41907c85c, type: 2}
   firePower: 1
   currentState: 0
-  bloodFx: {fileID: 3836327674847773433, guid: a4596465f171fff4a99e5a62d269753a, type: 3}
-  shootRange: 15
+  shotFX: {fileID: 7533186457207425133, guid: 8cd9dd661a6a25d4fa078c5fc5bffac1, type: 3}
+  shootRange: 30
   shootSpeed: 1.5
   ground:
     serializedVersion: 2
     m_Bits: 1
+  lastTarget: {fileID: 0}
+  attackPosition: {x: 0, y: 0, z: 0}
   unitLayer:
     serializedVersion: 2
     m_Bits: 256
-  currentEnemy: {fileID: 0}
   detectionRadius: 40
-  allEnemies: []
+  allTargets: []
 --- !u!195 &7809600282857023749
 NavMeshAgent:
   m_ObjectHideFlags: 0

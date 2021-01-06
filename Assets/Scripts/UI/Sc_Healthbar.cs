@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Sc_Healthbar : MonoBehaviour
 {
-    [SerializeField] Sc_DestroyableEntity myEntity;
+    [SerializeField] Sc_Entity myEntity;
     [SerializeField] Vector3 offset = new Vector3(0, 5, 0);
     Camera mainCam;
 
@@ -13,7 +13,7 @@ public class Sc_Healthbar : MonoBehaviour
         mainCam = Camera.main;
     }
 
-    public void Initialize(Sc_DestroyableEntity entity)
+    public void Initialize(Sc_Entity entity)
     {
         myEntity = entity;
     }

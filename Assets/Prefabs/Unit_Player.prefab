@@ -159,24 +159,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1d8e484ff8a554192f02db6d03acc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  s_Name: Soldier
-  s_description: A regular soldier.
   health:
-    maxHealth: 10
     currentHealth: 0
     healthSlider: {fileID: 0}
+  info: {fileID: 11400000, guid: 1eefce2f955d32541aea963df35f41a4, type: 2}
   highlighted: 0
+  meshRender: {fileID: 885422397579337499}
   myTeam: 0
   trail: {fileID: 1494408004880654766}
   HighlightMat: {fileID: 2100000, guid: b9cc259c1860d8f409305d5b34679100, type: 2}
   firePower: 1
   currentState: 0
-  bloodFx: {fileID: 3836327674847773433, guid: a4596465f171fff4a99e5a62d269753a, type: 3}
-  shootRange: 15
+  shotFX: {fileID: 7533186457207425133, guid: 8cd9dd661a6a25d4fa078c5fc5bffac1, type: 3}
+  shootRange: 30
   shootSpeed: 1.5
   ground:
     serializedVersion: 2
     m_Bits: 1
+  lastTarget: {fileID: 0}
+  attackPosition: {x: 0, y: 0, z: 0}
   SelectedMat: {fileID: 2100000, guid: 5bd55121e9c78804b8ba2d2d6635e530, type: 2}
   selected: 0
 --- !u!195 &885422398353187989
