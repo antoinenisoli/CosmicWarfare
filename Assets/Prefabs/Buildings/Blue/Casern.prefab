@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 642119195456318661}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -20.28, y: 2.6, z: -4.3}
+  m_LocalPosition: {x: -4.51, y: 0, z: -0.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2614295627643503618}
@@ -14323,6 +14323,7 @@ MonoBehaviour:
   health:
     currentHealth: 0
     healthSlider: {fileID: 0}
+    isDead: 0
   info: {fileID: 11400000, guid: c21e911ff8569de488b60bda0ebb95bb, type: 2}
   highlighted: 0
   meshRender: {fileID: 1921113840632965949}
@@ -14400,7 +14401,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8765172931856906224}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -47.6, y: 3.11, z: -5.9}
+  m_LocalPosition: {x: -7.13, y: 0, z: -0.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2614295627643503618}

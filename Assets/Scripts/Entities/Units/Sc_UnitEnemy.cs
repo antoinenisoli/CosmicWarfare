@@ -5,9 +5,10 @@ using UnityEngine;
 public class Sc_UnitEnemy : Sc_Unit
 {
     [Header("Unit Enemy")]
-    [SerializeField] LayerMask unitLayer;
+    [SerializeField] LayerMask playerLayer;
     [SerializeField] float detectionRadius = 5;
-    [SerializeField] List<Sc_UnitAlly> allTargets = new List<Sc_UnitAlly>();
+    [SerializeField] Collider[] detectedEnemies = new Collider[0];
+    [SerializeField] List<Sc_Entity> allTargets = new List<Sc_Entity>();
 
     private void OnDrawGizmosSelected()
     {
@@ -19,13 +20,13 @@ public class Sc_UnitEnemy : Sc_Unit
     {
         if (currentState == UnitState.IsUnactive)
         {
-            Collider[] detectedEnemies = Physics.OverlapSphere(transform.position, detectionRadius, unitLayer);
+            detectedEnemies = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
             foreach (var enemy in detectedEnemies)
             {
-                Sc_UnitAlly playerUnit = enemy.GetComponentInParent<Sc_UnitAlly>();
-                if (playerUnit && !allTargets.Contains(playerUnit))
+                Sc_Entity detectedEntity = enemy.GetComponentInParent<Sc_Entity>();
+                if (detectedEntity && !allTargets.Contains(detectedEntity) && detectedEntity.myTeam != myTeam)
                 {
-                    allTargets.Add(playerUnit);
+                    allTargets.Add(detectedEntity);
                 }
             }
 
@@ -45,7 +46,7 @@ public class Sc_UnitEnemy : Sc_Unit
                     {
                         maxDistance = distanceTo;
                         lastTarget = target;
-                        Attack(lastTarget, lastTarget.transform.position);
+                        Attack(lastTarget);
                     }
                 }
             }

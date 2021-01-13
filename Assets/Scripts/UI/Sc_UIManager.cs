@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Sc_UIManager : MonoBehaviour
 {
     public static Sc_UIManager instance;
-    Sc_Selection selectionManager => FindObjectOfType<Sc_Selection>();
+    Sc_SelectionManager selectionManager => FindObjectOfType<Sc_SelectionManager>();
 
     [SerializeField] Text displaySelection;
     public Sc_Tooltip tooltip;

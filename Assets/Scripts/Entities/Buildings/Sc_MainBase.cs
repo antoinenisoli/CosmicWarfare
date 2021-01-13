@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Sc_MainBase : Sc_Building
 {
-    public override string type => "MainBase";
+    public override BuildingType type => BuildingType.MainBase;
 
     [Header("MainBase")]
     [SerializeField] float constructionRadius = 50;
@@ -31,7 +31,6 @@ public class Sc_MainBase : Sc_Building
 
     public override void Death()
     {
-        base.Death();
         switch (myTeam)
         {
             case Team.Player:
@@ -41,6 +40,8 @@ public class Sc_MainBase : Sc_Building
                 print("Victory");
                 break;
         }
+
+        base.Death();
     }
 
     public override void UseBuilding()

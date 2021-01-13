@@ -11,7 +11,7 @@ public class Sc_Button_CreateUnit : Sc_Button
 
     public void InvokeCasern()
     {
-        casern.StartCoroutine(casern.Create(index, casern.unitsToCreate[index].creationDelay));
+        casern.StartUnitProduction(index, Team.Player);
         Image block = myButton.transform.parent.GetChild(1).GetComponent<Image>();
         Vector3 baseScale = block.transform.localScale;
         block.fillAmount = 1;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Sc_Engine : Sc_Building
 {
-    public override string type => "Engine";
+    public override BuildingType type => BuildingType.Engine;
 
     [Header("Engine")]
     [SerializeField] int resourceAmount = 5;

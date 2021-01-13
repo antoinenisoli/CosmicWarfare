@@ -12,6 +12,7 @@ public enum MouseState
 public class Sc_CursorManager : MonoBehaviour
 {
     public static Sc_CursorManager instance;
+    public MouseState currentState;
     [SerializeField] Texture2D[] cursorIcons;
     [SerializeField] Vector2 offset;
 
@@ -19,15 +20,12 @@ public class Sc_CursorManager : MonoBehaviour
     {
         if (instance == null)
             instance = this;
-    }
-
-    public void SetCursorState(MouseState state)
-    {
-        Cursor.SetCursor(cursorIcons[(int)state], offset, CursorMode.Auto);
+        else
+            Destroy(gameObject);
     }
 
     private void Update()
     {
-        Cursor.SetCursor(cursorIcons[0], offset, CursorMode.Auto);
+        Cursor.SetCursor(cursorIcons[(int)currentState], offset, CursorMode.Auto);
     }
 }

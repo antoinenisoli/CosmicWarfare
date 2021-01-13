@@ -11,11 +11,17 @@ public enum BuildingState
     Builded,
 }
 
+public enum BuildingType
+{
+    MainBase,
+    Casern,
+    Engine,
+}
+
 public abstract class Sc_Building : Sc_Entity
 {
-    protected Sc_ResourcesManager resourceManager => FindObjectOfType<Sc_ResourcesManager>();
-
-    public virtual string type { get; }
+    public virtual BuildingType type { get; }
+    protected Sc_ResourcesManager resourceManager;
 
     [Header("_BUILD")]
     public bool busy;
@@ -24,16 +30,14 @@ public abstract class Sc_Building : Sc_Entity
     [SerializeField] GameObject dummyVersion;
     public bool isColliding;
     float delay;
-    Outline outline;
 
     [Header("_GAMEPLAY")]
     public bool selected;
     [SerializeField] Animation[] idleAnimations;
 
-    private void Awake()
+    void Awake()
     {
         baseMat = meshRender.material;
-        outline = meshRender.GetComponent<Outline>();
         idleAnimations = GetComponentsInChildren<Animation>();
 
         if (currentState == BuildingState.InPlacing)
@@ -44,6 +48,27 @@ public abstract class Sc_Building : Sc_Entity
                 anim.Stop();
             }
         }
+
+        switch (myTeam)
+        {
+            case Team.Player:
+                resourceManager = FindObjectOfType<Sc_ResourcesManager_Ally>();
+                break;
+            case Team.Enemy:
+                resourceManager = FindObjectOfType<Sc_ResourcesManager_Enemy>();
+                break;
+        }
+    }
+
+    public Vector3 MeshClosestPoint(Vector3 from)
+    {
+        return meshRender.GetComponentInChildren<Collider>().ClosestPoint(from);
+    }
+
+    public override void Death()
+    {
+        Sc_VFXManager.Instance.InvokeVFX(FX_Event.Explosion, transform.position, Quaternion.identity);
+        base.Death();
     }
 
     private void OnTriggerStay(Collider other)
@@ -61,7 +86,7 @@ public abstract class Sc_Building : Sc_Entity
         base.ModifyLife(amount, damageLocation);
         if (amount < 0)
         {
-            Sc_VFXManager.Instance.InvokeVFX(FX_Event.BuildingDamage, damageLocation);
+            Sc_VFXManager.Instance.InvokeVFX(FX_Event.LaserDamage, damageLocation, Quaternion.identity);
         }
     }
 
@@ -77,7 +102,7 @@ public abstract class Sc_Building : Sc_Entity
         Destroy(constructionDummy, delay);
         meshRender.material = constructionMat;
         currentState = BuildingState.IsBuilding;
-        Sc_Selection.GenerateEntity(this);
+        Sc_SelectionManager.GenerateEntity(this);
     }
 
     public abstract void UseBuilding();
@@ -96,6 +121,7 @@ public abstract class Sc_Building : Sc_Entity
         newCol.a = 0.2f;
         meshRender.material.SetColor("_Color", newCol);
     }
+
     void Build()
     {
         meshRender.material = baseMat;
@@ -119,20 +145,11 @@ public abstract class Sc_Building : Sc_Entity
                 if (delay > 0)
                     delay -= Time.deltaTime;
                 else
-                {
                     Build();
-                }
                 break;
-            case BuildingState.Builded:
-                if (selected)
-                {
-                    meshRender.material = selectedMat;
-                }
-                else
-                {
-                    meshRender.material = baseMat;
-                }
 
+            case BuildingState.Builded:
+                meshRender.material = selected ? selectedMat : baseMat;
                 UseBuilding();
                 break;
         }

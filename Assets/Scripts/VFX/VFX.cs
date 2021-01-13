@@ -7,5 +7,5 @@ using UnityEngine;
 public class VFX 
 {
     public GameObject fx;
-    public FX_Event m_event;
+    public FX_Event thisEvent;
 }

@@ -11,6 +11,7 @@ public class Resource
     public Text displayResource;
     [SerializeField] int currentAmount;
     [SerializeField] int maxAmount;
+
     public int CurrentAmount
     {
         get => currentAmount;

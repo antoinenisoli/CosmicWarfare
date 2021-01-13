@@ -10,6 +10,8 @@ public class Sc_Entity : MonoBehaviour
     protected Material baseMat;
     public bool highlighted;
     public MeshRenderer meshRender;
+    protected Outline outline => meshRender.GetComponent<Outline>();
+
     public Team myTeam;
 
     public virtual void Start()
@@ -24,6 +26,7 @@ public class Sc_Entity : MonoBehaviour
 
     public virtual void Death()
     {
+        health.isDead = true;
         if (health.healthSlider)
             Destroy(health.healthSlider.gameObject);
 
@@ -36,6 +39,8 @@ public class Sc_Entity : MonoBehaviour
         {
             health.healthSlider.gameObject.SetActive(health.CurrentHealth < health.MaxHealth);
         }
+
+        outline.enabled = highlighted ? true : false;
     }
 
     public override string ToString()

@@ -12,13 +12,14 @@ public class ResourceCost
 
 public class Sc_GlobalBuilder : MonoBehaviour
 {
-    Sc_ResourcesManager resourceManager => FindObjectOfType<Sc_ResourcesManager>();
+    Sc_ResourcesManager_Ally resourceManager => FindObjectOfType<Sc_ResourcesManager_Ally>();
     Camera cam => Camera.main;
 
     Sc_MainBase mainBase;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] LayerMask oilLayer;
     [SerializeField] Transform parent;
+
     [Range(0,10)]
     [SerializeField] float maxBuildAngle = 8;
     bool isBuilding;
@@ -67,10 +68,8 @@ public class Sc_GlobalBuilder : MonoBehaviour
                 float angle = Vector3.Angle(hit.normal, Vector3.up);
                 bool canPlace = angle < maxBuildAngle && !lastBuilding.isColliding && mainBase.InRange(lastBuilding.transform.position);
 
-                if (lastBuilding.type == "Engine")
-                {
+                if (lastBuilding.type == BuildingType.Engine)
                     lastBuilding.CanBePlaced(canPlace && Physics.Raycast(ray, Mathf.Infinity, oilLayer));
-                }
                 else
                     lastBuilding.CanBePlaced(canPlace);
 

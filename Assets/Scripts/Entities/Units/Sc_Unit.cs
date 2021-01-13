@@ -14,31 +14,32 @@ public enum UnitState
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class Sc_Unit : Sc_Entity
 {
-    protected NavMeshAgent agent => GetComponent<NavMeshAgent>();
+    public NavMeshAgent agent => GetComponent<NavMeshAgent>();
     protected MeshRenderer mr => GetComponentInChildren<MeshRenderer>();
-    protected Outline outline => mr.GetComponent<Outline>();
-
-    [SerializeField] TrailRenderer trail;
 
     [Header("Selection")]    
     [SerializeField] protected Material HighlightMat;
 
-    [Header("Characteristics")]
-    [SerializeField] protected float firePower = 3;
-    [SerializeField] protected UnitState currentState = UnitState.IsUnactive;
-
     [Header("Fight")]
-    public GameObject shotFX;
-    [SerializeField] protected float shootRange = 5;
-    [SerializeField] protected float shootSpeed = 1.5f;
-    protected float shootTimer;
+    public float shootRange = 5;   
+    [HideInInspector] public float shootTimer;
     public LayerMask ground = 1 >> 2;
-    [SerializeField] protected Sc_Entity lastTarget;
-    [SerializeField] protected Vector3 attackPosition;
+    public Sc_Entity lastTarget;
+    public Vector3 attackPosition;
+
+    [Header("Behaviour")]
+    public UnitState currentState = UnitState.IsUnactive;
+    [SerializeField] UnitBehaviour_Fighting Fighting;
+    [SerializeField] UnitBehaviour_Moving Moving;
+    [SerializeField] UnitBehaviour_Attacking Attacking;
+    Dictionary<UnitState, UnitBehaviour> behaviours = new Dictionary<UnitState, UnitBehaviour>();
 
     public void Awake()
     {
         baseMat = mr.material;
+        behaviours.Add(Attacking.thisState, Attacking);
+        behaviours.Add(Moving.thisState, Moving);
+        behaviours.Add(Fighting.thisState, Fighting);
     }
 
     [ContextMenu("Place unit")]
@@ -54,91 +55,50 @@ public abstract class Sc_Unit : Sc_Entity
         base.ModifyLife(amount, damageLocation);
         if (amount < 0)
         {
-            Sc_VFXManager.Instance.InvokeVFX(FX_Event.BuildingDamage, damageLocation);
-            Sc_VFXManager.Instance.InvokeVFX(FX_Event.UnitDamage, damageLocation);
+            Sc_VFXManager.Instance.InvokeVFX(FX_Event.LaserDamage, damageLocation, Quaternion.identity);
+            Sc_VFXManager.Instance.InvokeVFX(FX_Event.UnitDamage, damageLocation, Quaternion.identity);
         }
     }
 
-    public void Attack(Sc_Entity target, Vector3 pos)
+    public void Attack(Sc_Entity target)
     {
         lastTarget = target;
-        attackPosition = pos;
         currentState = UnitState.IsAttacking;
     }
 
-    public virtual void Shoot()
+    public void MoveTo(Vector3 pos)
     {
-        shootTimer = 0;
-        lastTarget.ModifyLife(-firePower, attackPosition);
-        Instantiate(shotFX, transform.position, transform.rotation);
-    }
-
-    public Vector3 ClosestPoint()
-    {
-        return GetComponentInChildren<Collider>().ClosestPoint(transform.position);
+        NavMeshPath path = new NavMeshPath();
+        if (agent.CalculatePath(pos, path))
+        {
+            agent.isStopped = false;
+            currentState = UnitState.IsMoving;
+            agent.SetDestination(pos);
+        }
     }
 
     public virtual void Behavior()
     {
-        if (lastTarget && lastTarget.GetComponent<Sc_Unit>())
-            attackPosition = lastTarget.transform.position;
-
-        switch (currentState)
+        if (lastTarget)
         {
-            case UnitState.IsMoving:
-                if (Vector3.Distance(transform.position, agent.destination) < 3.5f)
-                {
-                    agent.isStopped = true;
-                    currentState = UnitState.IsUnactive;
-                }
-                break;
-
-            case UnitState.IsAttacking:
-                if (Vector3.Distance(transform.position, attackPosition) < shootRange)
-                {
-                    currentState = UnitState.IsFighting;
-                    agent.isStopped = true;
-                }
-                else
-                {
-                    agent.isStopped = false;
-                    agent.SetDestination(lastTarget.transform.position);
-                }
-                break;
-
-            case UnitState.IsFighting:
-                if (lastTarget == null)
-                {
-                    currentState = UnitState.IsUnactive;
-                    return;
-                }
-
-                if (Vector3.Distance(transform.position, attackPosition) < shootRange)
-                {
-                    shootTimer += Time.deltaTime;
-                    agent.isStopped = true;
-                    if (shootTimer > shootSpeed)
-                    {
-                        Shoot();
-                    }
-                }
-                else
-                {
-                    shootTimer = 0;
-                    Attack(lastTarget, ClosestPoint());
-                }
-                break;
-
-            default:
-                shootTimer = 0;
-                break;
+            if (lastTarget.GetComponent<Sc_Building>())
+                attackPosition = (lastTarget as Sc_Building).MeshClosestPoint(transform.position);
+            else
+                attackPosition = (lastTarget as Sc_Unit).transform.position;
         }
+
+        if (behaviours.TryGetValue(currentState, out UnitBehaviour behaviour))
+            behaviour.Execute(this);
+        else
+            shootTimer = 0;
     }
 
     public override void Update()
     {
+        if (health.isDead)
+            return;
+
         base.Update();
         Behavior();
-        outline.enabled = highlighted ? true : false;
     }
 }

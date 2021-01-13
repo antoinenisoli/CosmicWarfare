@@ -11,43 +11,17 @@ public enum ResourceType
     Oil,
 }
 
-public class Sc_ResourcesManager : MonoBehaviour
+public abstract class Sc_ResourcesManager : MonoBehaviour
 {
     public Resource[] resources;
-    [SerializeField] GameObject floatingText;
-    [SerializeField] float animDuration = 4f;
+    public Team myTeam;
 
-    private void Start()
-    {
-        ActualizeText();
-    }
-
-    public void ModifyValue(int amount, ResourceType res)
+    public virtual void ModifyValue(int amount, ResourceType res)
     {
         if (amount == 0)
             return;
 
-        GameObject txt = Instantiate(floatingText, resources[(int)res].displayResource.transform);
-        RectTransform txtRect = txt.GetComponent<RectTransform>();
-        txtRect.position = resources[(int)res].displayResource.transform.position + Vector3.up * 25;
-        txtRect.DOMoveY(txtRect.position.y + 30, animDuration);
-        Text thisText = txt.GetComponent<Text>();        
-        thisText.DOFade(0, animDuration);
-
-        if (amount < 0)
-        {
-            thisText.text = "" + amount;
-            thisText.color = Color.red;
-        }
-        else
-        {
-            thisText.text = "+" + amount;
-            thisText.color = Color.green;
-        }
-
-        Destroy(txt, animDuration);
         resources[(int)res].CurrentAmount += amount;
-        ActualizeText();
         Sc_EventManager.Instance.onCost.Invoke();
     }
 
@@ -72,13 +46,5 @@ public class Sc_ResourcesManager : MonoBehaviour
         }
 
         return canPay;
-    }
-
-    public void ActualizeText()
-    {
-        for (int i = 0; i < resources.Length; i++)
-        {
-            resources[i].displayResource.text = resources[i].type + " : " + resources[i].CurrentAmount;
-        }
     }
 }

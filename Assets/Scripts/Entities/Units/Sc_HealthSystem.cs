@@ -11,13 +11,14 @@ public class Sc_HealthSystem
     [SerializeField] float currentHealth;
     float maxHealth;
     public Slider healthSlider;
+    public bool isDead;
 
     public float CurrentHealth 
     { 
         get => currentHealth; 
         set
         {
-            if (value < 0)
+            if (value < 0 && !isDead)
             {
                 entity.Death();
                 value = 0;
