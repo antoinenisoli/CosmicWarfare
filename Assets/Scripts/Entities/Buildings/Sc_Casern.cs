@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Sc_Casern : Sc_Building
 {
-    public override BuildingType type => BuildingType.Casern;
+    public override BuildingType buildingType => BuildingType.Casern;
 
     [Header("Casern")]
     [SerializeField] Transform spawnDestination;
@@ -25,6 +25,7 @@ public class Sc_Casern : Sc_Building
     {
         busy = true;
         yield return new WaitForSeconds(unitsToCreate[index].creationDelay);
+        Sc_SoundManager.instance.PlayAudio(AudioType.NewUnit.ToString(), transform);
         GameObject newUnit = Instantiate(unitsToCreate[index].prefab, spawnTransform.position, Quaternion.identity);
         switch (unitTeam)
         {

@@ -32,6 +32,7 @@ public class Sc_UIManager : MonoBehaviour
         fadeScreen.DOFade(0, 0);
         fadeScreen.GetComponentInChildren<Image>().raycastTarget = false;
         fadeScreen.blocksRaycasts = false;
+        fadeScreen.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -46,6 +47,7 @@ public class Sc_UIManager : MonoBehaviour
 
     void EndGame(bool victory)
     {
+        fadeScreen.gameObject.SetActive(true);
         fadeScreen.DOFade(0.5f, fadeDuration);
         fadeScreen.GetComponentInChildren<Image>().raycastTarget = true;
         fadeScreen.blocksRaycasts = true;
@@ -65,7 +67,7 @@ public class Sc_UIManager : MonoBehaviour
     void UseSelectedBuilding()
     {
         bool isCasern = selectionManager.selectedBuilding && selectionManager.selectedBuilding.GetType() == typeof(Sc_Casern);
-        unitsPanel.SetActive(isCasern);
+        unitsPanel.SetActive(isCasern && selectionManager.selectedBuilding.myTeam == Team.Player);
 
         if (selectionManager.selectedBuilding)
         {

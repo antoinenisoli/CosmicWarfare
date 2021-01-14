@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public enum BuildingState
 {
@@ -20,7 +21,7 @@ public enum BuildingType
 
 public abstract class Sc_Building : Sc_Entity
 {
-    public virtual BuildingType type { get; }
+    public virtual BuildingType buildingType { get; }
     [HideInInspector] public Sc_ResourcesManager resourceManager;
 
     [Header("_BUILD")]
@@ -31,12 +32,15 @@ public abstract class Sc_Building : Sc_Entity
     public bool isColliding;
     float delay;
 
+    [Header("_DESTRUCTION")]
+    [SerializeField] float destructionDelay = 2;
+    [SerializeField] float fallPower = 15f;
+    [Range(0, 1)] [SerializeField] protected float shakeAmount = 0.5f;
+    protected StressReceiver shakeCam;
+
     [Header("_GAMEPLAY")]
     public bool selected;
     [SerializeField] Animation[] idleAnimations;
-    protected StressReceiver shakeCam;
-    [Range(0, 1)]
-    [SerializeField] protected float shakeAmount = 0.5f;
 
     public void Awake()
     {
@@ -72,8 +76,15 @@ public abstract class Sc_Building : Sc_Entity
     public override void Death()
     {
         Sc_VFXManager.Instance.InvokeVFX(FX_Event.Explosion, transform.position, Quaternion.identity);
+        Sc_SoundManager.instance.PlayAudio(AudioType.Explosion.ToString(), transform);
         shakeCam.InduceStress(shakeAmount);
-        base.Death();
+        health.isDead = true;
+        if (health.healthSlider)
+            Destroy(health.healthSlider.gameObject);
+
+        float currentPosY = transform.position.y;
+        transform.DOMoveY(currentPosY - fallPower, destructionDelay);
+        Destroy(gameObject, destructionDelay);
     }
 
     private void OnTriggerStay(Collider other)
@@ -98,7 +109,7 @@ public abstract class Sc_Building : Sc_Entity
     public void Place(float delay)
     {
         this.delay = delay;
-
+        Sc_SoundManager.instance.PlayAudio(AudioType.NewBuilding.ToString(), transform);
         Vector3 baseScale = transform.GetChild(0).localScale;
         transform.GetChild(0).localScale = Vector3.one * 0.1f;
         transform.GetChild(0).DOScale(baseScale, delay);
@@ -114,10 +125,16 @@ public abstract class Sc_Building : Sc_Entity
 
     public void SelectMe(bool select)
     {
-        if (currentState != BuildingState.Builded)
-            return;
-
-        selected = select;
+        if (!EventSystem.current.IsPointerOverGameObject() && currentState == BuildingState.Builded)
+        {
+            selected = select;
+            if (select)
+            {
+                Sc_SoundManager.instance.PlayAudio("Select" + buildingType.ToString(), transform);
+            }
+        }
+        else
+            selected = false;
     }
 
     public void CanBePlaced(bool canBePlaced)
@@ -131,6 +148,7 @@ public abstract class Sc_Building : Sc_Entity
     {
         meshRender.material = baseMat;
         delay = 0;
+        Sc_SoundManager.instance.PlayAudio(AudioType.BuildFinished.ToString(), transform);
         currentState = BuildingState.Builded;
         foreach (var anim in idleAnimations)
         {
@@ -155,11 +173,7 @@ public abstract class Sc_Building : Sc_Entity
 
             case BuildingState.Builded:
                 meshRender.material = selected ? selectedMat : baseMat;
-                if (selected)
-                    meshRender.material.SetColor("_EmissionColor", resourceManager.teamColor);
-                else
-                    meshRender.material.SetColor("_EmissionColor", Color.white);
-
+                meshRender.material.SetColor("_EmissionColor", selected ? resourceManager.teamColor : Color.white);
                 UseBuilding();
                 break;
         }

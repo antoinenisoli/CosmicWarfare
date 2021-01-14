@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 1166756106792602339}
   - component: {fileID: 8509643816647297773}
   - component: {fileID: 92136082786808990}
+  - component: {fileID: 4763925215587465045}
   m_Layer: 12
   m_Name: Cube
   m_TagString: Untagged
@@ -56,7 +57,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726748949928467748}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.81, z: 0}
+  m_LocalPosition: {x: 0, y: 0.39, z: 0}
   m_LocalScale: {x: 6.2131, y: 6.2131, z: 9.261247}
   m_Children: []
   m_Father: {fileID: 2614295627643503618}
@@ -109,6 +110,18 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &4763925215587465045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726748949928467748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e038bf700cfa444fb16c6ef963be9f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1944166623248241813
 GameObject:
   m_ObjectHideFlags: 0
@@ -14417,10 +14430,12 @@ MonoBehaviour:
   dummyVersion: {fileID: 5165177392697307732, guid: bdf39eff93698eb4ca6063ca7021ed5b,
     type: 3}
   isColliding: 0
+  destructionDelay: 2
+  fallPower: 15
+  shakeAmount: 0.5
   selected: 0
   idleAnimations:
   - {fileID: 1977860153996641817}
-  shakeAmount: 0.5
   spawnDestination: {fileID: 1306265219318091897}
   spawnTransform: {fileID: 8580752824338230019}
   unitsToCreate:

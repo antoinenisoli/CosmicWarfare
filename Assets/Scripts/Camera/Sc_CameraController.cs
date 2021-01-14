@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Sc_CameraController : MonoBehaviour
 {
-    Camera mainCam => Camera.main;
-
+    Camera mainCam;
     [SerializeField] bool debug;
     [SerializeField] Color boxColor = Color.white;
     bool canMove = true;
@@ -34,6 +34,7 @@ public class Sc_CameraController : MonoBehaviour
 
     private void Awake()
     {
+        mainCam = Camera.main;
         basePosition = transform.position;
         newRotation = transform.rotation;
         newPosition = transform.position;
@@ -42,7 +43,7 @@ public class Sc_CameraController : MonoBehaviour
 
     private void Start()
     {
-        Sc_EventManager.Instance.onEndGame.AddListener(StopCamera);
+        Sc_EventManager.Instance.onEndGame.AddListener(CenterCamera);
     }
 
     private void OnDrawGizmos()
@@ -54,9 +55,25 @@ public class Sc_CameraController : MonoBehaviour
         Gizmos.DrawCube(transform.position, new Vector3(panBounds.x * 2, zoomLimits.x, panBounds.z * 2));
     }
 
-    void StopCamera(bool b)
+    Sc_MainBase GetDestroyedBase(Team team)
+    {
+        Sc_MainBase[] bases = FindObjectsOfType<Sc_MainBase>();
+        foreach (var item in bases)
+        {
+            if (item.myTeam == team)
+                return item;
+        }
+
+        return null;
+    }
+
+    void CenterCamera(bool b)
     {
         canMove = false;
+        Sc_MainBase baseToCenter = b ? GetDestroyedBase(Team.Player) : GetDestroyedBase(Team.Enemy);
+        Vector3 _direction = (baseToCenter.transform.position - transform.position).normalized;
+        Quaternion _lookRotation = Quaternion.LookRotation(_direction);
+        mainCam.transform.DOLookAt(baseToCenter.transform.position, 0.5f);
     }
 
     [ContextMenu("Clamp position in box")]

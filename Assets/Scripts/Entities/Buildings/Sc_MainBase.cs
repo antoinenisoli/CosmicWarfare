@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Sc_MainBase : Sc_Building
 {
-    public override BuildingType type => BuildingType.MainBase;
+    public override BuildingType buildingType => BuildingType.MainBase;
 
     [Header("MainBase")]
     [SerializeField] float constructionRadius = 50;

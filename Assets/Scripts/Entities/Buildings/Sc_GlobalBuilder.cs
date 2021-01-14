@@ -68,7 +68,7 @@ public class Sc_GlobalBuilder : MonoBehaviour
                 float angle = Vector3.Angle(hit.normal, Vector3.up);
                 bool canPlace = angle < maxBuildAngle && !lastBuilding.isColliding && mainBase.InRange(lastBuilding.transform.position);
 
-                if (lastBuilding.type == BuildingType.Engine)
+                if (lastBuilding.buildingType == BuildingType.Engine)
                     lastBuilding.CanBePlaced(canPlace && Physics.Raycast(ray, Mathf.Infinity, oilLayer));
                 else
                     lastBuilding.CanBePlaced(canPlace);
