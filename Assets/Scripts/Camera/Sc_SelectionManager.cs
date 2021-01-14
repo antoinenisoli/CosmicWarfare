@@ -16,8 +16,8 @@ enum Detectables
 
 public class Sc_SelectionManager : MonoBehaviour
 {
-    Camera mainCam => Camera.main;
-
+    Camera mainCam;
+    bool stopGame;
     [SerializeField] List<Sc_UnitAlly> allPlayerUnits = new List<Sc_UnitAlly>();
     [SerializeField] List<Sc_UnitEnemy> allEnemyUnits = new List<Sc_UnitEnemy>();
     [SerializeField] List<Sc_Building> allBuildings = new List<Sc_Building>();
@@ -44,6 +44,7 @@ public class Sc_SelectionManager : MonoBehaviour
 
     private void Awake()
     {
+        mainCam = Camera.main;
         allPlayerUnits = FindObjectsOfType<Sc_UnitAlly>().ToList();
         allEnemyUnits = FindObjectsOfType<Sc_UnitEnemy>().ToList();
         allBuildings = FindObjectsOfType<Sc_Building>().ToList();
@@ -52,6 +53,12 @@ public class Sc_SelectionManager : MonoBehaviour
     private void Start()
     {
         Sc_EventManager.Instance.onNewUnit.AddListener(NewEntity);
+        Sc_EventManager.Instance.onEndGame.AddListener(StopGame);
+    }
+
+    void StopGame(bool b)
+    {
+        stopGame = true;
     }
 
     public static void GenerateEntity(Sc_Entity _new)
@@ -290,6 +297,9 @@ public class Sc_SelectionManager : MonoBehaviour
 
     private void Update()
     {
+        if (stopGame)
+            return;
+
         DetectItems();
         SelectInBox();
         SelectUnits();

@@ -25,7 +25,7 @@ public class Sc_UnitAlly : Sc_Unit
     {
         selectedVFX.SetActive(selected);
         if (HighlightMat != null && SelectedMat != null)
-            mr.material = selected ? HighlightMat : baseMat;
+            meshRender.material = selected ? HighlightMat : baseMat;
 
         base.Update();
     }

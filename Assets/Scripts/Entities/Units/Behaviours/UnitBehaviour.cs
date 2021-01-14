@@ -3,6 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum UnitState
+{
+    IsUnactive,
+    IsMoving,
+    IsAttacking,
+    IsFighting,
+}
+
 [Serializable]
 public abstract class UnitBehaviour
 {

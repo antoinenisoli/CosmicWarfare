@@ -59,7 +59,7 @@ public class Sc_UnitEnemy : Sc_Unit
     public override void Update()
     {
         if (HighlightMat != null)
-            mr.material = highlighted ? HighlightMat : baseMat;
+            meshRender.material = highlighted ? HighlightMat : baseMat;
 
         DetectTargets();
         base.Update();

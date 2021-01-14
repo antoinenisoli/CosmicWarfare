@@ -16,6 +16,11 @@ public class Sc_Casern : Sc_Building
         StartCoroutine(Production(index, unitTeam));
     }
 
+    public bool CanPayUnit(int unitIndex)
+    {
+        return resourceManager.CanPay(unitsToCreate[unitIndex].costs);
+    }
+
     public IEnumerator Production(int index, Team unitTeam)
     {
         busy = true;

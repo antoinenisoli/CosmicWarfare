@@ -21,11 +21,11 @@ public enum BuildingType
 public abstract class Sc_Building : Sc_Entity
 {
     public virtual BuildingType type { get; }
-    protected Sc_ResourcesManager resourceManager;
+    [HideInInspector] public Sc_ResourcesManager resourceManager;
 
     [Header("_BUILD")]
     public bool busy;
-    public BuildingState currentState = BuildingState.InPlacing;    
+    public BuildingState currentState = BuildingState.InPlacing;
     [SerializeField] Material movingMat, constructionMat, selectedMat;
     [SerializeField] GameObject dummyVersion;
     public bool isColliding;
@@ -34,10 +34,24 @@ public abstract class Sc_Building : Sc_Entity
     [Header("_GAMEPLAY")]
     public bool selected;
     [SerializeField] Animation[] idleAnimations;
+    protected StressReceiver shakeCam;
+    [Range(0, 1)]
+    [SerializeField] protected float shakeAmount = 0.5f;
 
-    void Awake()
+    public void Awake()
     {
+        switch (myTeam)
+        {
+            case Team.Player:
+                resourceManager = FindObjectOfType<Sc_ResourcesManager_Ally>();
+                break;
+            case Team.Enemy:
+                resourceManager = FindObjectOfType<Sc_ResourcesManager_Enemy>();
+                break;
+        }
+
         baseMat = meshRender.material;
+        shakeCam = FindObjectOfType<StressReceiver>();
         idleAnimations = GetComponentsInChildren<Animation>();
 
         if (currentState == BuildingState.InPlacing)
@@ -47,16 +61,6 @@ public abstract class Sc_Building : Sc_Entity
             {
                 anim.Stop();
             }
-        }
-
-        switch (myTeam)
-        {
-            case Team.Player:
-                resourceManager = FindObjectOfType<Sc_ResourcesManager_Ally>();
-                break;
-            case Team.Enemy:
-                resourceManager = FindObjectOfType<Sc_ResourcesManager_Enemy>();
-                break;
         }
     }
 
@@ -68,6 +72,7 @@ public abstract class Sc_Building : Sc_Entity
     public override void Death()
     {
         Sc_VFXManager.Instance.InvokeVFX(FX_Event.Explosion, transform.position, Quaternion.identity);
+        shakeCam.InduceStress(shakeAmount);
         base.Death();
     }
 
@@ -150,6 +155,11 @@ public abstract class Sc_Building : Sc_Entity
 
             case BuildingState.Builded:
                 meshRender.material = selected ? selectedMat : baseMat;
+                if (selected)
+                    meshRender.material.SetColor("_EmissionColor", resourceManager.teamColor);
+                else
+                    meshRender.material.SetColor("_EmissionColor", Color.white);
+
                 UseBuilding();
                 break;
         }

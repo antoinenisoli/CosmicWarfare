@@ -2,17 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class Sc_UIManager : MonoBehaviour
 {
     public static Sc_UIManager instance;
-    Sc_SelectionManager selectionManager => FindObjectOfType<Sc_SelectionManager>();
-
-    [SerializeField] Text displaySelection;
+    Sc_SelectionManager selectionManager;
     public Sc_Tooltip tooltip;
-
-    [SerializeField] GameObject unitsPanel;
     public Sc_Casern selectedCasern;
+
+    [Header("Description panel")]
+    [SerializeField] Text displaySelection;
+    [SerializeField] GameObject unitsPanel;
+
+    [Header("Game ending")]
+    [SerializeField] CanvasGroup fadeScreen;
+    [SerializeField] float fadeDuration = 5;
+    [SerializeField] Text displayEnding;
 
     private void Awake()
     {
@@ -20,6 +27,39 @@ public class Sc_UIManager : MonoBehaviour
             instance = this;
         else
             Destroy(gameObject);
+
+        selectionManager = FindObjectOfType<Sc_SelectionManager>();
+        fadeScreen.DOFade(0, 0);
+        fadeScreen.GetComponentInChildren<Image>().raycastTarget = false;
+        fadeScreen.blocksRaycasts = false;
+    }
+
+    private void Start()
+    {
+        Sc_EventManager.Instance.onEndGame.AddListener(EndGame);
+    }
+
+    public void Load(string name)
+    {
+        SceneManager.LoadScene(name);
+    }
+
+    void EndGame(bool victory)
+    {
+        fadeScreen.DOFade(0.5f, fadeDuration);
+        fadeScreen.GetComponentInChildren<Image>().raycastTarget = true;
+        fadeScreen.blocksRaycasts = true;
+
+        if (victory)
+        {
+            displayEnding.text = "Victory !";
+            displayEnding.color = Color.green;
+        }
+        else
+        {
+            displayEnding.text = "Defeat...";
+            displayEnding.color = Color.red;
+        }
     }
 
     void UseSelectedBuilding()

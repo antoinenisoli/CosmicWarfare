@@ -3,43 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public enum UnitState
-{
-    IsUnactive,
-    IsMoving,
-    IsAttacking,
-    IsFighting,
-}
-
 [RequireComponent(typeof(NavMeshAgent))]
 public abstract class Sc_Unit : Sc_Entity
 {
-    public NavMeshAgent agent => GetComponent<NavMeshAgent>();
-    protected MeshRenderer mr => GetComponentInChildren<MeshRenderer>();
+    [HideInInspector] public NavMeshAgent agent;
 
     [Header("Selection")]    
     [SerializeField] protected Material HighlightMat;
+    public LayerMask ground = 1 >> 2;
 
     [Header("Fight")]
     public float shootRange = 5;   
     [HideInInspector] public float shootTimer;
-    public LayerMask ground = 1 >> 2;
     public Sc_Entity lastTarget;
     public Vector3 attackPosition;
 
     [Header("Behaviour")]
     public UnitState currentState = UnitState.IsUnactive;
-    [SerializeField] UnitBehaviour_Fighting Fighting;
-    [SerializeField] UnitBehaviour_Moving Moving;
-    [SerializeField] UnitBehaviour_Attacking Attacking;
+    [SerializeField] UnitBehaviour_Fighting Fighting = new UnitBehaviour_Fighting();
+    [SerializeField] UnitBehaviour_Moving Moving = new UnitBehaviour_Moving();
+    [SerializeField] UnitBehaviour_Attacking Attacking = new UnitBehaviour_Attacking();
     Dictionary<UnitState, UnitBehaviour> behaviours = new Dictionary<UnitState, UnitBehaviour>();
 
     public void Awake()
     {
-        baseMat = mr.material;
+        agent = GetComponent<NavMeshAgent>();
+        baseMat = meshRender.material;
         behaviours.Add(Attacking.thisState, Attacking);
         behaviours.Add(Moving.thisState, Moving);
         behaviours.Add(Fighting.thisState, Fighting);
+    }
+
+    public override void Start()
+    {
+        base.Start();
+        Sc_EventManager.Instance.onEndGame.AddListener(Deactivate);
+    }
+
+    void Deactivate(bool b)
+    {
+        health.isDead = true;
+        StopAllCoroutines();
+        lastTarget = null;
+        agent.isStopped = true;
     }
 
     [ContextMenu("Place unit")]
@@ -96,7 +102,10 @@ public abstract class Sc_Unit : Sc_Entity
     public override void Update()
     {
         if (health.isDead)
+        {
+            currentState = UnitState.IsUnactive;
             return;
+        }
 
         base.Update();
         Behavior();

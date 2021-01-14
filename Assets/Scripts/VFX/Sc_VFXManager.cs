@@ -33,13 +33,19 @@ public class Sc_VFXManager : MonoBehaviour
 
     public void InvokeVFX(FX_Event fxEvent, Vector3 _pos, Quaternion _rot)
     {
-        if (storedVFX.TryGetValue(fxEvent, out GameObject newFX))
-        {
-            newFX = Instantiate(storedVFX[fxEvent], _pos, _rot);
+        if (storedVFX.TryGetValue(fxEvent, out _))
+        {           
+            GameObject newFX = Instantiate(storedVFX[fxEvent], _pos, _rot);
+            newFX.transform.position = _pos;
+            if (_rot == Quaternion.identity)
+                newFX.transform.rotation = storedVFX[fxEvent].transform.rotation;
+            else
+                newFX.transform.rotation = _rot;
+
+            if (!newFX.GetComponent<Sc_SelfDestroyVFX>())
+                newFX.AddComponent<Sc_SelfDestroyVFX>();
         }
         else
-        {
             Debug.LogError("There is a event gameobject missing.");
-        }
     }
 }

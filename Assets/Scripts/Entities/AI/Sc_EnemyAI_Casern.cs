@@ -8,6 +8,7 @@ public class Sc_EnemyAI_Casern : MonoBehaviour
     Sc_Casern thisCasern;
 
     [Header("Enemy spawn")]
+    [SerializeField] int enemyIndex;
     [SerializeField] float spawnRate = 8f;
     float timer;
 
@@ -18,11 +19,15 @@ public class Sc_EnemyAI_Casern : MonoBehaviour
 
     private void Update()
     {
+        if (thisCasern.resourceManager.gameEnded)
+            return;
+
         timer += Time.deltaTime;
         if (timer > spawnRate)
         {
             timer = 0;
-            thisCasern.StartUnitProduction(0, Team.Enemy);
+            if (thisCasern.CanPayUnit(enemyIndex))
+                thisCasern.StartUnitProduction(enemyIndex, Team.Enemy);
         }
     }
 }

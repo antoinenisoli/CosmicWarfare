@@ -7,15 +7,17 @@ public class Sc_Entity : MonoBehaviour
     [Header("ENTITY")]
     public Sc_HealthSystem health;
     public Sc_EntityInfo info;
-    protected Material baseMat;
-    public bool highlighted;
-    public MeshRenderer meshRender;
-    protected Outline outline => meshRender.GetComponent<Outline>();
-
     public Team myTeam;
+
+    [Header("Graphics")]
+    public bool highlighted;
+    protected Material baseMat;
+    public MeshRenderer meshRender;
+    protected Outline outline;
 
     public virtual void Start()
     {
+        outline = meshRender.GetComponent<Outline>();
         health.Initialize(this);
     }
 
@@ -36,9 +38,7 @@ public class Sc_Entity : MonoBehaviour
     public virtual void Update()
     {
         if (health.healthSlider)
-        {
             health.healthSlider.gameObject.SetActive(health.CurrentHealth < health.MaxHealth);
-        }
 
         outline.enabled = highlighted ? true : false;
     }

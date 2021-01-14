@@ -15,6 +15,10 @@ public abstract class Sc_ResourcesManager : MonoBehaviour
 {
     public Resource[] resources;
     public Team myTeam;
+    public bool gameEnded;
+
+    [ColorUsage(true, true)]
+    public Color teamColor = Color.blue;
 
     public virtual void ModifyValue(int amount, ResourceType res)
     {
@@ -38,6 +42,9 @@ public abstract class Sc_ResourcesManager : MonoBehaviour
 
     public bool CanPay(ResourceCost[] costs)
     {
+        if (gameEnded)
+            return false;
+
         bool canPay = false;
         foreach (ResourceCost cost in costs)
         {

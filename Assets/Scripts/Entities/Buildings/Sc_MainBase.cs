@@ -34,10 +34,12 @@ public class Sc_MainBase : Sc_Building
         switch (myTeam)
         {
             case Team.Player:
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                Sc_EventManager.Instance.onEndGame.Invoke(false);
+                print("Defeat");
                 break;
             case Team.Enemy:
                 print("Victory");
+                Sc_EventManager.Instance.onEndGame.Invoke(true);
                 break;
         }
 

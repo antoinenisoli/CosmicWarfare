@@ -12,7 +12,7 @@ public class UnitBehaviour_Fighting : UnitBehaviour
 
     public override void Execute(Sc_Unit unit)
     {
-        if (unit.health.isDead || unit == null)
+        if (unit.lastTarget.health.isDead || unit.lastTarget == null)
         {
             unit.currentState = UnitState.IsUnactive;
             return;

@@ -8,6 +8,7 @@ public class Sc_CameraController : MonoBehaviour
 
     [SerializeField] bool debug;
     [SerializeField] Color boxColor = Color.white;
+    bool canMove = true;
 
     [Header("Move camera")]
     [SerializeField] Vector3 panBounds;
@@ -39,6 +40,11 @@ public class Sc_CameraController : MonoBehaviour
         newZoom = mainCam.transform.localPosition;
     }
 
+    private void Start()
+    {
+        Sc_EventManager.Instance.onEndGame.AddListener(StopCamera);
+    }
+
     private void OnDrawGizmos()
     {
         if (!debug)
@@ -46,6 +52,11 @@ public class Sc_CameraController : MonoBehaviour
 
         Gizmos.color = boxColor;
         Gizmos.DrawCube(transform.position, new Vector3(panBounds.x * 2, zoomLimits.x, panBounds.z * 2));
+    }
+
+    void StopCamera(bool b)
+    {
+        canMove = false;
     }
 
     [ContextMenu("Clamp position in box")]
@@ -125,6 +136,9 @@ public class Sc_CameraController : MonoBehaviour
 
     private void Update()
     {
+        if (!canMove)
+            return;
+
         CameraZoom();
         CameraRotation();
         CameraScreenPanning();

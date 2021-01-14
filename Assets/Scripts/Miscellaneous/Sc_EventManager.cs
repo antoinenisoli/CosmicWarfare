@@ -11,6 +11,9 @@ public class Sc_EventManager : MonoBehaviour
     public class Entity_UnityEvent : UnityEvent<Sc_Entity> { }
     public Entity_UnityEvent onNewUnit = new Entity_UnityEvent();
 
+    public class UnityEventBool : UnityEvent<bool> { }
+    public UnityEventBool onEndGame = new UnityEventBool();
+
     void Awake()
     {
         if (Instance == null)
