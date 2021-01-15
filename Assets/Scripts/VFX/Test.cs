@@ -1,13 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
-[ExecuteInEditMode]
 public class Test : MonoBehaviour
 {
-    [ContextMenu("Play Audio")]
-    public void Play()
+    [ContextMenu("TEST")]
+    public void Try()
     {
-        GetComponent<AudioSource>().Play();
+        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+        Type[] possible = (from Type type in types where type.IsSubclassOf(typeof(UnitBehaviour)) select type).ToArray();
+        foreach (var item in possible)
+        {
+            print(item.Name);
+        }
     }
 }

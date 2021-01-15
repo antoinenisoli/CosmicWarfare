@@ -17,6 +17,7 @@ public enum BuildingType
     MainBase,
     Casern,
     Engine,
+    Turret,
 }
 
 public abstract class Sc_Building : Sc_Entity
@@ -174,7 +175,8 @@ public abstract class Sc_Building : Sc_Entity
             case BuildingState.Builded:
                 meshRender.material = selected ? selectedMat : baseMat;
                 meshRender.material.SetColor("_EmissionColor", selected ? resourceManager.teamColor : Color.white);
-                UseBuilding();
+                if (!resourceManager.gameEnded)
+                    UseBuilding();
                 break;
         }
     }

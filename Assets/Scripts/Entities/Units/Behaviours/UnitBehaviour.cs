@@ -14,6 +14,14 @@ public enum UnitState
 [Serializable]
 public abstract class UnitBehaviour
 {
-    public virtual UnitState thisState => UnitState.IsUnactive;
-    public abstract void Execute(Sc_Unit unit);
+    public virtual UnitState currentState => UnitState.IsUnactive; 
+    protected Sc_Unit unit;
+    protected Sc_UnitInfo info;
+
+    public UnitBehaviour(Sc_Unit unit)
+    {
+        this.unit = unit;
+    }
+
+    public abstract void Execute();
 }

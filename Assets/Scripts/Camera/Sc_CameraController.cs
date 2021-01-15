@@ -70,9 +70,7 @@ public class Sc_CameraController : MonoBehaviour
     void CenterCamera(bool b)
     {
         canMove = false;
-        Sc_MainBase baseToCenter = b ? GetDestroyedBase(Team.Player) : GetDestroyedBase(Team.Enemy);
-        Vector3 _direction = (baseToCenter.transform.position - transform.position).normalized;
-        Quaternion _lookRotation = Quaternion.LookRotation(_direction);
+        Sc_MainBase baseToCenter = b ? GetDestroyedBase(Team.Enemy) : GetDestroyedBase(Team.Player);
         mainCam.transform.DOLookAt(baseToCenter.transform.position, 0.5f);
     }
 

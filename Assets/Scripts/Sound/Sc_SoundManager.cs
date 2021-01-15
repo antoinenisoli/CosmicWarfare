@@ -70,6 +70,6 @@ public class Sc_SoundManager : MonoBehaviour
             lastSource.Play();
         }
         else
-            Debug.LogError("There is no song at this name : " + name);
+            print("There is no song at this name : " + name);
     }
 }

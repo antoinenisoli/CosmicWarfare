@@ -8,30 +8,25 @@ public abstract class Sc_Unit : Sc_Entity
 {
     [HideInInspector] public NavMeshAgent agent;
 
-    [Header("Selection")]    
+    [Header("UNIT")]
+    [SerializeField] Sc_UnitInfo unitInfo;
+    public UnitState currentState = UnitState.IsUnactive;
+    public float stopDistance = 3.5f;
     [SerializeField] protected Material HighlightMat;
     public LayerMask ground = 1 >> 2;
 
     [Header("Fight")]
-    public float shootRange = 5;   
-    [HideInInspector] public float shootTimer;
     public Sc_Entity lastTarget;
-    public Vector3 attackPosition;
-
-    [Header("Behaviour")]
-    public UnitState currentState = UnitState.IsUnactive;
-    [SerializeField] UnitBehaviour_Fighting Fighting = new UnitBehaviour_Fighting();
-    [SerializeField] UnitBehaviour_Moving Moving = new UnitBehaviour_Moving();
-    [SerializeField] UnitBehaviour_Attacking Attacking = new UnitBehaviour_Attacking();
+    [HideInInspector] public Vector3 attackPosition;
     Dictionary<UnitState, UnitBehaviour> behaviours = new Dictionary<UnitState, UnitBehaviour>();
 
     public void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
         baseMat = meshRender.material;
-        behaviours.Add(Attacking.thisState, Attacking);
-        behaviours.Add(Moving.thisState, Moving);
-        behaviours.Add(Fighting.thisState, Fighting);
+        behaviours.Add(UnitBehaviour_Attacking.State, new UnitBehaviour_Attacking(this, unitInfo));
+        behaviours.Add(UnitBehaviour_Moving.State, new UnitBehaviour_Moving(this));
+        behaviours.Add(UnitBehaviour_Fighting.State, new UnitBehaviour_Fighting(this, unitInfo));
     }
 
     public override void Start()
@@ -70,6 +65,8 @@ public abstract class Sc_Unit : Sc_Entity
     {
         lastTarget = target;
         currentState = UnitState.IsAttacking;
+        if (lastTarget.GetComponent<Sc_Building>())
+            attackPosition = (lastTarget as Sc_Building).MeshClosestPoint(transform.position);
     }
 
     public void MoveTo(Vector3 pos)
@@ -85,18 +82,13 @@ public abstract class Sc_Unit : Sc_Entity
 
     public virtual void Behavior()
     {
-        if (lastTarget)
+        if (lastTarget && lastTarget.GetComponent<Sc_Unit>())
         {
-            if (lastTarget.GetComponent<Sc_Building>())
-                attackPosition = (lastTarget as Sc_Building).MeshClosestPoint(transform.position);
-            else
-                attackPosition = (lastTarget as Sc_Unit).transform.position;
+            attackPosition = (lastTarget as Sc_Unit).transform.position;
         }
 
         if (behaviours.TryGetValue(currentState, out UnitBehaviour behaviour))
-            behaviour.Execute(this);
-        else
-            shootTimer = 0;
+            behaviour.Execute();
     }
 
     public override void Update()

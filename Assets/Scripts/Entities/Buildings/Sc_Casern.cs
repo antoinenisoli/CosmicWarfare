@@ -38,6 +38,11 @@ public class Sc_Casern : Sc_Building
 
             case Team.Enemy:
                 Sc_UnitEnemy enemyUnit = newUnit.GetComponent<Sc_UnitEnemy>();
+                foreach (var cost in unitsToCreate[index].costs)
+                {
+                    resourceManager.ModifyValue(cost.value, cost.resourceType);
+                }
+
                 enemyUnit.MoveTo(spawnDestination.position);
                 Sc_SelectionManager.GenerateEntity(enemyUnit);
                 Sc_VFXManager.Instance.InvokeVFX(FX_Event.NewEnemy, spawnTransform.position, Quaternion.identity);

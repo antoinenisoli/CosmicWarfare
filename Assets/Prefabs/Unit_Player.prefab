@@ -160,20 +160,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a1d8e484ff8a554192f02db6d03acc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  info: {fileID: 11400000, guid: 1eefce2f955d32541aea963df35f41a4, type: 2}
   health:
     currentHealth: 0
     healthSlider: {fileID: 0}
     isDead: 0
-  info: {fileID: 11400000, guid: 1eefce2f955d32541aea963df35f41a4, type: 2}
+  myTeam: 0
   highlighted: 0
   meshRender: {fileID: 885422397579337499}
-  myTeam: 0
-  HighlightMat: {fileID: 2100000, guid: b9cc259c1860d8f409305d5b34679100, type: 2}
-  firePower: 1
+  agent: {fileID: 0}
+  unitInfo: {fileID: 11400000, guid: fa9184eac0e2ec64b9a42300e0774a78, type: 2}
   currentState: 0
-  shotFX: {fileID: 7533186457207425133, guid: 8cd9dd661a6a25d4fa078c5fc5bffac1, type: 3}
-  shootRange: 30
-  shootSpeed: 1.5
+  stopDistance: 3.5
+  HighlightMat: {fileID: 2100000, guid: b9cc259c1860d8f409305d5b34679100, type: 2}
   ground:
     serializedVersion: 2
     m_Bits: 1
@@ -196,7 +195,7 @@ NavMeshAgent:
   m_Acceleration: 10000
   avoidancePriority: 50
   m_AngularSpeed: 10000
-  m_StoppingDistance: 0.1
+  m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1
@@ -215,7 +214,6 @@ GameObject:
   - component: {fileID: 1717899503450833877}
   - component: {fileID: 2227120696911063135}
   - component: {fileID: 8437313055370060185}
-  - component: {fileID: 4088930883875488929}
   m_Layer: 8
   m_Name: Cylinder
   m_TagString: Untagged
@@ -284,20 +282,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &4088930883875488929
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7727414683592382770}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!1001 &4221491916499877298
 PrefabInstance:
   m_ObjectHideFlags: 0

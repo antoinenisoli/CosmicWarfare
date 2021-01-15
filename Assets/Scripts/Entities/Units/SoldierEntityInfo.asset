@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 46621b3ae8376dd468c0fa9eaf56caff, type: 3}
-  m_Name: SoldierInfo
+  m_Name: SoldierEntityInfo
   m_EditorClassIdentifier: 
   entityName: Soldier
   entityDescription: A regular soldier.

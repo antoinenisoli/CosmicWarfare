@@ -20,6 +20,16 @@ public abstract class Sc_ResourcesManager : MonoBehaviour
     [ColorUsage(true, true)]
     public Color teamColor = Color.blue;
 
+    private void Start()
+    {
+        Sc_EventManager.Instance.onEndGame.AddListener(End);
+    }
+
+    void End(bool b)
+    {
+        gameEnded = true;
+    }
+
     public virtual void ModifyValue(int amount, ResourceType res)
     {
         if (amount == 0)

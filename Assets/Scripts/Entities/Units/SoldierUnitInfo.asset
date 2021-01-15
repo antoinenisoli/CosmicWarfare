@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46621b3ae8376dd468c0fa9eaf56caff, type: 3}
-  m_Name: BaseInfo
+  m_Script: {fileID: 11500000, guid: fdc3a65dc5f986b4fb1a62f154423ce5, type: 3}
+  m_Name: SoldierUnitInfo
   m_EditorClassIdentifier: 
-  entityName: Base
-  entityDescription: 'The main building of a base. '
-  maxHealth: 350
+  firePower: 1
+  shootRange: 20
+  shootRate: 2

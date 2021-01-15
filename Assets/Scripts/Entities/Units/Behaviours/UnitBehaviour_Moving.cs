@@ -7,22 +7,20 @@ using UnityEngine.AI;
 [Serializable]
 public class UnitBehaviour_Moving : UnitBehaviour
 {
-    public override UnitState thisState => UnitState.IsMoving;
-    [SerializeField] float stopDistance = 3.5f;
-    Sc_Unit unit;
+    public override UnitState currentState => State;
+    public static UnitState State => UnitState.IsMoving;
 
-    public override void Execute(Sc_Unit unit)
+    public UnitBehaviour_Moving(Sc_Unit unit) : base(unit)
     {
         this.unit = unit;
-        if (Vector3.Distance(unit.transform.position, unit.agent.destination) < stopDistance || !NavMesh.SamplePosition(unit.agent.destination, out _, 1.0f, NavMesh.AllAreas))
+    }
+
+    public override void Execute()
+    {
+        if (Vector3.Distance(unit.transform.position, unit.agent.destination) < unit.stopDistance || !NavMesh.SamplePosition(unit.agent.destination, out _, 1.0f, NavMesh.AllAreas))
         {
             unit.agent.isStopped = true;
             unit.currentState = UnitState.IsUnactive;
         }
-    }
-
-    public override string ToString()
-    {
-        return "" + Vector3.Distance(unit.transform.position, unit.agent.destination);
     }
 }

@@ -5,8 +5,8 @@ using UnityEngine;
 public class Sc_Entity : MonoBehaviour
 {
     [Header("ENTITY")]
-    public Sc_HealthSystem health;
     public Sc_EntityInfo info;
+    public Sc_HealthSystem health;
     public Team myTeam;
 
     [Header("Graphics")]
@@ -40,7 +40,8 @@ public class Sc_Entity : MonoBehaviour
         if (health.healthSlider)
             health.healthSlider.gameObject.SetActive(health.CurrentHealth < health.MaxHealth);
 
-        outline.enabled = highlighted ? true : false;
+        if (outline)
+            outline.enabled = highlighted ? true : false;
     }
 
     public override string ToString()

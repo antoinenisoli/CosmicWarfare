@@ -76,12 +76,52 @@ public class Sc_SelectionManager : MonoBehaviour
             allEnemyUnits.Add(entity as Sc_UnitEnemy);
     }
 
+    public void SentFormation(Vector3 targetPosition)
+    {
+        Vector3 pos = targetPosition;
+        int counter = -1;
+        int xIncrement = -1;
+
+        float xOffset = 10;
+        float yOffset = 10;
+        float sqrt = Mathf.Sqrt(10);
+        float startX = targetPosition.x;
+   
+        for (int i = 0; i < selectedUnits.Count; i++)
+        {
+            Sc_UnitAlly unit = selectedUnits[i].GetComponent<Sc_UnitAlly>();
+            counter++;
+            xIncrement++;
+            if (xIncrement > 1)
+                xIncrement = 1;
+            pos.x += xIncrement * xOffset;
+            if (counter == Mathf.Floor(sqrt))
+            {
+                counter = 0;
+                pos.x = startX;
+                pos.z += 1 + yOffset;
+            }
+
+            if (NavMesh.SamplePosition(pos, out NavMeshHit navHit, 100f, NavMesh.AllAreas))
+            {
+                if (unit.selected)
+                    unit.MoveTo(pos);
+
+                GameObject dummy = Instantiate(moveMark, navHit.position + Vector3.up * 0.4f, Quaternion.FromToRotation(Vector3.up, hit.normal));
+                Vector3 currentScale = dummy.transform.localScale;
+                dummy.transform.DOScale(currentScale * 1.5f, dummyAnimDuration / 3);
+                dummy.transform.DOScale(Vector3.zero, dummyAnimDuration / 3).SetDelay(dummyAnimDuration / 3);
+                Destroy(dummy, dummyAnimDuration);
+            }
+        }
+    }
+
     void MoveUnits()
     {
         if (hit.transform != null)
         {
             Vector3 position = hit.point;
-            invalid = !NavMesh.SamplePosition(position, out _, 1.0f, NavMesh.AllAreas) && selectedUnits.Count > 0;
+            invalid = !NavMesh.SamplePosition(position, out _, 100f, NavMesh.AllAreas) && selectedUnits.Count > 0;
         }
         else
             invalid = false;
@@ -89,21 +129,11 @@ public class Sc_SelectionManager : MonoBehaviour
         if (selectedUnits.Count > 0 && isDetecting == Detectables.Ground)
         {
             Vector3 position = hit.point;
-            if (NavMesh.SamplePosition(position, out _, 1.0f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(position, out _, 100, NavMesh.AllAreas))
             {
                 if (Input.GetMouseButtonDown(1))
-                {                    
-                    foreach (var unit in selectedUnits)
-                    {
-                        if (unit.selected)
-                            unit.MoveTo(position);
-                    }
-
-                    GameObject dummy = Instantiate(moveMark, position + Vector3.up * 0.4f, Quaternion.FromToRotation(Vector3.up, hit.normal));
-                    Vector3 currentScale = dummy.transform.localScale;
-                    dummy.transform.DOScale(currentScale * 1.5f, dummyAnimDuration / 3);
-                    dummy.transform.DOScale(Vector3.zero, dummyAnimDuration / 3).SetDelay(dummyAnimDuration / 3);
-                    Destroy(dummy, dummyAnimDuration);
+                {
+                    SentFormation(position);
                 }
             }
         }
