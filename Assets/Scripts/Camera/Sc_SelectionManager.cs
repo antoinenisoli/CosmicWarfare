@@ -28,7 +28,7 @@ public class Sc_SelectionManager : MonoBehaviour
     [SerializeField] LayerMask buildingsLayer;
     [SerializeField] Detectables isDetecting;
     public Sc_Building selectedBuilding;
-    RaycastHit hit;
+    public RaycastHit hit;
     bool invalid, attackUnit;
 
     [Header("Rectangle selection")]
@@ -39,8 +39,10 @@ public class Sc_SelectionManager : MonoBehaviour
 
     [Header("Move units")]
     [SerializeField] LayerMask groundLayer;
-    [SerializeField] GameObject moveMark;
-    [SerializeField] float dummyAnimDuration = 3;
+    [SerializeField] FormationType formationType;
+    UnitsFormation formation = new UnitsFormation();
+    public GameObject moveMark;
+    public float dummyAnimDuration = 3;
 
     private void Awake()
     {
@@ -76,113 +78,81 @@ public class Sc_SelectionManager : MonoBehaviour
             allEnemyUnits.Add(entity as Sc_UnitEnemy);
     }
 
-    public void SentFormation(Vector3 targetPosition)
-    {
-        Vector3 pos = targetPosition;
-        int counter = -1;
-        int xIncrement = -1;
-
-        float xOffset = 10;
-        float yOffset = 10;
-        float sqrt = Mathf.Sqrt(10);
-        float startX = targetPosition.x;
-   
-        for (int i = 0; i < selectedUnits.Count; i++)
-        {
-            Sc_UnitAlly unit = selectedUnits[i].GetComponent<Sc_UnitAlly>();
-            counter++;
-            xIncrement++;
-            if (xIncrement > 1)
-                xIncrement = 1;
-            pos.x += xIncrement * xOffset;
-            if (counter == Mathf.Floor(sqrt))
-            {
-                counter = 0;
-                pos.x = startX;
-                pos.z += 1 + yOffset;
-            }
-
-            if (NavMesh.SamplePosition(pos, out NavMeshHit navHit, 100f, NavMesh.AllAreas))
-            {
-                if (unit.selected)
-                    unit.MoveTo(pos);
-
-                GameObject dummy = Instantiate(moveMark, navHit.position + Vector3.up * 0.4f, Quaternion.FromToRotation(Vector3.up, hit.normal));
-                Vector3 currentScale = dummy.transform.localScale;
-                dummy.transform.DOScale(currentScale * 1.5f, dummyAnimDuration / 3);
-                dummy.transform.DOScale(Vector3.zero, dummyAnimDuration / 3).SetDelay(dummyAnimDuration / 3);
-                Destroy(dummy, dummyAnimDuration);
-            }
-        }
-    }
-
     void MoveUnits()
     {
         if (hit.transform != null)
         {
             Vector3 position = hit.point;
-            invalid = !NavMesh.SamplePosition(position, out _, 100f, NavMesh.AllAreas) && selectedUnits.Count > 0;
+            invalid = !NavMesh.SamplePosition(position, out _, 5f, NavMesh.AllAreas) && selectedUnits.Count > 0;
         }
         else
             invalid = false;
 
         if (selectedUnits.Count > 0 && isDetecting == Detectables.Ground)
         {
-            Vector3 position = hit.point;
-            if (NavMesh.SamplePosition(position, out _, 100, NavMesh.AllAreas))
-            {
-                if (Input.GetMouseButtonDown(1))
-                {
-                    SentFormation(position);
-                }
-            }
+            Vector3 position = hit.point;           
+            if (Input.GetMouseButtonDown(1) && !invalid)
+                formation.DoFormation(this, position);
         }
-    }
-
-    bool CanMove()
-    {
-        if (selectedUnits.Count > 0 && isDetecting == Detectables.Ground)
-        {
-            Vector3 position = hit.point;
-            return NavMesh.SamplePosition(position, out _, 1.0f, NavMesh.AllAreas);
-        }
-
-        return false;
     }
 
     void SelectUnits()
     {
         foreach (var ally in allPlayerUnits)
         {
-            ally.highlighted = 
+            if (hit.collider != null)
+            {
+                Sc_UnitAlly unit = hit.collider.gameObject.GetComponentInParent<Sc_UnitAlly>();
+                ally.highlighted =
                 (
-                hit.collider != null 
-                && ally.Equals(hit.collider.gameObject.GetComponentInParent<Sc_UnitAlly>()) 
-                && !ally.selected 
-                ) 
+                hit.collider != null
+                && !EventSystem.current.IsPointerOverGameObject()
+                && ally.Equals(unit)
+                && !ally.selected
+                )
                 || selectedUnits.Contains(ally)
                 ;
+            }
+            else
+                ally.highlighted = false;
         }
 
         foreach (var enemy in allEnemyUnits)
         {
-            enemy.highlighted = hit.collider != null && selectedUnits.Count > 0 && enemy.Equals(hit.collider.gameObject.GetComponentInParent<Sc_UnitEnemy>());
+            if (hit.collider != null)
+            {
+                Sc_UnitEnemy unit = hit.collider.gameObject.GetComponentInParent<Sc_UnitEnemy>();
+                enemy.highlighted =
+                    hit.collider != null
+                    && selectedUnits.Count > 0
+                    && enemy.Equals(unit)
+                    && !EventSystem.current.IsPointerOverGameObject()
+                    ;
+            }
+            else
+                enemy.highlighted = false;
         }
 
         foreach (var building in allBuildings)
         {
-            bool hover = hit.collider != null && building.Equals(hit.collider.gameObject.GetComponentInParent<Sc_Building>()) && !building.selected;
-            bool teamCondition = true;
+            if (hit.collider != null)
+            {
+                Sc_Building buildScript = hit.collider.gameObject.GetComponentInParent<Sc_Building>();
+                bool hover = building.Equals(buildScript) && !building.selected && !EventSystem.current.IsPointerOverGameObject();
+                bool teamCondition = true;
 
-            if (building.myTeam == Team.Player)
-                teamCondition = building.currentState == BuildingState.Builded;
+                if (building.myTeam == Team.Player)
+                    teamCondition = building.currentState == BuildingState.Builded;
+                else
+                    teamCondition = selectedUnits.Count > 0;
+
+                building.highlighted = hover && teamCondition;
+            }
             else
-                teamCondition = selectedUnits.Count > 0;
-
-            building.highlighted = hover && teamCondition;
+                building.highlighted = false;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
         {
             for (int i = 0; i < allPlayerUnits.Count; i++)
             {
@@ -190,7 +160,7 @@ public class Sc_SelectionManager : MonoBehaviour
                 selectedUnits.Clear();
             }
 
-            if (selectedBuilding && !EventSystem.current.IsPointerOverGameObject())
+            if (selectedBuilding)
             {
                 selectedBuilding.SelectMe(false);
                 selectedBuilding = null;
@@ -219,28 +189,33 @@ public class Sc_SelectionManager : MonoBehaviour
 
     void InteractUnits()
     {
-        attackUnit = hit.transform != null && selectedUnits.Count > 0 && hit.collider.GetComponentInParent<Sc_Entity>();
-        if (hit.transform != null && selectedUnits.Count > 0)
+        if (hit.transform != null)
         {
             Sc_Entity target = hit.collider.GetComponentInParent<Sc_Entity>();
-            if (target)
+            attackUnit = selectedUnits.Count > 0 && target && target.myTeam == Team.Enemy;
+            if (attackUnit)
             {
                 if (Input.GetMouseButtonDown(1))
                 {
                     foreach (var unit in selectedUnits)
-                    {
                         unit.Attack(target);
-                    }
 
-                    GameObject dummy = Instantiate(moveMark, target.transform.position + Vector3.up * 0.2f, Quaternion.identity);
-                    dummy.GetComponent<MeshRenderer>().material.color = Color.red;
-                    Vector3 currentScale = dummy.transform.localScale;
-                    dummy.transform.DOScale(currentScale * 1.5f, dummyAnimDuration / 3);
-                    dummy.transform.DOScale(Vector3.zero, dummyAnimDuration / 3).SetDelay(dummyAnimDuration / 3);
-                    Destroy(dummy, dummyAnimDuration);
+                    CreateDummy(target.transform.position, Quaternion.identity, Color.red);
                 }
             }
         }
+        else
+            attackUnit = false;
+    }
+
+    public void CreateDummy(Vector3 position, Quaternion rotation, Color color)
+    {
+        GameObject dummy = Instantiate(moveMark, position + Vector3.up * 0.2f, rotation);
+        dummy.GetComponent<MeshRenderer>().material.color = color;
+        Vector3 currentScale = dummy.transform.localScale;
+        dummy.transform.DOScale(currentScale * 1.5f, dummyAnimDuration / 3);
+        dummy.transform.DOScale(Vector3.zero, dummyAnimDuration / 3).SetDelay(dummyAnimDuration / 3);
+        Destroy(dummy, dummyAnimDuration);
     }
 
     private void OnGUI()
@@ -256,9 +231,7 @@ public class Sc_SelectionManager : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             if (Input.GetMouseButtonDown(0))
-            {
                 mousePos = Input.mousePosition;
-            }
 
             selectRect = new Rect(mousePos.x, Screen.height - mousePos.y, Input.mousePosition.x - mousePos.x, -1 * (Input.mousePosition.y - mousePos.y));
             if (selectRect.size.y < 2 && selectRect.size.y < 2)
@@ -291,7 +264,6 @@ public class Sc_SelectionManager : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
         {            
             selectRect = new Rect();
-
             if (selectedUnits.Count <= 0)
                 return;
 

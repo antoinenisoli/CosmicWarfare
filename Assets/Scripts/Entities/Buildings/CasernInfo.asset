@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityName: Casern
   entityDescription: This building can recruits and deploy regular units.
-  maxHealth: 200
+  maxHealth: 100

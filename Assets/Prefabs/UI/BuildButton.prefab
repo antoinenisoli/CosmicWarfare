@@ -285,14 +285,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myPurchase:
-    purchase_Name: 
-    prefab: {fileID: 0}
-    creationDelay: 3
+    purchase_Name: Casern
+    prefab: {fileID: 2333201051896128405, guid: f5b7504519013bc4db556724349705a5,
+      type: 3}
+    creationDelay: 6
     costs:
-    - value: 15
+    - value: -30
       resourceType: 0
-    - value: 15
-      resourceType: 0
+    - value: -45
+      resourceType: 1
 --- !u!114 &5039303540181692689
 MonoBehaviour:
   m_ObjectHideFlags: 0

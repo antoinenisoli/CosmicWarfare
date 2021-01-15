@@ -90,7 +90,7 @@ public abstract class Sc_Building : Sc_Entity
 
     private void OnTriggerStay(Collider other)
     {
-        isColliding = other.GetComponent<Sc_Building>() || other.GetComponentInParent<Sc_Unit>();
+        isColliding = other.transform.root.GetComponentInChildren<Sc_Entity>();
     }
 
     private void OnTriggerExit(Collider other)
@@ -111,9 +111,11 @@ public abstract class Sc_Building : Sc_Entity
     {
         this.delay = delay;
         Sc_SoundManager.instance.PlayAudio(AudioType.NewBuilding.ToString(), transform);
-        Vector3 baseScale = transform.GetChild(0).localScale;
-        transform.GetChild(0).localScale = Vector3.one * 0.1f;
-        transform.GetChild(0).DOScale(baseScale, delay);
+        Transform childToTween = transform.GetChild(0);
+        Vector3 baseScale = childToTween.localScale;
+
+        childToTween.localScale = Vector3.one * 0.1f;
+        childToTween.DOScale(baseScale, delay);
         GameObject constructionDummy = Instantiate(dummyVersion, transform.position, Quaternion.identity);
         constructionDummy.transform.localScale = baseScale;
         Destroy(constructionDummy, delay);
@@ -130,9 +132,7 @@ public abstract class Sc_Building : Sc_Entity
         {
             selected = select;
             if (select)
-            {
                 Sc_SoundManager.instance.PlayAudio("Select" + buildingType.ToString(), transform);
-            }
         }
         else
             selected = false;
@@ -152,9 +152,7 @@ public abstract class Sc_Building : Sc_Entity
         Sc_SoundManager.instance.PlayAudio(AudioType.BuildFinished.ToString(), transform);
         currentState = BuildingState.Builded;
         foreach (var anim in idleAnimations)
-        {
             anim.Play();
-        }
     }
 
     public override void Update()

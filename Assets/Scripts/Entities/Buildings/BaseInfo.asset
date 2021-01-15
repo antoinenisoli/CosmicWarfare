@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityName: Base
   entityDescription: 'The main building of a base. '
-  maxHealth: 350
+  maxHealth: 150
