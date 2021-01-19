@@ -8,6 +8,7 @@ public class Sc_Turret : Sc_Building
     public override BuildingType buildingType => BuildingType.Turret;
 
     [Header("Turret")]
+    [SerializeField] Transform mainMesh;
     [SerializeField] Sc_UnitInfo fightInfo;
     [SerializeField] float animRate = 3;
     [SerializeField] LayerMask targetLayer;
@@ -37,12 +38,12 @@ public class Sc_Turret : Sc_Building
         {
             Vector3 _direction = (lastTarget.transform.position - transform.position).normalized;
             Quaternion _lookRotation = Quaternion.LookRotation(_direction);
-            transform.DORotateQuaternion(_lookRotation, 0.5f);
+            mainMesh.DORotateQuaternion(_lookRotation, 0.5f);
 
             if (timer > fightInfo.shootRate)
             {
                 timer = 0;
-                Sc_VFXManager.Instance.InvokeVFX(FX_Event.ShootLaser, transform.position, transform.rotation);
+                Sc_VFXManager.Instance.InvokeVFX(FX_Event.ShootLaser, transform.position, mainMesh.rotation);
                 lastTarget.ModifyLife(-fightInfo.firePower, lastTarget.transform.position);
             }
         }
@@ -53,7 +54,7 @@ public class Sc_Turret : Sc_Building
                 timer = 0;
                 Vector3 _direction = (RandomPosition(-500, 500) - transform.position).normalized;
                 Quaternion _lookRotation = Quaternion.LookRotation(_direction);
-                transform.DORotateQuaternion(_lookRotation, 0.8f);
+                mainMesh.DORotateQuaternion(_lookRotation, 0.8f);
             }
         }
     }

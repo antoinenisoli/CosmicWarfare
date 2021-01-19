@@ -9,8 +9,9 @@ public class Sc_ResourcesManager_Ally : Sc_ResourcesManager
     [SerializeField] GameObject floatingText;
     [SerializeField] float animDuration = 4f;
 
-    void Start()
+    public override void Start()
     {
+        base.Start();
         ActualizeText();
     }
 

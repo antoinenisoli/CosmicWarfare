@@ -561,11 +561,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dacd3bc56468295479693a05ebbba72b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  info: {fileID: 11400000, guid: 8adb712b03ad2d84d9d5bf91a096c4a1, type: 2}
   health:
     currentHealth: 0
     healthSlider: {fileID: 0}
     isDead: 0
-  info: {fileID: 11400000, guid: 8adb712b03ad2d84d9d5bf91a096c4a1, type: 2}
   myTeam: 0
   highlighted: 0
   meshRender: {fileID: 2482028087933070073}
@@ -585,7 +585,7 @@ MonoBehaviour:
   idleAnimations:
   - {fileID: 2569867544951270389}
   resourceAmount: 5
-  f_waitingTime: 10
+  f_waitingTime: 8
 --- !u!65 &3744916934382811512
 BoxCollider:
   m_ObjectHideFlags: 0

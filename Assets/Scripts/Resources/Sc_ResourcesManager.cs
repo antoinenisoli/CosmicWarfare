@@ -16,11 +16,21 @@ public abstract class Sc_ResourcesManager : MonoBehaviour
     public Resource[] resources;
     public Team myTeam;
     public bool gameEnded;
+    public Dictionary<ResourceType, Resource> myResources = new Dictionary<ResourceType, Resource>();
 
     [ColorUsage(true, true)]
     public Color teamColor = Color.blue;
 
-    private void Start()
+    private void Awake()
+    {
+        foreach (var item in resources)
+        {
+            if (!myResources.ContainsKey(item.type))
+                myResources.Add(item.type, item);
+        }
+    }
+
+    public virtual void Start()
     {
         Sc_EventManager.Instance.onEndGame.AddListener(End);
     }
@@ -39,17 +49,6 @@ public abstract class Sc_ResourcesManager : MonoBehaviour
         Sc_EventManager.Instance.onCost.Invoke();
     }
 
-    public Resource GetResource(ResourceType type)
-    {
-        foreach (Resource resource in resources)
-        {
-            if (resource.type.Equals(type))
-                return resource;
-        }
-
-        return null;
-    }
-
     public bool CanPay(ResourceCost[] costs)
     {
         if (gameEnded)
@@ -58,7 +57,7 @@ public abstract class Sc_ResourcesManager : MonoBehaviour
         bool canPay = false;
         foreach (ResourceCost cost in costs)
         {
-            Resource resource = GetResource(cost.resourceType);
+            Resource resource = myResources[cost.resourceType];
             canPay = (resource.CurrentAmount + cost.value) >= 0;
         }
 
