@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 public interface IShooter
 {
-    Sc_UnitInfo UnitInfo { get; }
+    UnitInfo UnitInfo { get; }
 }

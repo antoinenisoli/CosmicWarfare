@@ -52,8 +52,8 @@ MonoBehaviour:
     isDead: 0
   myTeam: 1
   highlighted: 0
-  meshRender: {fileID: 5074675513775119291}
   agent: {fileID: 0}
+  meshRender: {fileID: 5074675513775119291}
   currentState: 0
   stopDistance: 3.5
   HighlightMat: {fileID: 2100000, guid: f3bee6971ab035948b3dded41907c85c, type: 2}
@@ -97,6 +97,96 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7809600282857023754}
     m_Modifications:
+    - target: {fileID: 301727883077848030, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 301727883077848030, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 301727883077848030, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0.010215759
+      objectReference: {fileID: 0}
+    - target: {fileID: 1873171138207450030, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1873171138207450030, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1873171138207450030, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0.010215759
+      objectReference: {fileID: 0}
+    - target: {fileID: 2062629232825913622, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2062629232825913622, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2062629232825913622, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0.010215759
+      objectReference: {fileID: 0}
+    - target: {fileID: 4981816597450453624, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4981816597450453624, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4981816597450453624, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0.010215759
+      objectReference: {fileID: 0}
+    - target: {fileID: 7744622779554558242, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7744622779554558242, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7744622779554558242, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0.010215759
+      objectReference: {fileID: 0}
+    - target: {fileID: 8293324108187082512, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8293324108187082512, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8293324108187082512, guid: c98043d57e0190845b790d7b92990bee,
+        type: 3}
+      propertyPath: outlineColor.b
+      value: 0.010215759
+      objectReference: {fileID: 0}
     - target: {fileID: 8529222571010959994, guid: c98043d57e0190845b790d7b92990bee,
         type: 3}
       propertyPath: m_Name
@@ -176,32 +266,32 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0425ca0ff593c0d458fe82bc8034f3cd, type: 2}
+      objectReference: {fileID: 2100000, guid: c889f0c24ea22a94e81ebc77f3bf7844, type: 2}
     - target: {fileID: 8529222571014137650, guid: c98043d57e0190845b790d7b92990bee,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0425ca0ff593c0d458fe82bc8034f3cd, type: 2}
+      objectReference: {fileID: 2100000, guid: c889f0c24ea22a94e81ebc77f3bf7844, type: 2}
     - target: {fileID: 8529222571014137656, guid: c98043d57e0190845b790d7b92990bee,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0425ca0ff593c0d458fe82bc8034f3cd, type: 2}
+      objectReference: {fileID: 2100000, guid: c889f0c24ea22a94e81ebc77f3bf7844, type: 2}
     - target: {fileID: 8529222571014137658, guid: c98043d57e0190845b790d7b92990bee,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0425ca0ff593c0d458fe82bc8034f3cd, type: 2}
+      objectReference: {fileID: 2100000, guid: c889f0c24ea22a94e81ebc77f3bf7844, type: 2}
     - target: {fileID: 8529222571014137660, guid: c98043d57e0190845b790d7b92990bee,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0425ca0ff593c0d458fe82bc8034f3cd, type: 2}
+      objectReference: {fileID: 2100000, guid: c889f0c24ea22a94e81ebc77f3bf7844, type: 2}
     - target: {fileID: 8529222571014137662, guid: c98043d57e0190845b790d7b92990bee,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 0425ca0ff593c0d458fe82bc8034f3cd, type: 2}
+      objectReference: {fileID: 2100000, guid: c889f0c24ea22a94e81ebc77f3bf7844, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c98043d57e0190845b790d7b92990bee, type: 3}
 --- !u!4 &5074675513761942239 stripped

@@ -13,7 +13,7 @@ public enum FormationType
 [Serializable]
 public class UnitsFormation : IUnitFormation
 {
-    public void DoFormation(Sc_SelectionManager thisSelection, Vector3 targetPosition)
+    public void DoFormation(SelectionManager thisSelection, Vector3 targetPosition)
     {
         Vector3 pos = targetPosition;
         int counter = -1;
@@ -26,7 +26,7 @@ public class UnitsFormation : IUnitFormation
 
         for (int i = 0; i < thisSelection.selectedUnits.Count; i++)
         {
-            Sc_UnitAlly unit = thisSelection.selectedUnits[i].GetComponent<Sc_UnitAlly>();
+            UnitAlly unit = thisSelection.selectedUnits[i].GetComponent<UnitAlly>();
             counter++;
             xIncrement++;
             if (xIncrement > 1)

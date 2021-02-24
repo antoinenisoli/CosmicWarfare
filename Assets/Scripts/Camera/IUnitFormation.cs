@@ -9,5 +9,5 @@ using UnityEngine.EventSystems;
 
 interface IUnitFormation
 {
-    void DoFormation(Sc_SelectionManager thisSelection, Vector3 targetPosition);
+    void DoFormation(SelectionManager thisSelection, Vector3 targetPosition);
 }

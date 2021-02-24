@@ -40,19 +40,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 5129332398892986804}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4461ca22ad129b749ab346b8c0ff782e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6e79c3bf0cb32bd45a1a5039df80a526, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   allEffects:
   - fx: {fileID: 7698848195010027440, guid: cbb294b71e1d4f6429ac2124e49bc815, type: 3}
     thisEvent: 0
-  - fx: {fileID: 3836327674847773433, guid: a4596465f171fff4a99e5a62d269753a, type: 3}
-    thisEvent: 1
-  - fx: {fileID: 159196, guid: 37e803394624a5c48ae5f13fd212ac0b, type: 3}
-    thisEvent: 3
-  - fx: {fileID: 173814, guid: 810eb771809ba56409dd29eab937ddb2, type: 3}
-    thisEvent: 4
-  - fx: {fileID: 1121192042590650, guid: e1b08032bec16ba4eb1ae23cbd572664, type: 3}
-    thisEvent: 5
   - fx: {fileID: 7533186457207425133, guid: 8cd9dd661a6a25d4fa078c5fc5bffac1, type: 3}
     thisEvent: 6
+  - fx: {fileID: 1121192042590650, guid: e1b08032bec16ba4eb1ae23cbd572664, type: 3}
+    thisEvent: 5
+  - fx: {fileID: 3836327674847773433, guid: a4596465f171fff4a99e5a62d269753a, type: 3}
+    thisEvent: 1
+  - fx: {fileID: 1000014008274426, guid: ade4a8a0e9637bb4e9f97dfca89c65b1, type: 3}
+    thisEvent: 3
+  - fx: {fileID: 1000014008274426, guid: ade4a8a0e9637bb4e9f97dfca89c65b1, type: 3}
+    thisEvent: 4

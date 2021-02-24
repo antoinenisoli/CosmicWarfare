@@ -109,7 +109,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4608e824fbdc8c2478c596617b3b8384, type: 2}
+  - {fileID: 2100000, guid: de36ad4a9be10664db3734171f4742e2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1407,20 +1407,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 7747204294015466825}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a58212ead2b1ace40be8b813c9c5e2a2, type: 3}
+  m_Script: {fileID: 11500000, guid: 5d2d41fcdeb416d488f68cb131ce89d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  info: {fileID: 11400000, guid: 15134bc6a61623f42af3be72e4c5f355, type: 2}
   health:
     currentHealth: 0
     healthSlider: {fileID: 0}
     isDead: 0
-  info: {fileID: 11400000, guid: 15134bc6a61623f42af3be72e4c5f355, type: 2}
   myTeam: 0
   highlighted: 0
-  meshRender: {fileID: 6434241742990703995}
   resourceManager: {fileID: 0}
+  meshRender: {fileID: 6434241742990703995}
   busy: 0
-  currentState: 2
+  currentState: 0
   movingMat: {fileID: 2100000, guid: 1d4a4e6a523898c4ba1e11815c972cae, type: 2}
   constructionMat: {fileID: 2100000, guid: 933912a211c868c4ea7f4caeddab5d68, type: 2}
   selectedMat: {fileID: 2100000, guid: 155b45b62d24ac34d934939c0623fcad, type: 2}
@@ -1432,9 +1432,10 @@ MonoBehaviour:
   shakeAmount: 0.5
   selected: 0
   idleAnimations:
+  - {fileID: 6381859372405866883}
   - {fileID: 6381859375018781309}
   - {fileID: 6381859371441856859}
-  constructionRadius: 130
+  constructionRadius: 140
   projectArea: {fileID: 5423526268808829870}
 --- !u!65 &7201233640251452055
 BoxCollider:

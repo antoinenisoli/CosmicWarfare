@@ -10,7 +10,7 @@ public class UnitBehaviour_Chasing : UnitBehaviour
     public override UnitState currentState => State;
     public static UnitState State => UnitState.IsChasing;
 
-    public UnitBehaviour_Chasing(Unit unit, Sc_UnitInfo unitInfo) : base(unit)
+    public UnitBehaviour_Chasing(Unit unit, UnitInfo unitInfo) : base(unit)
     {
         this.unit = unit;
         this.unitInfo = unitInfo;

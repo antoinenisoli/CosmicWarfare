@@ -8,7 +8,7 @@ public class UnitEnemy : Unit
     [SerializeField] LayerMask playerLayer;
     [SerializeField] float detectionRadius = 5;
     [SerializeField] Collider[] detectedEnemies = new Collider[0];
-    [SerializeField] List<Sc_Entity> allTargets = new List<Sc_Entity>();
+    [SerializeField] List<Entity> allTargets = new List<Entity>();
 
     private void OnDrawGizmosSelected()
     {
@@ -23,7 +23,7 @@ public class UnitEnemy : Unit
             detectedEnemies = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
             foreach (var enemy in detectedEnemies)
             {
-                Sc_Entity detectedEntity = enemy.GetComponentInParent<Sc_Entity>();
+                Entity detectedEntity = enemy.GetComponentInParent<Entity>();
                 if (detectedEntity && !allTargets.Contains(detectedEntity) && detectedEntity.myTeam != myTeam)
                     allTargets.Add(detectedEntity);
             }

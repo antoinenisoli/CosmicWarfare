@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fdc3a65dc5f986b4fb1a62f154423ce5, type: 3}
+  m_Script: {fileID: 11500000, guid: 58a27c17cb4b3df438377fb5f33c3298, type: 3}
   m_Name: TurretUnitInfo
   m_EditorClassIdentifier: 
   entityName: Turret
   entityDescription: A very dangerous turret, which can destroy enemies in seconds.
   maxHealth: 30
-  firePower: 2
-  shootRange: 45
-  shootRate: 0.5
+  firePower: 1
+  shootRange: 20
+  shootRate: 2
+  moveSpeed: 5

@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public abstract class Unit : Sc_Entity, IShooter
+public abstract class Unit : Entity, IShooter
 {
-    public Sc_UnitInfo UnitInfo => (Sc_UnitInfo)info;
+    public UnitInfo UnitInfo => (UnitInfo)info;
     public UnitBehaviour behaviour;
     [HideInInspector] public NavMeshAgent agent;
     protected Animator anim;
@@ -19,7 +19,7 @@ public abstract class Unit : Sc_Entity, IShooter
     public LayerMask ground = 1 >> 2;
 
     [Header("Fight")]
-    public Sc_Entity lastTarget;
+    public Entity lastTarget;
     [HideInInspector] public Vector3 attackPosition;
 
     public void Awake()
@@ -33,7 +33,7 @@ public abstract class Unit : Sc_Entity, IShooter
     public override void Start()
     {
         base.Start();
-        Sc_EventManager.Instance.onEndGame.AddListener(Deactivate);
+        EventManager.Instance.onEndGame.AddListener(Deactivate);
     }
 
     public void SetState(UnitState state)
@@ -53,9 +53,6 @@ public abstract class Unit : Sc_Entity, IShooter
             case UnitState.IsFighting:
                 behaviour = new UnitBehaviour_Fighting(this, UnitInfo);
                 break;
-            case UnitState.IsDead:
-                behaviour = null;
-                break;
         }
     }
 
@@ -63,7 +60,7 @@ public abstract class Unit : Sc_Entity, IShooter
     {
         base.Death();
         anim.SetTrigger("Death");
-        SetState(UnitState.IsDead);
+        SetState(UnitState.IsUnactive);
     }
 
     public void Shoot()
@@ -100,17 +97,22 @@ public abstract class Unit : Sc_Entity, IShooter
         base.ModifyLife(amount, damageLocation);
         if (amount < 0)
         {
-            Sc_VFXManager.Instance.InvokeVFX(FX_Event.LaserDamage, damageLocation, Quaternion.identity);
-            Sc_VFXManager.Instance.InvokeVFX(FX_Event.UnitDamage, damageLocation, Quaternion.identity);
+            VFXManager.Instance.InvokeVFX(FX_Event.LaserDamage, damageLocation, Quaternion.identity);
+            VFXManager.Instance.InvokeVFX(FX_Event.UnitDamage, damageLocation, Quaternion.identity);
         }
     }
 
-    public void Attack(Sc_Entity target) //start chase
+    public override Vector3 MeshClosestPoint(Vector3 from)
+    {
+        return GetComponentInChildren<Collider>().ClosestPoint(from);
+    }
+
+    public void Attack(Entity target) //start chase
     {
         lastTarget = target;
         SetState(UnitState.IsChasing);
-        if (lastTarget.GetComponent<Sc_Building>())
-            attackPosition = (lastTarget as Sc_Building).MeshClosestPoint(transform.position);
+        if (lastTarget.GetComponent<Building>())
+            attackPosition = (lastTarget as Building).MeshClosestPoint(transform.position);
     }
 
     public void MoveTo(Vector3 pos)

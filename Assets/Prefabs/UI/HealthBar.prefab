@@ -213,11 +213,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7104084502260718500}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73d38a2db777f26448a621337d0ee227, type: 3}
+  m_Script: {fileID: 11500000, guid: 89d61185e71c11a4787bf33b86cedd8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   myEntity: {fileID: 0}
-  offset: {x: 0, y: 15, z: 0}
+  offset: {x: 0, y: 8, z: 0}
 --- !u!114 &7819907044754068617
 MonoBehaviour:
   m_ObjectHideFlags: 0

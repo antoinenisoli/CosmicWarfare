@@ -10,7 +10,7 @@ public class UnitBehaviour_Fighting : UnitBehaviour
     public static UnitState State => UnitState.IsFighting;
     float shootTimer;    
 
-    public UnitBehaviour_Fighting(Unit unit, Sc_UnitInfo unitInfo) : base(unit)
+    public UnitBehaviour_Fighting(Unit unit, UnitInfo unitInfo) : base(unit)
     {
         this.unit = unit;
         this.unitInfo = unitInfo;
@@ -28,6 +28,7 @@ public class UnitBehaviour_Fighting : UnitBehaviour
         if (Vector3.Distance(unit.transform.position, unit.attackPosition) < unitInfo.shootRange)
         {
             Vector3 _direction = (unit.attackPosition - unit.transform.position).normalized;
+            _direction.y = 0;
             Quaternion _lookRotation = Quaternion.LookRotation(_direction);
             unit.transform.rotation = _lookRotation;
             unit.meshRender.transform.rotation = _lookRotation;

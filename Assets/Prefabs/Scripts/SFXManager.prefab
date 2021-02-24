@@ -40,43 +40,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 8317558257458417120}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e7a9a6c4add6b14c9b052c16a133687, type: 3}
+  m_Script: {fileID: 11500000, guid: 2e72a09c232b6f74eafbfc52877790ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   sounds:
   - soundType: 0
     clip: {fileID: 8300000, guid: 02c3b26eb76bc4648b4a658afe8e0f9e, type: 3}
-    volume: 0.259
+    volume: 0.5
     pitch: 1
     spatialBlend: 0
     radius: 20
   - soundType: 1
     clip: {fileID: 8300000, guid: e4f1ba289a3837f4eb716d07c7d67097, type: 3}
-    volume: 0.177
+    volume: 0.5
     pitch: 1
     spatialBlend: 0
+    radius: 20
+  - soundType: 3
+    clip: {fileID: 8300000, guid: 9117c4f0aac9c3e47a7252b50cf45924, type: 3}
+    volume: 0.5
+    pitch: 1
+    spatialBlend: 1
     radius: 20
   - soundType: 2
     clip: {fileID: 8300000, guid: 53467735a9f5f564d84f1048bac11bcb, type: 3}
     volume: 0.5
     pitch: 1
     spatialBlend: 1
-    radius: 100
-  - soundType: 3
-    clip: {fileID: 8300000, guid: 9117c4f0aac9c3e47a7252b50cf45924, type: 3}
-    volume: 0.5
-    pitch: 1
-    spatialBlend: 1
-    radius: 100
-  - soundType: 4
-    clip: {fileID: 8300000, guid: 540fe21cea449d6438caf5c1c73a35e8, type: 3}
-    volume: 0.095
-    pitch: 1
-    spatialBlend: 1
-    radius: 100
+    radius: 20
   - soundType: 5
     clip: {fileID: 8300000, guid: 1fd31868d68903d4f9e2c4a3b7ef98f3, type: 3}
-    volume: 0.139
+    volume: 0.254
     pitch: 1
     spatialBlend: 1
-    radius: 100
+    radius: 20

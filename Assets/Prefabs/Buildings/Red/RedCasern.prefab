@@ -14281,8 +14281,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2614295627643503618}
-  - component: {fileID: 46013565126922197}
-  - component: {fileID: 489624399542959883}
+  - component: {fileID: 5332962588226986531}
+  - component: {fileID: 8519486351444143614}
   - component: {fileID: 1030195292304667922}
   - component: {fileID: 8927781265013125240}
   m_Layer: 9
@@ -14310,7 +14310,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &46013565126922197
+--- !u!114 &5332962588226986531
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14323,8 +14323,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyIndex: 0
-  spawnRate: 15
---- !u!114 &489624399542959883
+  spawnRate: 8
+--- !u!114 &8519486351444143614
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -14333,20 +14333,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 2333201051896128405}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 229908fb5603477448c33ba5d857b713, type: 3}
+  m_Script: {fileID: 11500000, guid: dd4abf73b0676854dabf775a01001c95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  info: {fileID: 11400000, guid: c21e911ff8569de488b60bda0ebb95bb, type: 2}
   health:
     currentHealth: 0
     healthSlider: {fileID: 0}
     isDead: 0
-  info: {fileID: 11400000, guid: c21e911ff8569de488b60bda0ebb95bb, type: 2}
   myTeam: 1
   highlighted: 0
-  meshRender: {fileID: 1921113840632965949}
   resourceManager: {fileID: 0}
+  meshRender: {fileID: 1921113840632965949}
   busy: 0
-  currentState: 2
+  currentState: 0
   movingMat: {fileID: 2100000, guid: 1d4a4e6a523898c4ba1e11815c972cae, type: 2}
   constructionMat: {fileID: 2100000, guid: 933912a211c868c4ea7f4caeddab5d68, type: 2}
   selectedMat: {fileID: 2100000, guid: d4fbbde4238aa524dbdac2813cd5cdca, type: 2}
@@ -14365,10 +14365,12 @@ MonoBehaviour:
   - purchase_Name: Soldier
     prefab: {fileID: 7809600282857023752, guid: c7ceefea6d827bd4dbf28212a049b3ab,
       type: 3}
-    creationDelay: 0
+    creationDelay: 30
     costs:
-    - value: -5
+    - value: 5
       resourceType: 0
+    - value: 5
+      resourceType: 1
 --- !u!65 &1030195292304667922
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -271,6 +271,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e7bebc05dc33047bdb4be0bedd145e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  col: {fileID: 6191196912420412744}
   areaRadius: 7.33
 --- !u!135 &6191196912420412744
 SphereCollider:

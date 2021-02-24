@@ -89,7 +89,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4608e824fbdc8c2478c596617b3b8384, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14410,7 +14410,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2333201051896128405}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 229908fb5603477448c33ba5d857b713, type: 3}
+  m_Script: {fileID: 11500000, guid: dd4abf73b0676854dabf775a01001c95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   info: {fileID: 11400000, guid: c21e911ff8569de488b60bda0ebb95bb, type: 2}
@@ -14420,8 +14420,8 @@ MonoBehaviour:
     isDead: 0
   myTeam: 0
   highlighted: 0
-  meshRender: {fileID: 1921113840632965949}
   resourceManager: {fileID: 0}
+  meshRender: {fileID: 1921113840632965949}
   busy: 0
   currentState: 0
   movingMat: {fileID: 2100000, guid: 1d4a4e6a523898c4ba1e11815c972cae, type: 2}
@@ -14441,15 +14441,17 @@ MonoBehaviour:
   unitsToCreate:
   - purchase_Name: Soldier
     prefab: {fileID: 885422398353187992, guid: e32cf44b03e3a454b9ecc19bb0b8cbc6, type: 3}
-    creationDelay: 3
+    creationDelay: 10
     costs:
-    - value: -5
+    - value: 5
       resourceType: 0
   - purchase_Name: Drone
     prefab: {fileID: 885422398353187992, guid: c20bc751fb3526a4a802925beedd6584, type: 3}
-    creationDelay: 3
+    creationDelay: 13
     costs:
-    - value: -10
+    - value: 10
+      resourceType: 0
+    - value: 10
       resourceType: 1
 --- !u!65 &1030195292304667922
 BoxCollider:
