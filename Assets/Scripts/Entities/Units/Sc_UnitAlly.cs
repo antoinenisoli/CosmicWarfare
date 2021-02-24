@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Sc_UnitAlly : Sc_Unit
+public class Sc_UnitAlly : Unit
 {
     [Header("Unit ally")]
     [SerializeField] protected Material SelectedMat;
@@ -24,9 +24,6 @@ public class Sc_UnitAlly : Sc_Unit
     public override void Update()
     {
         selectedVFX.SetActive(selected);
-        if (HighlightMat != null && SelectedMat != null)
-            meshRender.material = selected ? HighlightMat : baseMat;
-
         base.Update();
     }
 }

@@ -27,8 +27,14 @@ public class Purchase
 
 public abstract class Sc_Button : MonoBehaviour
 {
-    protected Sc_ResourcesManager_Ally resourceManager => FindObjectOfType<Sc_ResourcesManager_Ally>();
-    protected Button myButton => GetComponent<Button>();
+    protected Sc_ResourcesManager_Ally resourceManager;
+    protected Button myButton;
+
+    private void Awake()
+    {
+        resourceManager = FindObjectOfType<Sc_ResourcesManager_Ally>();
+        myButton = GetComponent<Button>();
+    }
 
     public virtual void Start()
     {

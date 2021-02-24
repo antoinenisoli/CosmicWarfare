@@ -6,22 +6,21 @@ using DG.Tweening;
 
 public class Sc_Button_CreateUnit : Sc_Button
 {
-    Sc_Casern casern => Sc_UIManager.instance.selectedCasern;
+    Sc_Casern Casern => Sc_UIManager.instance.selectedCasern;
     [SerializeField] int index;
 
     public void InvokeCasern()
     {
-        casern.StartUnitProduction(index, Team.Player);
+        Casern.StartUnitProduction(index, Team.Player);
         Image block = myButton.transform.parent.GetChild(1).GetComponent<Image>();
         Vector3 baseScale = block.transform.localScale;
+
         block.fillAmount = 1;
         block.transform.localScale = Vector3.one * 0.1f;
         block.transform.DOScale(baseScale, 0.2f);
-        block.DOFillAmount(0, casern.unitsToCreate[index].creationDelay);
-        foreach (var item in casern.unitsToCreate[index].costs)
-        {
+        block.DOFillAmount(0, Casern.unitsToCreate[index].creationDelay);
+        foreach (var item in Casern.unitsToCreate[index].costs)
             resourceManager.ModifyValue(item.value, item.resourceType);
-        }
 
         Sc_EventManager.Instance.onCost.Invoke();
     }
@@ -29,12 +28,11 @@ public class Sc_Button_CreateUnit : Sc_Button
     public override void ShowTooltip(bool value)
     {
         base.ShowTooltip(value);
-        Sc_UIManager.instance.tooltip.TypeText(casern.unitsToCreate[index].ToString());
+        Sc_UIManager.instance.tooltip.TypeText(Casern.unitsToCreate[index].ToString());
     }
 
     public override void SetButton()
     {
-        if (casern)
-            myButton.interactable = resourceManager.CanPay(casern.unitsToCreate[index].costs) && !casern.busy;
+        myButton.interactable = Casern && resourceManager.CanPay(Casern.unitsToCreate[index].costs) && !Casern.busy;
     }
 }

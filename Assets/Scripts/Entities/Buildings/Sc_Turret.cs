@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class Sc_Turret : Sc_Building
+public class Sc_Turret : Sc_Building, IShooter
 {
+    public Sc_UnitInfo UnitInfo => (Sc_UnitInfo)info;
     public override BuildingType buildingType => BuildingType.Turret;
 
     [Header("Turret")]
     [SerializeField] Transform mainMesh;
-    [SerializeField] Sc_UnitInfo fightInfo;
     [SerializeField] float animRate = 3;
     [SerializeField] LayerMask targetLayer;
     [SerializeField] Collider[] detectedEnemies = new Collider[0];
@@ -19,7 +19,7 @@ public class Sc_Turret : Sc_Building
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, fightInfo.shootRange);
+        Gizmos.DrawWireSphere(transform.position, UnitInfo.shootRange);
     }
 
     public Vector3 RandomPosition(float min, float max)
@@ -40,11 +40,11 @@ public class Sc_Turret : Sc_Building
             Quaternion _lookRotation = Quaternion.LookRotation(_direction);
             mainMesh.DORotateQuaternion(_lookRotation, 0.5f);
 
-            if (timer > fightInfo.shootRate)
+            if (timer > UnitInfo.shootRate)
             {
                 timer = 0;
                 Sc_VFXManager.Instance.InvokeVFX(FX_Event.ShootLaser, transform.position, mainMesh.rotation);
-                lastTarget.ModifyLife(-fightInfo.firePower, lastTarget.transform.position);
+                lastTarget.ModifyLife(-UnitInfo.firePower, lastTarget.transform.position);
             }
         }
         else
@@ -61,7 +61,7 @@ public class Sc_Turret : Sc_Building
 
     private void FixedUpdate()
     {
-        detectedEnemies = Physics.OverlapSphere(transform.position, fightInfo.shootRange, targetLayer);
+        detectedEnemies = Physics.OverlapSphere(transform.position, UnitInfo.shootRange, targetLayer);
         foreach (var enemy in detectedEnemies)
         {
             Sc_Entity detectedEntity = enemy.GetComponentInParent<Sc_Entity>();

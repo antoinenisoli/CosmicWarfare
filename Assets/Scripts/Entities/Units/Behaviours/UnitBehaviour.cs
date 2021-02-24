@@ -7,18 +7,19 @@ public enum UnitState
 {
     IsUnactive,
     IsMoving,
-    IsAttacking,
+    IsChasing,
     IsFighting,
+    IsDead,
 }
 
 [Serializable]
 public abstract class UnitBehaviour
 {
     public virtual UnitState currentState => UnitState.IsUnactive; 
-    protected Sc_Unit unit;
-    protected Sc_UnitInfo info;
+    protected Unit unit;
+    protected Sc_UnitInfo unitInfo;
 
-    public UnitBehaviour(Sc_Unit unit)
+    public UnitBehaviour(Unit unit)
     {
         this.unit = unit;
     }

@@ -37,7 +37,7 @@ public class Sc_Casern : Sc_Building
                 break;
 
             case Team.Enemy:
-                Sc_UnitEnemy enemyUnit = newUnit.GetComponent<Sc_UnitEnemy>();
+                UnitEnemy enemyUnit = newUnit.GetComponent<UnitEnemy>();
                 foreach (var cost in unitsToCreate[index].costs)
                 {
                     resourceManager.ModifyValue(cost.value, cost.resourceType);

@@ -26,12 +26,14 @@ public abstract class Sc_Building : Sc_Entity
     [HideInInspector] public Sc_ResourcesManager resourceManager;
 
     [Header("_BUILD")]
+    public MeshRenderer meshRender;
     public bool busy;
     public BuildingState currentState = BuildingState.InPlacing;
     [SerializeField] Material movingMat, constructionMat, selectedMat;
     [SerializeField] GameObject dummyVersion;
     public bool isColliding;
     float delay;
+    NavMeshSourceTag sourceTag;
 
     [Header("_DESTRUCTION")]
     [SerializeField] float destructionDelay = 2;
@@ -55,12 +57,14 @@ public abstract class Sc_Building : Sc_Entity
                 break;
         }
 
+        sourceTag = GetComponentInChildren<NavMeshSourceTag>();
         baseMat = meshRender.material;
         shakeCam = FindObjectOfType<StressReceiver>();
         idleAnimations = GetComponentsInChildren<Animation>();
 
         if (currentState == BuildingState.InPlacing)
         {
+            sourceTag.enabled = false;
             meshRender.material = movingMat;
             foreach (var anim in idleAnimations)
             {
@@ -69,9 +73,12 @@ public abstract class Sc_Building : Sc_Entity
         }
     }
 
-    public Vector3 MeshClosestPoint(Vector3 from)
+    public override float HealthbarOffset()
     {
-        return meshRender.GetComponentInChildren<Collider>().ClosestPoint(from);
+        if (meshRender.TryGetComponent(out MeshFilter mf))
+            return mf.mesh.bounds.size.magnitude;
+
+        return 0;
     }
 
     public override void Death()
@@ -122,6 +129,7 @@ public abstract class Sc_Building : Sc_Entity
         meshRender.material = constructionMat;
         currentState = BuildingState.IsBuilding;
         Sc_SelectionManager.GenerateEntity(this);
+        sourceTag.enabled = true;
     }
 
     public abstract void UseBuilding();
@@ -158,9 +166,6 @@ public abstract class Sc_Building : Sc_Entity
     public override void Update()
     {
         base.Update();
-        if (outline)
-            outline.enabled = highlighted;
-
         switch (currentState)
         {
             case BuildingState.IsBuilding:

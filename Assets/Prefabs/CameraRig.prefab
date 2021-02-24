@@ -249,7 +249,7 @@ MonoBehaviour:
   screenBoundsY: 0.982
   panSpeed: 5
   rotationAmount: 2
-  zoomLimits: {x: 60, y: 15}
+  zoomLimits: {x: 60, y: 35}
   zoomAmount: 60
 --- !u!114 &3793122177438570755
 MonoBehaviour:

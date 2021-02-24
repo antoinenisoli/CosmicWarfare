@@ -14413,11 +14413,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 229908fb5603477448c33ba5d857b713, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  info: {fileID: 11400000, guid: c21e911ff8569de488b60bda0ebb95bb, type: 2}
   health:
     currentHealth: 0
     healthSlider: {fileID: 0}
     isDead: 0
-  info: {fileID: 11400000, guid: c21e911ff8569de488b60bda0ebb95bb, type: 2}
   myTeam: 0
   highlighted: 0
   meshRender: {fileID: 1921113840632965949}
@@ -14445,6 +14445,12 @@ MonoBehaviour:
     costs:
     - value: -5
       resourceType: 0
+  - purchase_Name: Drone
+    prefab: {fileID: 885422398353187992, guid: c20bc751fb3526a4a802925beedd6584, type: 3}
+    creationDelay: 3
+    costs:
+    - value: -10
+      resourceType: 1
 --- !u!65 &1030195292304667922
 BoxCollider:
   m_ObjectHideFlags: 0

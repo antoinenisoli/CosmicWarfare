@@ -19,7 +19,7 @@ public class Sc_SelectionManager : MonoBehaviour
     Camera mainCam;
     bool stopGame;
     [SerializeField] List<Sc_UnitAlly> allPlayerUnits = new List<Sc_UnitAlly>();
-    [SerializeField] List<Sc_UnitEnemy> allEnemyUnits = new List<Sc_UnitEnemy>();
+    [SerializeField] List<UnitEnemy> allEnemyUnits = new List<UnitEnemy>();
     [SerializeField] List<Sc_Building> allBuildings = new List<Sc_Building>();
 
     [Header("Select")]
@@ -48,7 +48,7 @@ public class Sc_SelectionManager : MonoBehaviour
     {
         mainCam = Camera.main;
         allPlayerUnits = FindObjectsOfType<Sc_UnitAlly>().ToList();
-        allEnemyUnits = FindObjectsOfType<Sc_UnitEnemy>().ToList();
+        allEnemyUnits = FindObjectsOfType<UnitEnemy>().ToList();
         allBuildings = FindObjectsOfType<Sc_Building>().ToList();
     }
 
@@ -74,8 +74,8 @@ public class Sc_SelectionManager : MonoBehaviour
             allBuildings.Add(entity as Sc_Building);
         else if (entity.GetComponent<Sc_UnitAlly>())
             allPlayerUnits.Add(entity as Sc_UnitAlly);
-        else if (entity.GetComponent<Sc_UnitEnemy>())
-            allEnemyUnits.Add(entity as Sc_UnitEnemy);
+        else if (entity.GetComponent<UnitEnemy>())
+            allEnemyUnits.Add(entity as UnitEnemy);
     }
 
     void MoveUnits()
@@ -121,7 +121,7 @@ public class Sc_SelectionManager : MonoBehaviour
         {
             if (hit.collider != null)
             {
-                Sc_UnitEnemy unit = hit.collider.gameObject.GetComponentInParent<Sc_UnitEnemy>();
+                UnitEnemy unit = hit.collider.gameObject.GetComponentInParent<UnitEnemy>();
                 enemy.highlighted =
                     hit.collider != null
                     && selectedUnits.Count > 0
@@ -169,7 +169,7 @@ public class Sc_SelectionManager : MonoBehaviour
             if (isDetecting == Detectables.HoverUnit) //select a unit
             {
                 Sc_UnitAlly thisUnit = hit.collider.GetComponentInParent<Sc_UnitAlly>();
-                if (thisUnit && !selectedUnits.Contains(thisUnit))
+                if (thisUnit && !thisUnit.health.isDead && !selectedUnits.Contains(thisUnit))
                 {
                     thisUnit.Select(true);
                     selectedUnits.Add(thisUnit);
@@ -178,7 +178,7 @@ public class Sc_SelectionManager : MonoBehaviour
             else if (isDetecting == Detectables.Buildings) //select a building
             {
                 Sc_Building pointedBuilding = hit.collider.GetComponentInParent<Sc_Building>();
-                if (pointedBuilding.currentState == BuildingState.Builded)
+                if (pointedBuilding.currentState == BuildingState.Builded && !pointedBuilding.health.isDead)
                 {
                     selectedBuilding = pointedBuilding;
                     selectedBuilding.SelectMe(true);

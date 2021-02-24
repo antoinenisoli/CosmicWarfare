@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9bfff4ddefe95f4a832d796f4206f46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  info: {fileID: 11400000, guid: 8d29a97b2c640884a9bc34116aff42be, type: 2}
+  info: {fileID: 11400000, guid: 2493f772fd70a294fb5039c53b420cb3, type: 2}
   health:
     currentHealth: 0
     healthSlider: {fileID: 0}

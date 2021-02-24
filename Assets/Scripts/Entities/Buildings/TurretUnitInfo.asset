@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc3a65dc5f986b4fb1a62f154423ce5, type: 3}
   m_Name: TurretUnitInfo
   m_EditorClassIdentifier: 
+  entityName: Turret
+  entityDescription: A very dangerous turret, which can destroy enemies in seconds.
+  maxHealth: 30
   firePower: 2
   shootRange: 45
   shootRate: 0.5

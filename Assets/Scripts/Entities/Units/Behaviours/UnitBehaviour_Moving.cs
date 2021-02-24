@@ -10,7 +10,7 @@ public class UnitBehaviour_Moving : UnitBehaviour
     public override UnitState currentState => State;
     public static UnitState State => UnitState.IsMoving;
 
-    public UnitBehaviour_Moving(Sc_Unit unit) : base(unit)
+    public UnitBehaviour_Moving(Unit unit) : base(unit)
     {
         this.unit = unit;
     }
@@ -20,7 +20,7 @@ public class UnitBehaviour_Moving : UnitBehaviour
         if (Vector3.Distance(unit.transform.position, unit.agent.destination) < unit.stopDistance || !NavMesh.SamplePosition(unit.agent.destination, out _, 1.0f, NavMesh.AllAreas))
         {
             unit.agent.isStopped = true;
-            unit.currentState = UnitState.IsUnactive;
+            unit.SetState(UnitState.IsUnactive);
         }
     }
 }

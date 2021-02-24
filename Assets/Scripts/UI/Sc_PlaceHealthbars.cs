@@ -30,7 +30,7 @@ public class Sc_PlaceHealthbars : MonoBehaviour
             return;
 
         GameObject bar = Instantiate(barPrefab, transform.position, Quaternion.identity, parent);
-        bar.transform.localScale = Vector3.one + Vector3.one * (0.1f * entity.meshRender.GetComponent<MeshFilter>().mesh.bounds.size.magnitude);
+        bar.transform.localScale = Vector3.one + Vector3.one * (0.1f * entity.HealthbarOffset());
         entity.health.healthSlider = bar.GetComponent<Slider>();
         bar.GetComponent<Sc_Healthbar>().Initialize(entity);
         entity.health.SetSlider();
