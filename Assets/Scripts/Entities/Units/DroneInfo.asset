@@ -18,4 +18,4 @@ MonoBehaviour:
   firePower: 1
   shootRange: 20
   shootRate: 1
-  moveSpeed: 16
+  moveSpeed: 27

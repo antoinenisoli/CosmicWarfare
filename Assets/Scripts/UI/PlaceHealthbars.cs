@@ -30,7 +30,7 @@ public class PlaceHealthbars : MonoBehaviour
             return;
 
         GameObject bar = Instantiate(barPrefab, transform.position, Quaternion.identity, parent);
-        bar.transform.localScale = Vector3.one + Vector3.one * (0.1f * entity.HealthbarOffset());
+        bar.transform.localScale = Vector3.one + Vector3.one * (0.1f * entity.UIScale);
         entity.health.healthSlider = bar.GetComponent<Slider>();
         bar.GetComponent<Healthbar>().Initialize(entity);
         entity.health.SetSlider();

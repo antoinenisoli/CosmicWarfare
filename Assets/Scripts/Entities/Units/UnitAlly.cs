@@ -9,6 +9,12 @@ public class UnitAlly : Unit
     [SerializeField] GameObject selectedVFX;
     public bool selected;
 
+    public override void Start()
+    {
+        base.Start();
+        Select(false);
+    }
+
     public bool CorrectPath(Vector3 target)
     {
         NavMeshPath path = new NavMeshPath();
@@ -18,11 +24,8 @@ public class UnitAlly : Unit
     public void Select(bool select)
     {
         selected = select;
-    }
-
-    public override void Update()
-    {
-        selectedVFX.SetActive(selected);
-        base.Update();
+        selectedVFX.SetActive(select);
+        if (select)
+            selectedVFX.GetComponent<ParticleSystem>().Play();
     }
 }

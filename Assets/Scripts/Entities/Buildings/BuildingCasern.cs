@@ -9,7 +9,15 @@ public class BuildingCasern : Building
     [Header("Casern")]
     [SerializeField] Transform spawnDestination;
     [SerializeField] Transform spawnTransform;
+
     public Purchase[] unitsToCreate;
+    [HideInInspector] public bool[] Busies;
+
+    public override void Start()
+    {
+        base.Start();
+        Busies = new bool[unitsToCreate.Length];
+    }
 
     public void StartUnitProduction(int index, Team unitTeam)
     {
@@ -23,7 +31,7 @@ public class BuildingCasern : Building
 
     public IEnumerator Production(int index, Team unitTeam)
     {
-        busy = true;
+        Busies[index] = true;
         yield return new WaitForSeconds(unitsToCreate[index].creationDelay);
         SoundManager.instance.PlayAudio(AudioType.NewUnit.ToString(), transform);
         GameObject newUnit = Instantiate(unitsToCreate[index].prefab, spawnTransform.position, Quaternion.identity);
@@ -49,8 +57,7 @@ public class BuildingCasern : Building
                 break;
         }
 
-        busy = false;
-        EventManager.Instance.onCost.Invoke();
+        Busies[index] = false;
     }
 
     public override void UseBuilding()

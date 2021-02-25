@@ -73,17 +73,9 @@ public abstract class Building : Entity
         }
     }
 
-    public override float HealthbarOffset()
-    {
-        if (meshRender.TryGetComponent(out MeshFilter mf))
-            return mf.mesh.bounds.size.magnitude;
-
-        return 0;
-    }
-
     public override Vector3 MeshClosestPoint(Vector3 from)
     {
-        return meshRender.GetComponent<Collider>().ClosestPoint(from);
+        return GetComponentInChildren<MeshCollider>().ClosestPoint(from);
     }
 
     public override void Death()
@@ -124,13 +116,12 @@ public abstract class Building : Entity
         this.delay = delay;
         SoundManager.instance.PlayAudio(AudioType.NewBuilding.ToString(), transform);
         Transform childToTween = transform.GetChild(0);
-        Vector3 baseScale = childToTween.localScale;
-
-        childToTween.localScale = Vector3.one * 0.1f;
-        childToTween.DOScale(baseScale, delay);
+        float baseHeight = childToTween.transform.localPosition.y;
         GameObject constructionDummy = Instantiate(dummyVersion, transform.position, Quaternion.identity);
-        constructionDummy.transform.localScale = baseScale;
         Destroy(constructionDummy, delay);
+
+        childToTween.position -= Vector3.up * 20;
+        childToTween.DOLocalMoveY(baseHeight, delay);
         meshRender.material = constructionMat;
         currentState = BuildingState.IsBuilding;
         SelectionManager.GenerateEntity(this);

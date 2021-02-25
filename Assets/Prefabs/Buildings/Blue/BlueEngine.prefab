@@ -59,7 +59,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4608e824fbdc8c2478c596617b3b8384, type: 2}
+  - {fileID: 2100000, guid: b9cc259c1860d8f409305d5b34679100, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -568,8 +568,8 @@ MonoBehaviour:
     isDead: 0
   myTeam: 0
   highlighted: 0
-  meshRender: {fileID: 2482028087933070073}
   resourceManager: {fileID: 0}
+  meshRender: {fileID: 2482028087933070073}
   busy: 0
   currentState: 0
   movingMat: {fileID: 2100000, guid: 1d4a4e6a523898c4ba1e11815c972cae, type: 2}

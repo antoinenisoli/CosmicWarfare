@@ -13,6 +13,8 @@ public abstract class Entity : MonoBehaviour
     public bool highlighted;
     protected Material baseMat;
     protected Outline[] outlines;
+    public float UIOffset = 28;
+    public float UIScale = 5;
 
     public virtual void Start()
     {
@@ -24,8 +26,6 @@ public abstract class Entity : MonoBehaviour
     {
         health.TakeDamages(amount);
     }
-
-    public abstract float HealthbarOffset();
 
     public abstract Vector3 MeshClosestPoint(Vector3 from);
 

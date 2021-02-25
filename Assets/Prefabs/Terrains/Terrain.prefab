@@ -59,7 +59,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 345.1
+  orthographic size: 443.8
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -272,7 +272,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   col: {fileID: 6191196912420412744}
-  areaRadius: 7.33
+  areaRadius: 28.3
 --- !u!135 &6191196912420412744
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -284,7 +284,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 7.33
+  m_Radius: 28.3
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6191196914033667923
 GameObject:

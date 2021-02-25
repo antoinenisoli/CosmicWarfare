@@ -58,6 +58,14 @@ public class SelectionManager : MonoBehaviour
         EventManager.Instance.onEndGame.AddListener(StopGame);
     }
 
+    private void OnGUI()
+    {
+        Texture2D texture = new Texture2D(1, 1);
+        texture.SetPixel(0, 0, textureColor);
+        texture.Apply();
+        GUI.DrawTexture(selectRect, texture);
+    }
+
     void StopGame(bool b)
     {
         stopGame = true;
@@ -140,12 +148,7 @@ public class SelectionManager : MonoBehaviour
                 Building buildScript = hit.collider.gameObject.GetComponentInParent<Building>();
                 bool hover = building.Equals(buildScript) && !building.selected && !EventSystem.current.IsPointerOverGameObject();
                 bool teamCondition = true;
-
-                if (building.myTeam == Team.Player)
-                    teamCondition = building.currentState == BuildingState.Builded;
-                else
-                    teamCondition = selectedUnits.Count > 0;
-
+                teamCondition = building.myTeam == Team.Player ? building.currentState == BuildingState.Builded : selectedUnits.Count > 0;
                 building.highlighted = hover && teamCondition;
             }
             else
@@ -218,12 +221,20 @@ public class SelectionManager : MonoBehaviour
         Destroy(dummy, dummyAnimDuration);
     }
 
-    private void OnGUI()
+    void DrawRectangle()
     {
-        Texture2D texture = new Texture2D(1, 1);
-        texture.SetPixel(0, 0, textureColor);
-        texture.Apply();
-        GUI.DrawTexture(selectRect, texture);
+        selectRect = new Rect(mousePos.x, Screen.height - mousePos.y, Input.mousePosition.x - mousePos.x, -1 * (Input.mousePosition.y - mousePos.y));
+
+        if (selectRect.width < 0)
+        {
+            selectRect.x += selectRect.width;
+            selectRect.width = Mathf.Abs(selectRect.width);
+        }
+        if (selectRect.height < 0)
+        {
+            selectRect.y += selectRect.height;
+            selectRect.height = Mathf.Abs(selectRect.height);
+        }
     }
 
     void SelectInBox()
@@ -233,10 +244,7 @@ public class SelectionManager : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
                 mousePos = Input.mousePosition;
 
-            selectRect = new Rect(mousePos.x, Screen.height - mousePos.y, Input.mousePosition.x - mousePos.x, -1 * (Input.mousePosition.y - mousePos.y));
-            if (selectRect.size.y < 2 && selectRect.size.y < 2)
-                return;
-
+            DrawRectangle();
             foreach (var unit in allPlayerUnits)
             {
                 if (unit == null)
@@ -262,15 +270,13 @@ public class SelectionManager : MonoBehaviour
         }
 
         if (Input.GetMouseButtonUp(0))
-        {            
+        {
             selectRect = new Rect();
             if (selectedUnits.Count <= 0)
                 return;
 
-            for (int i = 0; i < selectedUnits.Count; i++)
-            {
-                selectedUnits[i].Select(true);
-            }
+            foreach (var item in selectedUnits)
+                item.Select(true);
         }
     }
 
@@ -289,12 +295,7 @@ public class SelectionManager : MonoBehaviour
 
     void ManageCursor()
     {
-        if (attackUnit)
-            CursorManager.instance.currentState = MouseState.Attack;
-        else if (invalid)
-            CursorManager.instance.currentState = MouseState.Invalid;
-        else
-            CursorManager.instance.currentState = MouseState.Valid;
+        CursorManager.instance.currentState = attackUnit ? MouseState.Attack : invalid ? MouseState.Invalid : MouseState.Valid;
     }
 
     private void Update()

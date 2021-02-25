@@ -35,6 +35,7 @@ public class ResourcesManagerAlly : ResourcesManager
         if (amount == 0)
             return;
 
+        resources[(int)res].CurrentAmount += amount;
         Vector3 offsetPosition = resources[(int)res].displayResource.transform.position + Vector3.up * 25;
         CreateFloatingText(amount, res, offsetPosition);
         ActualizeText();

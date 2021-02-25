@@ -52,7 +52,7 @@ MonoBehaviour:
     thisEvent: 5
   - fx: {fileID: 3836327674847773433, guid: a4596465f171fff4a99e5a62d269753a, type: 3}
     thisEvent: 1
-  - fx: {fileID: 1000014008274426, guid: ade4a8a0e9637bb4e9f97dfca89c65b1, type: 3}
+  - fx: {fileID: 159196, guid: 37e803394624a5c48ae5f13fd212ac0b, type: 3}
     thisEvent: 3
-  - fx: {fileID: 1000014008274426, guid: ade4a8a0e9637bb4e9f97dfca89c65b1, type: 3}
+  - fx: {fileID: 173814, guid: 810eb771809ba56409dd29eab937ddb2, type: 3}
     thisEvent: 4

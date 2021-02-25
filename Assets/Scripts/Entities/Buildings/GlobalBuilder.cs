@@ -77,12 +77,10 @@ public class GlobalBuilder : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0) && canPlace)
                 {
-                    lastBuilding.Place(lastBuildingCost.creationDelay);
                     foreach (var cost in lastBuildingCost.costs)
-                    {
                         resourceManager.ModifyValue(cost.value, cost.resourceType);
-                    }
 
+                    lastBuilding.Place(lastBuildingCost.creationDelay);
                     ExitBuild();
                 }
             }

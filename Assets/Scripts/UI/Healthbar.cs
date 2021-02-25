@@ -5,7 +5,6 @@ using UnityEngine;
 public class Healthbar : MonoBehaviour
 {
     [SerializeField] Entity myEntity;
-    [SerializeField] Vector3 offset = new Vector3(0, 5, 0);
     Camera cam;
 
     private void Awake()
@@ -23,7 +22,7 @@ public class Healthbar : MonoBehaviour
         if (myEntity != null)
         {
             Vector3 targetPositionScreenPoint = cam.WorldToScreenPoint(myEntity.transform.position);
-            transform.position = targetPositionScreenPoint + offset;
+            transform.position = targetPositionScreenPoint + Vector3.up * myEntity.UIOffset;
         }
     }
 }

@@ -61,16 +61,22 @@ MonoBehaviour:
     volume: 0.5
     pitch: 1
     spatialBlend: 1
-    radius: 20
+    radius: 150
   - soundType: 2
     clip: {fileID: 8300000, guid: 53467735a9f5f564d84f1048bac11bcb, type: 3}
     volume: 0.5
     pitch: 1
     spatialBlend: 1
-    radius: 20
+    radius: 150
   - soundType: 5
     clip: {fileID: 8300000, guid: 1fd31868d68903d4f9e2c4a3b7ef98f3, type: 3}
     volume: 0.254
     pitch: 1
     spatialBlend: 1
-    radius: 20
+    radius: 150
+  - soundType: 4
+    clip: {fileID: 8300000, guid: 19b9a8e562a53ab4894a0651be7aec93, type: 3}
+    volume: 0.254
+    pitch: 1
+    spatialBlend: 1
+    radius: 150

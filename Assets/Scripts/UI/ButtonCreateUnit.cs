@@ -21,8 +21,6 @@ public class ButtonCreateUnit : Button
         block.DOFillAmount(0, Casern.unitsToCreate[index].creationDelay);
         foreach (var item in Casern.unitsToCreate[index].costs)
             resourceManager.ModifyValue(item.value, item.resourceType);
-
-        EventManager.Instance.onCost.Invoke();
     }
 
     public override void ShowTooltip(bool value)
@@ -33,6 +31,6 @@ public class ButtonCreateUnit : Button
 
     public override void SetButton()
     {
-        myButton.interactable = Casern && resourceManager.CanPay(Casern.unitsToCreate[index].costs) && !Casern.busy;
+        myButton.interactable = Casern && resourceManager.CanPay(Casern.unitsToCreate[index].costs) && !Casern.Busies[index];
     }
 }

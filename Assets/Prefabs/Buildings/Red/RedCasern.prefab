@@ -14323,7 +14323,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyIndex: 0
-  spawnRate: 8
+  spawnRate: 15
 --- !u!114 &8519486351444143614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14343,6 +14343,8 @@ MonoBehaviour:
     isDead: 0
   myTeam: 1
   highlighted: 0
+  UIOffset: 28
+  UIScale: 15
   resourceManager: {fileID: 0}
   meshRender: {fileID: 1921113840632965949}
   busy: 0
@@ -14365,12 +14367,10 @@ MonoBehaviour:
   - purchase_Name: Soldier
     prefab: {fileID: 7809600282857023752, guid: c7ceefea6d827bd4dbf28212a049b3ab,
       type: 3}
-    creationDelay: 30
+    creationDelay: 10
     costs:
-    - value: 5
+    - value: -5
       resourceType: 0
-    - value: 5
-      resourceType: 1
 --- !u!65 &1030195292304667922
 BoxCollider:
   m_ObjectHideFlags: 0

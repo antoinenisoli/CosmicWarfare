@@ -60,7 +60,7 @@ public abstract class Unit : Entity, IShooter
     {
         base.Death();
         anim.SetTrigger("Death");
-        SetState(UnitState.IsUnactive);
+        Deactivate(true);
     }
 
     public void Shoot()
@@ -68,16 +68,9 @@ public abstract class Unit : Entity, IShooter
         anim.SetTrigger("Shoot");
     }
 
-    public override float HealthbarOffset()
-    {
-        if (meshRender.TryGetComponent(out SkinnedMeshRenderer mesh))
-            return 7.5f;
-
-        return 0;
-    }
-
     void Deactivate(bool b)
     {
+        SetState(UnitState.IsUnactive);
         health.isDead = true;
         StopAllCoroutines();
         lastTarget = null;
@@ -111,8 +104,13 @@ public abstract class Unit : Entity, IShooter
     {
         lastTarget = target;
         SetState(UnitState.IsChasing);
+        
         if (lastTarget.GetComponent<Building>())
-            attackPosition = (lastTarget as Building).MeshClosestPoint(transform.position);
+        {
+            bool getPoint = NavMesh.SamplePosition((lastTarget as Building).MeshClosestPoint(transform.position), out NavMeshHit hit, 100, NavMesh.AllAreas);
+            if (getPoint)
+                attackPosition = hit.position;
+        }
     }
 
     public void MoveTo(Vector3 pos)

@@ -15,7 +15,7 @@ MonoBehaviour:
   entityName: Turret
   entityDescription: A very dangerous turret, which can destroy enemies in seconds.
   maxHealth: 30
-  firePower: 1
-  shootRange: 20
-  shootRate: 2
-  moveSpeed: 5
+  firePower: 2
+  shootRange: 70
+  shootRate: 0.4
+  moveSpeed: 0

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityName: Soldier
   entityDescription: A regular soldier.
-  maxHealth: 15
+  maxHealth: 10
   firePower: 1
-  shootRange: 20
+  shootRange: 35
   shootRate: 2
-  moveSpeed: 13
+  moveSpeed: 20

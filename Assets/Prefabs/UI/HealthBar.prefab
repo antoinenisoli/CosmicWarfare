@@ -217,7 +217,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myEntity: {fileID: 0}
-  offset: {x: 0, y: 8, z: 0}
+  offset: {x: 0, y: 28, z: 0}
 --- !u!114 &7819907044754068617
 MonoBehaviour:
   m_ObjectHideFlags: 0

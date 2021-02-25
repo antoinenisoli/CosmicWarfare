@@ -52,7 +52,7 @@ public class CameraController : MonoBehaviour
             return;
 
         Gizmos.color = boxColor;
-        Gizmos.DrawCube(transform.position, new Vector3(panBounds.x * 2, zoomLimits.x, panBounds.z * 2));
+        Gizmos.DrawCube(Vector3.zero, new Vector3(panBounds.x * 2, zoomLimits.x, panBounds.z * 2));
     }
 
     BuildingMainBase GetDestroyedBase(Team team)
@@ -75,8 +75,8 @@ public class CameraController : MonoBehaviour
     [ContextMenu("Clamp position in box")]
     public void ClampPosition()
     {
-        newPosition.x = Mathf.Clamp(newPosition.x, basePosition.x - panBounds.x, basePosition.x + panBounds.x);
-        newPosition.z = Mathf.Clamp(newPosition.z, basePosition.z - panBounds.z, basePosition.z + panBounds.z);
+        newPosition.x = Mathf.Clamp(newPosition.x, -panBounds.x, panBounds.x);
+        newPosition.z = Mathf.Clamp(newPosition.z, -panBounds.z, panBounds.z);
     }
 
     public void CameraZoom()

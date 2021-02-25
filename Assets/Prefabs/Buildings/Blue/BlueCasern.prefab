@@ -89,7 +89,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: b9cc259c1860d8f409305d5b34679100, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14441,18 +14441,16 @@ MonoBehaviour:
   unitsToCreate:
   - purchase_Name: Soldier
     prefab: {fileID: 885422398353187992, guid: e32cf44b03e3a454b9ecc19bb0b8cbc6, type: 3}
-    creationDelay: 10
+    creationDelay: 3
     costs:
-    - value: 5
+    - value: -5
       resourceType: 0
-  - purchase_Name: Drone
-    prefab: {fileID: 885422398353187992, guid: c20bc751fb3526a4a802925beedd6584, type: 3}
-    creationDelay: 13
+  - purchase_Name: Soldier
+    prefab: {fileID: 885422398353187992, guid: e32cf44b03e3a454b9ecc19bb0b8cbc6, type: 3}
+    creationDelay: 3
     costs:
-    - value: 10
+    - value: -5
       resourceType: 0
-    - value: 10
-      resourceType: 1
 --- !u!65 &1030195292304667922
 BoxCollider:
   m_ObjectHideFlags: 0

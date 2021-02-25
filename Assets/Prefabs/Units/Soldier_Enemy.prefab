@@ -65,7 +65,7 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 768
-  detectionRadius: 300
+  detectionRadius: 5000
   detectedEnemies: []
   allTargets: []
 --- !u!195 &7809600282857023749

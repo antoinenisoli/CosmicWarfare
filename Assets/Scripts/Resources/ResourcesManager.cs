@@ -13,13 +13,12 @@ public enum ResourceType
 
 public abstract class ResourcesManager : MonoBehaviour
 {
-    public Resource[] resources;
     public Team myTeam;
-    public bool gameEnded;
-    public Dictionary<ResourceType, Resource> myResources = new Dictionary<ResourceType, Resource>();
-
     [ColorUsage(true, true)]
     public Color teamColor = Color.blue;
+    public bool gameEnded;
+    public Resource[] resources;
+    public Dictionary<ResourceType, Resource> myResources = new Dictionary<ResourceType, Resource>();
 
     private void Awake()
     {
@@ -44,7 +43,6 @@ public abstract class ResourcesManager : MonoBehaviour
             return;
 
         resources[(int)res].CurrentAmount += amount;
-        EventManager.Instance.onCost.Invoke();
     }
 
     public bool CanPay(ResourceCost[] costs)

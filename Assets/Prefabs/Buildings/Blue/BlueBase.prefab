@@ -109,7 +109,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: de36ad4a9be10664db3734171f4742e2, type: 2}
+  - {fileID: 2100000, guid: b9cc259c1860d8f409305d5b34679100, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1417,6 +1417,8 @@ MonoBehaviour:
     isDead: 0
   myTeam: 0
   highlighted: 0
+  UIOffset: 50
+  UIScale: 15
   resourceManager: {fileID: 0}
   meshRender: {fileID: 6434241742990703995}
   busy: 0
@@ -1435,7 +1437,7 @@ MonoBehaviour:
   - {fileID: 6381859372405866883}
   - {fileID: 6381859375018781309}
   - {fileID: 6381859371441856859}
-  constructionRadius: 140
+  constructionRadius: 200
   projectArea: {fileID: 5423526268808829870}
 --- !u!65 &7201233640251452055
 BoxCollider:

@@ -24,6 +24,7 @@ public class Resource
             if (value < 0)
                 value = 0;
 
+            EventManager.Instance.onCost?.Invoke();
             currentAmount = value;
         }
     }

@@ -54,6 +54,8 @@ MonoBehaviour:
     isDead: 0
   myTeam: 1
   highlighted: 0
+  UIOffset: 28
+  UIScale: 15
   resourceManager: {fileID: 0}
   meshRender: {fileID: 3978170369886912971}
   busy: 0
