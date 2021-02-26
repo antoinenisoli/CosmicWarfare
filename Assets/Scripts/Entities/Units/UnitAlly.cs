@@ -24,7 +24,9 @@ public class UnitAlly : Unit
     public void Select(bool select)
     {
         selected = select;
-        selectedVFX.SetActive(select);
+        if (selectedVFX)
+            selectedVFX.SetActive(select);
+
         if (select)
             selectedVFX.GetComponent<ParticleSystem>().Play();
     }

@@ -31,6 +31,7 @@ public class ButtonCreateUnit : Button
 
     public override void SetButton()
     {
-        myButton.interactable = Casern && resourceManager.CanPay(Casern.unitsToCreate[index].costs) && !Casern.Busies[index];
+        if (Casern)
+            myButton.interactable = resourceManager.CanPay(Casern.unitsToCreate[index].costs) && !Casern.Busies[index];
     }
 }

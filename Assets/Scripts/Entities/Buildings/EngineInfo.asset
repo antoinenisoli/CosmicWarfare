@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: EngineInfo
   m_EditorClassIdentifier: 
   entityName: Engine
-  entityDescription: This building can mine oil.
+  entityDescription: This building can mine 5 units of resources every 8 seconds.
   maxHealth: 50

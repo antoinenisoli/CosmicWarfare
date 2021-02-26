@@ -13,9 +13,9 @@ public class BuildingCasern : Building
     public Purchase[] unitsToCreate;
     [HideInInspector] public bool[] Busies;
 
-    public override void Start()
+    public override void Awake()
     {
-        base.Start();
+        base.Awake();
         Busies = new bool[unitsToCreate.Length];
     }
 

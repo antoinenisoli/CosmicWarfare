@@ -45,7 +45,7 @@ public abstract class Building : Entity
     public bool selected;
     [SerializeField] Animation[] idleAnimations;
 
-    public void Awake()
+    public virtual void Awake()
     {
         switch (myTeam)
         {
@@ -67,9 +67,7 @@ public abstract class Building : Entity
             sourceTag.enabled = false;
             meshRender.material = movingMat;
             foreach (var anim in idleAnimations)
-            {
                 anim.Stop();
-            }
         }
     }
 
@@ -106,9 +104,7 @@ public abstract class Building : Entity
     {
         base.ModifyLife(amount, damageLocation);
         if (amount < 0)
-        {
             VFXManager.Instance.InvokeVFX(FX_Event.LaserDamage, damageLocation, Quaternion.identity);
-        }
     }
 
     public void Place(float delay)

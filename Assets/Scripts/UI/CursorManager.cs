@@ -14,7 +14,7 @@ public class CursorManager : MonoBehaviour
     public static CursorManager instance;
     public MouseState currentState;
     [SerializeField] Texture2D[] cursorIcons;
-    [SerializeField] Vector2 offset;
+    [SerializeField] Vector2 offsetPC, offsetWeb;
 
     private void Awake()
     {
@@ -26,6 +26,12 @@ public class CursorManager : MonoBehaviour
 
     private void Update()
     {
-        Cursor.SetCursor(cursorIcons[(int)currentState], offset, CursorMode.Auto);
+        Texture2D cursor = cursorIcons[(int)currentState];
+
+#if UNITY_WEBGL
+        Cursor.SetCursor(cursor, offsetWeb, CursorMode.ForceSoftware);
+#else
+        Cursor.SetCursor(cursor, offsetPC, CursorMode.Auto);
+#endif
     }
 }

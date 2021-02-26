@@ -245,6 +245,9 @@ public class SelectionManager : MonoBehaviour
                 mousePos = Input.mousePosition;
 
             DrawRectangle();
+            if (selectRect.size.y < 2 || selectRect.size.x < 2)
+                return;
+
             foreach (var unit in allPlayerUnits)
             {
                 if (unit == null)
